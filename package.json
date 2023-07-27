@@ -11,7 +11,7 @@
     "url": "git+https://github.com/GustavoTardin/Stock-Project.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Gustavo Tardin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/GustavoTardin/Stock-Project/issues"
@@ -22,6 +22,7 @@
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
+    "@tsconfig/node16": "^16.1.0",
     "ts-node": "^10.9.1"
   }
 }
