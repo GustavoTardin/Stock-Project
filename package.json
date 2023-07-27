@@ -1,0 +1,27 @@
+{
+  "name": "stock-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustavoTardin/Stock-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GustavoTardin/Stock-Project/issues"
+  },
+  "homepage": "https://github.com/GustavoTardin/Stock-Project#readme",
+  "dependencies": {
+    "@types/node": "^20.4.5",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
