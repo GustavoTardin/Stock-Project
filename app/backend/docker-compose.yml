@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  api:
+    container_name: Stock_Project_api
+    build: .
+    restart: always
+    ports:
+      - 3001:3001
+    working_dir: /app
+    volumes:
+      - ./src:/app/src
+    command: dev
+    environment:
+      - name=value
+    env_file:
+      - .env
+    depends_on:
+      - database
+  database:
+    container_name: stock_project_db
+    image: mongo:4
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - name=value
+    env_file:
+      - .env
