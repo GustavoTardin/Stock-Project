@@ -6,6 +6,10 @@ RUN npm install
 
 COPY . .
 
+RUN chown node:node /app
+
+USER node
+
 EXPOSE 3001
 
 ENTRYPOINT [ "npm", "run" ]
