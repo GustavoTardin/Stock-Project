@@ -6,15 +6,15 @@ services:
     build: .
     restart: always
     ports:
-      - 3001:3001
+      - 3009:3009
     working_dir: /app
     volumes:
       - ./src:/app/src
     command: dev
-    environment:
-      - name=value
     env_file:
       - .env
+    environment:
+      - MONGO_URL=${MONGO_URL}
     depends_on:
       - database
   database:
@@ -23,7 +23,3 @@ services:
     restart: always
     ports:
       - 27017:27017
-    environment:
-      - name=value
-    env_file:
-      - .env
