@@ -33,7 +33,7 @@
     "rules": {
         "class-methods-use-this": [0],
         "no-underscore-dangle": "off",
-        "no-console": 1,
+        "no-console": 0,
         "camelcase": "warn",
         "arrow-parens": [2, "always"],
         "quotes": [2, "single"],
