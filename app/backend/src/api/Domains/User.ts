@@ -2,13 +2,13 @@ import IUser from '../interfaces/users/IUser';
 
 class User {
   protected _id: string | undefined;
-  protected _name: string;
+  protected _userName: string;
   protected _credential: string;
   protected _store: string[];
 
   constructor(user: IUser) {
     this._id = user.id;
-    this._name = user.name;
+    this._userName = user.userName;
     this._credential = user.credential;
     this._store = user.store;
   }
@@ -22,11 +22,11 @@ class User {
   }
 
   get name(): string {
-    return this._name;
+    return this._userName;
   }
 
   set name(name: string) {
-    this._name = name;
+    this._userName = name;
   }
 
   get credential(): string {
