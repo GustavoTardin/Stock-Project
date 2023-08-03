@@ -1,7 +1,9 @@
+import Login from './Pages/Login';
+
 function App() {
   return (
-    <h1>Configuração inicial</h1>
-  )
+    <Login />
+  );
 }
 
-export default App
+export default App;
