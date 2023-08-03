@@ -4,16 +4,8 @@ export default function Login() {
   const [user, userSetter] = useState('');
   const [password, passwordSetter] = useState('');
 
-  const handleUser = (event:ChangeEvent<HTMLInputElement>): void => {
-    userSetter(event.target.value);
-  };
-
-  const handlePassword = (event: ChangeEvent<HTMLInputElement>): void => {
-    passwordSetter(event.target.value);
-  };
-
   const handleButton = (): boolean => {
-    return !(user.length >= 4 && password.length >= 4);
+    return !(user.length >= 3 && password.length >= 4);
   };
 
   const tryLogin = (event: React.FormEvent): void => {
@@ -27,14 +19,14 @@ export default function Login() {
         type="text"
         id="user"
         value={ user }
-        onChange={ (event: ChangeEvent<HTMLInputElement>) => handleUser(event) }
+        onChange={ (e: ChangeEvent<HTMLInputElement>) => userSetter(e.target.value) }
       />
       <label htmlFor="password">Senha</label>
       <input
         type="password"
         id="password"
         value={ password }
-        onChange={ (event: ChangeEvent<HTMLInputElement>) => handlePassword(event) }
+        onChange={ (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value) }
       />
       <button
         disabled={ handleButton() }
