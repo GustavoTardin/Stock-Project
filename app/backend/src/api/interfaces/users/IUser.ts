@@ -3,5 +3,5 @@ export default interface IUser {
   userName: string,
   credential: string,
   store: string[],
-  password?: string
+  password: string
 }
