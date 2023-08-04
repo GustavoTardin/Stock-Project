@@ -13,6 +13,7 @@ class UserService {
   }
 
   async checkLogin(credentials: unknown): Promise<string | Error> {
+    console.log('aaa');
     this.joi.validateData(credentials);
     const validatedCredentials = credentials as { userName: string, password: string };
     const token = await 

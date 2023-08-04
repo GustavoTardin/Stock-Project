@@ -10,6 +10,7 @@ class UserController {
 
   checkLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      console.log('aa');
       const token = await this.service.checkLogin(req.body);
       res.status(200).json({ token });
     } catch (error) {
