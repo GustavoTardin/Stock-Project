@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import app from './app';
-import connectToDatabase from './database/Models/Connection';
+import connectToDatabase from './api/Models/Connection';
 
 const PORT = process.env.PORT || 3009;
 connectToDatabase()

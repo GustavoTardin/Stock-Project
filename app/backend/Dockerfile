@@ -2,15 +2,16 @@ FROM node:16-alpine3.11
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
+RUN npm install
 
-RUN ["npm", "install"]
+COPY . .
 
 RUN chown node:node /app
 
 USER node
 
-EXPOSE 3001
+EXPOSE 3009
 
 ENTRYPOINT [ "npm", "run" ]
 CMD [ "start" ]
