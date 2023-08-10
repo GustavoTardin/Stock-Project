@@ -6,9 +6,10 @@ import AbstractODM from './AbstractODM';
 import userSchema from './Schemas/userSchema';
 import Jwt from '../Auth/Jwt';
 import StoreODM from './StoreODM';
+import { IStoreODM } from '../interfaces/stores';
 
 class UserODM extends AbstractODM<IUser> implements IUserODM {
-  protected storeModel: StoreODM;
+  protected storeModel: IStoreODM;
   constructor() {
     super(userSchema, 'User');
     this.storeModel = new StoreODM();
