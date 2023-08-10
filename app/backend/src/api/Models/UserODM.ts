@@ -6,8 +6,9 @@ import AbstractODM from './AbstractODM';
 import userSchema from './Schemas/userSchema';
 import Jwt from '../Auth/Jwt';
 import StoreODM from './StoreODM';
+import IUserODM from '../interfaces/users/IUserODM';
 
-class UserODM extends AbstractODM<IUser> {
+class UserODM extends AbstractODM<IUser> implements IUserODM {
   protected storeModel: StoreODM;
   constructor() {
     super(userSchema, 'User');
@@ -26,7 +27,7 @@ class UserODM extends AbstractODM<IUser> {
   };
 
   validateStoreField = async (user: IUser) => {
-    const stores = await this.storeModel.getAll();
+    const stores = await this.storeModel.getStoreNames();
     const storeNames = stores.map((e) => e.name);
     if (!(user.store.every((e) => storeNames.includes(e)))) {
       throw new CustomError('Esta loja não existe no banco de dados!', '400');
@@ -39,9 +40,9 @@ class UserODM extends AbstractODM<IUser> {
 
   checkLogin = async (userName: string, password: string): Promise<string | Error> => {
     const user = await this.model.findOne({ userName });
-    if (!user) throw new CustomError('Invalid username or password', '404');
+    if (!user) throw new CustomError('Nome de usuário ou senha inválidos', '404');
     if (!bcrypt.compareSync(password, user.password)) {
-      throw new CustomError('Invalid username or password', '404');
+      throw new CustomError('Nome de usuário ou senha inválidos', '404');
     } else {
       const token = this.generateUserAuthToken(user);
       return token;
@@ -50,7 +51,7 @@ class UserODM extends AbstractODM<IUser> {
 
   createUser = async (user: IUser): Promise<IUser> => {
     const duplicateUsername = await this.model.findOne({ userName: user.userName });
-    if (duplicateUsername) throw new CustomError('Username already in use', '409');
+    if (duplicateUsername) throw new CustomError('Nome de usuário já em uso!', '409');
     user = await this.validateStoreField(user);
     user.password = bcrypt.hashSync(user.password, 10);
     const newUser = await this.model.create({ ...user });
