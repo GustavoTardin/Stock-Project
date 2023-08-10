@@ -1,8 +1,9 @@
+import { IStoreODM } from '../interfaces/stores';
 import IStore from '../interfaces/stores/IStore';
 import AbstractODM from './AbstractODM';
 import storeSchema from './Schemas/storeSchema';
 
-class StoreODM extends AbstractODM<IStore> {
+class StoreODM extends AbstractODM<IStore> implements IStoreODM {
   constructor() {
     super(storeSchema, 'Store');
   }
