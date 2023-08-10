@@ -8,9 +8,17 @@ class UserController {
     this.service = service;
   }
 
+  createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const newUser = await this.service.createUser(req.body);
+      res.status(201).json(newUser);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   checkLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      console.log('aa');
       const token = await this.service.checkLogin(req.body);
       res.status(200).json({ token });
     } catch (error) {

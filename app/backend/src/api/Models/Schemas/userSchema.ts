@@ -5,7 +5,7 @@ const userSchema = new Schema<IUser>({
   userName: { type: String, required: true },
   password: { type: String, required: true },
   credential: { type: String, required: true },
-  store: { type: [String], required: true },
+  store: { type: [String] },
 });
 
 export default userSchema;

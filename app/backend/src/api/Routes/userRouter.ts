@@ -1,16 +1,23 @@
 import { Router } from 'express';
-import Validation from '../MIdllewares/Validation';
+import UserValidation from '../MIdllewares/UserValidation';
 import UserODM from '../Models/UserODM';
 import UserService from '../Services/UserService';
 import UserController from '../Controllers/UserController';
 
 const userRouter = Router();
 
-const { usernameRequired, userPasswordRequired } = Validation;
+const { usernameRequired, passwordRequired, credentialRequired, storeRequired } = UserValidation;
 const userODM = new UserODM();
 const userService = new UserService(userODM);
 const userController = new UserController(userService);
 
-userRouter.post('/login', usernameRequired, userPasswordRequired, userController.checkLogin);
-
+userRouter.post('/login', usernameRequired, passwordRequired, userController.checkLogin);
+userRouter.post(
+  '/create', 
+  usernameRequired,
+  passwordRequired, 
+  credentialRequired, 
+  storeRequired, 
+  userController.createUser,
+);
 export default userRouter;
