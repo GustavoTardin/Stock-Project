@@ -1,13 +1,12 @@
 import UserODM from '../Models/UserODM';
 import JoiValidation from '../Utils/JoiValidation';
-import loginSchema from '../Utils/JoiSchemas/loginSchema';
 import User from '../Domains/User';
-import userSchema from '../Utils/JoiSchemas/userSchema';
-import IUser from '../interfaces/users/IUser';
+import { userSchema, loginSchema } from '../Utils/JoiSchemas';
+import { IUser, IUserService } from '../interfaces/users';
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 
-class UserService extends AbstractService<IUser, UserODM> {
+class UserService extends AbstractService<IUser, UserODM> implements IUserService {
   async createUser(user: unknown): Promise<User | Error> {
     const newUserJoi = new JoiValidation(userSchema);
     newUserJoi.validateData(user);

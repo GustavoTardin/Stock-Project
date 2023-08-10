@@ -1,6 +1,8 @@
-import IUser from './IUser';
+import User from '../../Domains/User';
 
-export default interface IUserService {
-  getAll(): Promise<IUser[]>
-  getById(): Promise<IUser> | Error
+interface IUserService {
+  createUser(user: unknown): Promise<User | Error>;
+  checkLogin(credentials: unknown): Promise<string | Error>;
 }
+
+export default IUserService;

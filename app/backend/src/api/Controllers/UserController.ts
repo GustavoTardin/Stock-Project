@@ -1,13 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import UserService from '../Services/UserService';
+import AbstractController from './AbstractController';
+import { IUser, IUserODM } from '../interfaces/users';
 
-class UserController {
-  protected service: UserService;
-
-  constructor(service:UserService) {
-    this.service = service;
-  }
-
+class UserController extends AbstractController<IUser, IUserODM, UserService> {
   createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const newUser = await this.service.createUser(req.body);

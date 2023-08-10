@@ -1,12 +1,11 @@
 /* eslint-disable no-param-reassign */
 import * as bcrypt from 'bcrypt';
 import CustomError from '../Errors/CustomError';
-import IUser from '../interfaces/users/IUser';
+import { IUser, IUserODM } from '../interfaces/users';
 import AbstractODM from './AbstractODM';
 import userSchema from './Schemas/userSchema';
 import Jwt from '../Auth/Jwt';
 import StoreODM from './StoreODM';
-import IUserODM from '../interfaces/users/IUserODM';
 
 class UserODM extends AbstractODM<IUser> implements IUserODM {
   protected storeModel: StoreODM;
