@@ -36,7 +36,16 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
     }
     return user;
   };
-
+  
+  createUser = async (user: IUser): Promise<IUser> => {
+    const duplicateUsername = await this.model.findOne({ userName: user.userName });
+    if (duplicateUsername) throw new CustomError('Nome de usuário já em uso!', '409');
+    user = await this.validateStoreField(user);
+    user.password = bcrypt.hashSync(user.password, 10);
+    const newUser = await this.model.create({ ...user });
+    return newUser;
+  };
+  
   checkLogin = async (userName: string, password: string): Promise<string | Error> => {
     const user = await this.model.findOne({ userName });
     if (!user) throw new CustomError('Nome de usuário ou senha inválidos', '404');
@@ -46,15 +55,6 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
       const token = this.generateUserAuthToken(user);
       return token;
     }
-  };
-
-  createUser = async (user: IUser): Promise<IUser> => {
-    const duplicateUsername = await this.model.findOne({ userName: user.userName });
-    if (duplicateUsername) throw new CustomError('Nome de usuário já em uso!', '409');
-    user = await this.validateStoreField(user);
-    user.password = bcrypt.hashSync(user.password, 10);
-    const newUser = await this.model.create({ ...user });
-    return newUser;
   };
 }
 

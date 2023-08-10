@@ -4,6 +4,9 @@ import AbstractController from './AbstractController';
 import { IUser, IUserODM } from '../interfaces/users';
 
 class UserController extends AbstractController<IUser, IUserODM, UserService> {
+  constructor(service: UserService) {
+    super('user', service);
+  }
   createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const newUser = await this.service.createUser(req.body);

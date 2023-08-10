@@ -2,20 +2,24 @@ import { NextFunction, Request, Response } from 'express';
 import { Document } from 'mongoose';
 import AbstractService from '../Services/AbstractService';
 import AbstractODM from '../Models/AbstractODM';
+import DomainFactory from '../Utils/DomainFactory';
 
 abstract class AbstractController<
     DocumentType extends Document,
     ODMType extends AbstractODM<DocumentType>,
     ServiceType extends AbstractService<DocumentType, ODMType>> {
   protected service: ServiceType;
-  constructor(service: ServiceType) {
+  public domainType: string;
+  constructor(domainType: string, service: ServiceType) {
     this.service = service;
+    this.domainType = domainType;
   }
 
   getAll = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const data = await this.service.getAll();
-      res.status(200).json(data);
+      const domains = data.map((e) => DomainFactory.createDomain(this.domainType, e));
+      res.status(200).json(domains);
     } catch (error) {
       next(error);
     }
