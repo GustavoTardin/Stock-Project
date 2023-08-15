@@ -1,7 +1,18 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `http://localhost:${process.env.REACT_APP_API_PORT}`,
+  baseURL: 'http://localhost:3009',
 });
 
-export default api;
+const requestLogin = async (
+  endpoint: string,
+  body: { userName: string, password: string },
+) => {
+  const { data } = await api.post(endpoint, body);
+  return data;
+};
+
+export {
+  api,
+  requestLogin,
+};
