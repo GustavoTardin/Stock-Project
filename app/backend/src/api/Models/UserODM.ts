@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as bcrypt from 'bcrypt';
 import CustomError from '../Errors/CustomError';
-import { IUser, IUserODM } from '../interfaces/users';
+import { ILoginResponse, IUser, IUserODM } from '../interfaces/users';
 import AbstractODM from './AbstractODM';
 import userSchema from './Schemas/userSchema';
 import Jwt from '../Auth/Jwt';
@@ -47,14 +47,14 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
     return newUser;
   };
   
-  checkLogin = async (userName: string, password: string): Promise<string | Error> => {
+  checkLogin = async (userName: string, password: string): Promise<ILoginResponse> => {
     const user = await this.model.findOne({ userName });
     if (!user) throw new CustomError('Nome de usuário ou senha inválidos', '404');
     if (!bcrypt.compareSync(password, user.password)) {
       throw new CustomError('Nome de usuário ou senha inválidos', '404');
     } else {
       const token = this.generateUserAuthToken(user);
-      return token;
+      return { token, credential: user.credential };
     }
   };
 }

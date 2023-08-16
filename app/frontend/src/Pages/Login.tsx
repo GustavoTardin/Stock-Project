@@ -1,16 +1,40 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import { requestLogin, setToken } from '../Utils/requests';
 
 export default function Login() {
-  const [user, userSetter] = useState('');
+  const [userName, userNameSetter] = useState('');
   const [password, passwordSetter] = useState('');
+  const [failedLogin, failedLoginSetter] = useState(false);
+  const [isLogged, isLoggedSetter] = useState(false);
 
   const handleButton = (): boolean => {
-    return !(user.length >= 3 && password.length >= 4);
+    return !(userName.length >= 3 && password.length >= 4);
   };
 
-  const tryLogin = (event: React.FormEvent): void => {
+  const tryLogin = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
+    try {
+      const { token, credential } = await requestLogin(
+        '/user/login',
+        { userName, password },
+      );
+      setToken(token as string);
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('credential', credential);
+
+      isLoggedSetter(true);
+    } catch {
+      failedLoginSetter(true);
+    }
   };
+
+  useEffect(() => {
+    failedLoginSetter(false);
+  }, [userName, password]);
+
+  if (isLogged) return <Navigate to="/menu" />;
 
   return (
     <form action="">
@@ -18,8 +42,8 @@ export default function Login() {
       <input
         type="text"
         id="user"
-        value={ user }
-        onChange={ (e: ChangeEvent<HTMLInputElement>) => userSetter(e.target.value) }
+        value={ userName }
+        onChange={ (e: ChangeEvent<HTMLInputElement>) => userNameSetter(e.target.value) }
       />
       <label htmlFor="password">Senha</label>
       <input
@@ -28,6 +52,18 @@ export default function Login() {
         value={ password }
         onChange={ (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value) }
       />
+      {
+        (failedLogin)
+          ? (
+            <p>
+              {
+                `O endereço de e-mail ou a senha não estão corretos.
+                    Por favor, tente novamente.`
+              }
+            </p>
+          )
+          : null
+      }
       <button
         disabled={ handleButton() }
         onClick={ tryLogin }

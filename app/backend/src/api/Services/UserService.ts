@@ -1,7 +1,7 @@
 import JoiValidation from '../Utils/JoiValidation';
 import User from '../Domains/User';
 import { userSchema, loginSchema } from '../Utils/JoiSchemas';
-import { IUser, IUserODM, IUserService } from '../interfaces/users';
+import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/users';
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';
@@ -10,6 +10,7 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
   async createUser(user: unknown): Promise<User | Error> {
     const newUserJoi = new JoiValidation(userSchema);
     newUserJoi.validateData(user);
+
     const validatedUser = user as IUser;
 
     if (validatedUser.credential === 'Lojista' && validatedUser.store.length < 1) {
@@ -24,13 +25,13 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
     return domain as User;
   }
 
-  async checkLogin(credentials: unknown): Promise<string | Error> {
+  async checkLogin(credentials: unknown): Promise<ILoginResponse> {
     const loginJoi = new JoiValidation(loginSchema);
     loginJoi.validateData(credentials);
     const validatedCredentials = credentials as { userName: string, password: string };
-    const token = await 
+    const { token, credential } = await 
     this.odm.checkLogin(validatedCredentials.userName, validatedCredentials.password);
-    return token;
+    return { token, credential };
   }
 }
 
