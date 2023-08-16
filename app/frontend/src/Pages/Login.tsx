@@ -1,10 +1,12 @@
 import { ChangeEvent, useState, useEffect } from 'react';
-import { requestLogin } from '../Utils/requests';
+import { Navigate } from 'react-router-dom';
+import { requestLogin, setToken } from '../Utils/requests';
 
 export default function Login() {
   const [userName, userNameSetter] = useState('');
   const [password, passwordSetter] = useState('');
   const [failedLogin, failedLoginSetter] = useState(false);
+  const [isLogged, isLoggedSetter] = useState(false);
 
   const handleButton = (): boolean => {
     return !(userName.length >= 3 && password.length >= 4);
@@ -13,8 +15,17 @@ export default function Login() {
   const tryLogin = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
     try {
-      const { token } = await requestLogin('/user/login', { userName, password });
-      console.log(token);
+      const { token, credential } = await requestLogin(
+        '/user/login',
+        { userName, password },
+      );
+      setToken(token as string);
+      console.log(token, credential);
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('credential', credential);
+
+      isLoggedSetter(true);
     } catch {
       failedLoginSetter(true);
     }
@@ -23,6 +34,8 @@ export default function Login() {
   useEffect(() => {
     failedLoginSetter(false);
   }, [userName, password]);
+
+  if (isLogged) return <Navigate to="/home" />;
 
   return (
     <form action="">

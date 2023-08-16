@@ -12,7 +12,12 @@ const requestLogin = async (
   return data;
 };
 
+const setToken = (token: string) => {
+  api.defaults.headers.common.Authorization = token;
+};
+
 export {
   api,
   requestLogin,
+  setToken,
 };
