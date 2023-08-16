@@ -1,6 +1,6 @@
 function AdminPanel() {
   return (
-    <h1>Painel Adminstrativo</h1>
+    <h1>Painel Administrativo</h1>
   );
 }
 
