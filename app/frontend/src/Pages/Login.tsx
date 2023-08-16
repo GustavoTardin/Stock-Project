@@ -19,7 +19,7 @@ export default function Login() {
         '/user/login',
         { userName, password },
       );
-      setToken(token as string);
+      setToken(token);
 
       localStorage.setItem('token', token);
       localStorage.setItem('credential', credential);
