@@ -20,7 +20,6 @@ export default function Login() {
         { userName, password },
       );
       setToken(token as string);
-      console.log(token, credential);
 
       localStorage.setItem('token', token);
       localStorage.setItem('credential', credential);
@@ -35,7 +34,7 @@ export default function Login() {
     failedLoginSetter(false);
   }, [userName, password]);
 
-  if (isLogged) return <Navigate to="/home" />;
+  if (isLogged) return <Navigate to="/menu" />;
 
   return (
     <form action="">
