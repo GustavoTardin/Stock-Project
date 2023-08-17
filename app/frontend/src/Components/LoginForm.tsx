@@ -40,16 +40,14 @@ function LoginForm({ tryLogin }: { tryLogin: (
         onChange={ (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value) }
       />
       {
-              (failedLogin)
-                ? (
-                  <p>
-                    {
+              (failedLogin) && (
+                <p>
+                  {
                               `O endereço de e-mail ou a senha não estão corretos.
                     Por favor, tente novamente.`
                           }
-                  </p>
-                )
-                : null
+                </p>
+              )
           }
       <button
         disabled={ handleButton() }
