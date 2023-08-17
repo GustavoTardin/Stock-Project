@@ -2,7 +2,7 @@ import Context from './Context';
 
 function Provider({ children }:{ children: React.ReactNode }) {
   return (
-    <Context.Provider value="a">
+    <Context.Provider value="b">
       {children}
     </Context.Provider>
   );
