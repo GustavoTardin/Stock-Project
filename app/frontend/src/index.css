@@ -25,10 +25,18 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0%;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+  margin: 0%;
+  padding: 0%;
 }
 
 h1 {
