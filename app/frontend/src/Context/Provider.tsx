@@ -9,3 +9,8 @@ function Provider({ children }:{ children: React.ReactNode }) {
 }
 
 export default Provider;
+
+/* Coisas que com certeza serão úteis colocar no contexto global:
+        - Dados do usuário
+
+*/

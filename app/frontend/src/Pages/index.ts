@@ -1,11 +1,11 @@
-import AdminPanel from './AdminPanel';
-import CreateOrder from './CreateOrder';
+import AdminPanel from '../Components/Admin/AdminPanel';
+import CreateOrder from './Sales/CreateOrder';
 import Home from './Home';
 import Login from './Login';
 import LowStockItems from './LowStockItems';
-import PendingOrders from './PendingOrders';
-import StockRefill from './StockRefill';
-import Valuation from './Valuation';
+import PendingOrders from './WareHouse/PendingOrders';
+import StockRefill from './WareHouse/StockRefill';
+import Valuation from './Admin/Valuation';
 
 export {
   AdminPanel,

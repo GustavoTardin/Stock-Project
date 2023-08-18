@@ -1,14 +1,25 @@
+import { useState } from 'react';
 import '../Styles/Navbar.css';
+import AdminPanel from './Admin/AdminPanel';
 
 function NavBar() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const credential = localStorage.getItem('credential');
   const isAdmin = credential === 'Administrador';
   const storeAccess = isAdmin || credential === 'lojista';
   const stockAccess = isAdmin || credential === 'Estoquista';
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
-    <div className="nav-container">
+    <nav className="nav-container">
       <ul className="nav-list">
+        <li>
+          <a href="/menu">Início</a>
+        </li>
         {storeAccess && (
           <li>
             <a href="/novo-pedido">Novo Pedido</a>
@@ -30,7 +41,10 @@ function NavBar() {
         {isAdmin && (
           <>
             <li>
-              <a href="/painel-administrativo">Painel Administrativo</a>
+              <button onClick={ toggleDropdown }>Painel Administrativo</button>
+              {isDropdownOpen && (
+                <AdminPanel />
+              )}
             </li>
             <li>
               <a href="/valuation">Valuation</a>
@@ -38,7 +52,7 @@ function NavBar() {
           </>
         )}
       </ul>
-    </div>
+    </nav>
   );
 }
 
