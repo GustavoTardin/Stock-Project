@@ -39,17 +39,12 @@ function NavBar() {
           </>
         )}
         {isAdmin && (
-          <>
-            <li>
-              <button onClick={ toggleDropdown }>Painel Administrativo</button>
-              {isDropdownOpen && (
-                <AdminPanel />
-              )}
-            </li>
-            <li>
-              <a href="/valuation">Valuation</a>
-            </li>
-          </>
+          <li>
+            <button onClick={ toggleDropdown }>Painel Administrativo</button>
+            {isDropdownOpen && (
+              <AdminPanel />
+            )}
+          </li>
         )}
       </ul>
     </nav>

@@ -17,6 +17,7 @@ function App() {
     { path: 'usuarios', element: <UserManagement /> },
     { path: 'produtos', element: <ProductManagement /> },
     { path: 'lojas', element: <StoreManagement /> },
+    { path: 'valuation', element: <Valuation /> },
   ];
   return (
     <Routes>
@@ -33,7 +34,6 @@ function App() {
       <Route path="/produtos-em-falta" element={ <LowStockItems /> } />
       <Route path="/pedidos-pendentes" element={ <PendingOrders /> } />
       <Route path="/reposição-de-produtos" element={ <StockRefill /> } />
-      <Route path="/valuation" element={ <Valuation /> } />
     </Routes>
   );
 }

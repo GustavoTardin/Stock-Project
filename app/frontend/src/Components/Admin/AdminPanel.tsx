@@ -6,6 +6,7 @@ function AdminPanel() {
       <AdminCard type="Usuários" />
       <AdminCard type="Produtos" />
       <AdminCard type="Lojas" />
+      <AdminCard type="Valuation" />
     </>
   );
 }
