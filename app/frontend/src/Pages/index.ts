@@ -6,6 +6,9 @@ import LowStockItems from './LowStockItems';
 import PendingOrders from './WareHouse/PendingOrders';
 import StockRefill from './WareHouse/StockRefill';
 import Valuation from './Admin/Valuation';
+import UserManagement from './Admin/UserManagement';
+import StoreManagement from './Admin/StoreManagement';
+import ProductManagement from './Admin/ProductManagement';
 
 export {
   AdminPanel,
@@ -16,4 +19,7 @@ export {
   PendingOrders,
   StockRefill,
   Valuation,
+  UserManagement,
+  StoreManagement,
+  ProductManagement,
 };

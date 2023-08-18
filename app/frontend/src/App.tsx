@@ -1,21 +1,34 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, RouteProps } from 'react-router-dom';
 import {
-  AdminPanel,
   CreateOrder,
   Home,
   Login,
   LowStockItems,
   PendingOrders,
+  ProductManagement,
   StockRefill,
+  StoreManagement,
+  UserManagement,
   Valuation,
 } from './Pages';
 
 function App() {
+  const adminRoutes: RouteProps[] = [
+    { path: 'usuarios', element: <UserManagement /> },
+    { path: 'produtos', element: <ProductManagement /> },
+    { path: 'lojas', element: <StoreManagement /> },
+  ];
   return (
     <Routes>
       <Route path="/" element={ <Login /> } />
       <Route path="/menu" element={ <Home /> } />
-      <Route path="/painel-administrativo" element={ <AdminPanel /> } />
+      {adminRoutes.map((route, index) => (
+        <Route
+          key={ index }
+          path={ `/painel-administrativo/${route.path}` }
+          element={ route.element }
+        />
+      ))}
       <Route path="/novo-pedido" element={ <CreateOrder /> } />
       <Route path="/produtos-em-falta" element={ <LowStockItems /> } />
       <Route path="/pedidos-pendentes" element={ <PendingOrders /> } />
