@@ -25,20 +25,30 @@ function LoginForm({ tryLogin }: { tryLogin: (
 
   return (
     <form action="">
-      <label htmlFor="user">Nome de Usuário</label>
-      <input
-        type="text"
-        id="user"
-        value={ userName }
-        onChange={ (e: ChangeEvent<HTMLInputElement>) => userNameSetter(e.target.value) }
-      />
-      <label htmlFor="password">Senha</label>
-      <input
-        type="password"
-        id="password"
-        value={ password }
-        onChange={ (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value) }
-      />
+      <label htmlFor="user">
+        Nome de Usuário
+        <input
+          type="text"
+          placeholder="Digite seu nome de usuário"
+          id="user"
+          value={ userName }
+          onChange={
+             (e: ChangeEvent<HTMLInputElement>) => userNameSetter(e.target.value)
+            }
+        />
+      </label>
+      <label htmlFor="password">
+        Senha
+        <input
+          type="password"
+          placeholder="Digite sua senha"
+          id="password"
+          value={ password }
+          onChange={
+             (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value)
+}
+        />
+      </label>
       {
               (failedLogin) && (
                 <p>

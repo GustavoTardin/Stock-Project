@@ -1,6 +1,12 @@
+import NavBar from '../../Components/Navbar';
+
 function StoreManagement() {
   return (
-    <h1>Lojas</h1>
+    <body>
+      <NavBar />
+      <button>Criar novo usuário</button>
+      <button>Administrar usuários</button>
+    </body>
   );
 }
 
