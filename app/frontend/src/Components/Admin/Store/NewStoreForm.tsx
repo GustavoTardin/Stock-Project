@@ -1,11 +1,23 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import Select, { MultiValue } from 'react-select';
 import { getUsernames } from '../../../Utils/userRequests';
 
+type IStoreData = {
+  storeName: string;
+  sellers: string[];
+  storeImg: File | null;
+};
+
+type IOptionType = {
+  value: string;
+  label: string;
+};
+
 function NewStoreForm() {
-  const [storeData, storeDataSetter] = useState({
+  const [storeData, storeDataSetter] = useState<IStoreData>({
     storeName: '',
     sellers: [],
-    color: '',
+    storeImg: null,
   });
   const [users, usersSetter] = useState([]);
 
@@ -17,14 +29,25 @@ function NewStoreForm() {
     }));
   };
 
+  const handleMultiSelectChange = (selected: MultiValue<IOptionType>) => {
+    storeDataSetter((prevData) => ({
+      ...prevData,
+      sellers: selected.map((option) => option.value),
+    }));
+  };
+
   useEffect(() => {
     const getNames = async () => {
       const userNames = await getUsernames();
       usersSetter(userNames);
-      console.log(userNames);
     };
     getNames();
   }, []);
+
+  const options = users.map((user) => ({
+    value: user,
+    label: user,
+  }));
 
   return (
     <form action="">
@@ -38,6 +61,23 @@ function NewStoreForm() {
           onChange={ handleChange }
         />
       </label>
+
+      <label htmlFor="salesPeople">
+        Vendedores
+      </label>
+      <Select
+        id="salesPeople"
+        isMulti
+        options={ options }
+        onChange={ (selected) => {
+          handleMultiSelectChange(selected);
+        } }
+        value={ options.filter((option) => storeData.sellers.includes(option.value)) }
+        isClearable
+      />
+      <label htmlFor="storeImg">Logo da loja</label>
+      <input type="file" id="storeImg" />
+
     </form>
   );
 }

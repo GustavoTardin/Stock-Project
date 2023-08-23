@@ -9,7 +9,7 @@
     left: 0;
     width: 100%;
     /* Ocupa toda a largura */
-    background-color: darkorchid;
+   background-color: black;
     padding: 20px;
     z-index: 1000;
     /* Ajuste conforme necessário */
@@ -31,7 +31,12 @@
 
 .nav-list a {
     text-decoration: none;
-    color: white;
+    color: #6300d7;
+
     /* Cor do texto */
+}
+
+button {
+    color: #6300d7;
 }
 

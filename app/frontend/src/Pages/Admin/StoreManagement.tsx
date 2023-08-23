@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NavBar from '../../Components/Navbar';
 import NewStoreForm from '../../Components/Admin/Store/NewStoreForm';
 
