@@ -12,6 +12,7 @@ const userService = new UserService(userODM);
 const userController = new UserController(userService);
 
 userRouter.get('/', userController.getAll);
+userRouter.get('/names', userController.getUserNames);
 userRouter.post('/login', usernameRequired, passwordRequired, userController.checkLogin);
 userRouter.post(
   '/create', 

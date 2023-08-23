@@ -15,6 +15,12 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
     this.storeModel = new StoreODM();
   }
 
+  getUserNames = async (): Promise<string[]> => {
+    const userNames = await this.model.find({}, 'userName');
+    console.log(userNames);
+    return userNames.map((user) => user.userName);
+  };
+
   generateUserAuthToken = (user: (IUser & { _id: string; })) => {
     const payload = {
       id: user._id,

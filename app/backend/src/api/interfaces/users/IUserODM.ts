@@ -7,6 +7,7 @@ interface IUserODM extends AbstractODM<IUser> {
   validateStoreField(user: IUser): Promise<IUser>;
   checkLogin(userName: string, password: string): Promise<ILoginResponse>;
   createUser(user: IUser): Promise<IUser>;
+  getUserNames(): Promise<string[]>
 }
 
 export default IUserODM;

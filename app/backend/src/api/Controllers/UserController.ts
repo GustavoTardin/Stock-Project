@@ -6,6 +6,16 @@ class UserController extends AbstractController<IUser, IUserODM, IUserService> {
   constructor(service: IUserService) {
     super('user', service);
   }
+
+  getUserNames = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userNames = await this.service.getUserNames();
+      res.status(200).json(userNames);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const newUser = await this.service.createUser(req.body);

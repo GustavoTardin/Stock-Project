@@ -7,6 +7,11 @@ import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';
 
 class UserService extends AbstractService<IUser, IUserODM> implements IUserService {
+  async getUserNames(): Promise<string[]> {
+    const userNames = await this.odm.getUserNames();
+    return userNames;
+  }
+
   async createUser(user: unknown): Promise<User | Error> {
     const newUserJoi = new JoiValidation(userSchema);
     newUserJoi.validateData(user);
