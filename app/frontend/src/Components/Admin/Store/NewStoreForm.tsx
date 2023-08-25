@@ -5,7 +5,7 @@ import { getUsernames } from '../../../Utils/userRequests';
 type IStoreData = {
   storeName: string;
   sellers: string[];
-  storeImg: File | null;
+  storeImg: File | null,
 };
 
 type IOptionType = {
@@ -34,6 +34,17 @@ function NewStoreForm() {
       ...prevData,
       sellers: selected.map((option) => option.value),
     }));
+  };
+
+  const handleFileInput = (files: FileList | null) => {
+    if (files && files.length > 0) {
+      const selectedFile = files[0];
+
+      storeDataSetter((prevData) => ({
+        ...prevData,
+        storeImg: selectedFile,
+      }));
+    }
   };
 
   useEffect(() => {
@@ -75,8 +86,14 @@ function NewStoreForm() {
         value={ options.filter((option) => storeData.sellers.includes(option.value)) }
         isClearable
       />
+
       <label htmlFor="storeImg">Logo da loja</label>
-      <input type="file" id="storeImg" />
+      <input
+        type="file"
+        id="storeImg"
+        accept="image/png"
+        onChange={ (e) => { handleFileInput(e.target.files); } }
+      />
 
     </form>
   );
