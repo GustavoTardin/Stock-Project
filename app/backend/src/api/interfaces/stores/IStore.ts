@@ -1,11 +1,11 @@
 import { Document } from 'mongoose';
-import IShippedProducts from './IShippedProducts';
+import IProductDetails from './IProductDetails';
 
 interface IStore extends Document {
   name: string,
   sellers: string[],
-  color: string,
-  shippedProducts: { [productName: string]: IShippedProducts }
+  logoPath: string | null,
+  productDetails: { [productName: string]: IProductDetails }
 }
 
 export default IStore;

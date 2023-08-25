@@ -1,9 +1,9 @@
-import IShippedProducts from './IShippedProducts';
+import IProductDetails from './IProductDetails';
 import IStore from './IStore';
 import IStoreODM from './IStoreODM';
 
 export {
-  IShippedProducts,
+  IProductDetails,
   IStore,
   IStoreODM,
 };

@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
-import IStore from '../../interfaces/stores/IStore';
+import IStore from '../../../interfaces/stores/IStore';
+import productDetailsSchema from './productDetailsSchema';
 
 const storeSchema = new Schema<IStore>({
   name: { type: String, required: true },
@@ -13,13 +14,12 @@ const storeSchema = new Schema<IStore>({
       message: 'Sellers must be an array of strings or an empty array.',
     },
   },
-  shippedProducts: {
+  logoPath: { type: String, default: null },
+  productDetails: {
     type: Map,
-    of: {
-      price: Number,
-      quantity: Number,
-      totalMovement: Number,
-    },
+    of: productDetailsSchema,
+    default: {},
+    required: true,
   },
 });
 
