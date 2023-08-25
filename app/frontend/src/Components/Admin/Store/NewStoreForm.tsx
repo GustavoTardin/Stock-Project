@@ -3,16 +3,18 @@ import MultiSelect from './MultiSelect';
 import { IStoreData } from './types';
 import StoreNameInput from './StoreNameInput';
 import { createStore } from '../../../Utils/storeRequests';
+import FileInput from './FileInput';
 
 function NewStoreForm() {
   const [storeData, storeDataSetter] = useState<IStoreData>({
     storeName: '',
     sellers: [],
+    storeLogo: null,
   });
   const [apiReturn, apiReturnSetter] = useState('');
 
   const disabledButton = () => {
-    return (storeData.storeName.length >= 4);
+    return storeData.storeName.length < 4;
   };
 
   const tryToCreate = async (event: React.FormEvent) => {
@@ -32,6 +34,7 @@ function NewStoreForm() {
         storeName={ storeData.storeName }
       />
       <MultiSelect storeDataSetter={ storeDataSetter } sellers={ storeData.sellers } />
+      <FileInput storeDataSetter={ storeDataSetter } />
       <button onClick={ tryToCreate } disabled={ disabledButton() }>Finalizar</button>
       { apiReturn && <p>{ apiReturn }</p> }
     </form>
@@ -39,16 +42,3 @@ function NewStoreForm() {
 }
 
 export default NewStoreForm;
-
-/* const handleFileInput = (files: FileList | null) => {
-   if (files && files.length > 0) {
-     const selectedFile = files[0];
-
-     storeDataSetter((prevData) => ({
-       ...prevData,
-       storeImg: selectedFile,
-     }));
-   }
- };
-
- */
