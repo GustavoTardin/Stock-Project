@@ -4,9 +4,7 @@ import CustomError from '../Errors/CustomError';
 import { ILoginResponse, IUser, IUserODM } from '../interfaces/users';
 import userSchema from './Schemas/user/userSchema';
 import Jwt from '../Auth/Jwt';
-import { AbstractODM } from '.';
-import { IStoreODM } from '../interfaces/stores';
-import ConsistencyChecker from '../Utils/ConsistencyChecker';
+import AbstractODM from './AbstractODM';
 
 class UserODM extends AbstractODM<IUser> implements IUserODM {
   constructor() {
@@ -33,9 +31,6 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
   };
   
   createUser = async (user: IUser): Promise<IUser> => {
-    const duplicateUsername = await this.model.findOne({ userName: user.userName });
-    if (duplicateUsername) throw new CustomError('Nome de usuário já em uso!', '409');
-    user = await ConsistencyChecker.checkStoreName(user);
     user.password = bcrypt.hashSync(user.password, 10);
     const newUser = await this.model.create({ ...user });
     return newUser;

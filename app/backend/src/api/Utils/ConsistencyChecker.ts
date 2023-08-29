@@ -10,6 +10,9 @@ class ConsistencyChecker {
   private static _StoreODM: IStoreODM = new StoreODM();
 
   static checkStoreName = async (user: IUser) => {
+    const users = await this._UserODM.getAll();
+    const duplicateUsername = users.find((e) => e.userName === user.userName);
+    if (duplicateUsername) throw new CustomError('Nome de usuário já em uso!', '409');
     const storeNames = await this._StoreODM.getStoreNames();
     if (!(user.store.every((e) => storeNames.includes(e)))) {
       throw new CustomError('Esta loja não existe no banco de dados!', '400');
@@ -17,6 +20,7 @@ class ConsistencyChecker {
     if (user.credential === 'Adminstrador' && user.store.length !== storeNames.length) {
       user.store = storeNames;
     }
+
     return user;
   };
 }

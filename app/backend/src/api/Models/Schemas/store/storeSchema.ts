@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
-import IStore from '../../../interfaces/stores/IStore';
 import productDetailsSchema from './productDetailsSchema';
+import IStoreDetails from '../../../interfaces/stores/IStoreDetails';
 
-const storeSchema = new Schema<IStore>({
+const storeSchema = new Schema<IStoreDetails>({
   name: { type: String, required: true },
   sellers: {
     type: [String],

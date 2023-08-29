@@ -1,12 +1,10 @@
 import CustomError from '../Errors/CustomError';
 import { IStoreODM } from '../interfaces/stores';
 import IStore from '../interfaces/stores/IStore';
-import { IUserODM } from '../interfaces/users';
 import storeSchema from './Schemas/store/storeSchema';
-import { UserODM, AbstractODM } from '.';
+import AbstractODM from './AbstractODM';
 
 class StoreODM extends AbstractODM<IStore> implements IStoreODM {
-  userModel: IUserODM;
   constructor() {
     super(storeSchema, 'Store');
   }

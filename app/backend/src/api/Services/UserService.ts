@@ -5,6 +5,7 @@ import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/use
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';
+import ConsistencyChecker from '../Utils/ConsistencyChecker';
 
 class UserService extends AbstractService<IUser, IUserODM> implements IUserService {
   async getUserNames(): Promise<string[]> {
@@ -16,16 +17,15 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
     const newUserJoi = new JoiValidation(userSchema);
     newUserJoi.validateData(user);
 
-    const validatedUser = user as IUser;
+    const joiValidated = user as IUser;
 
-    if (validatedUser.credential === 'Lojista' && validatedUser.store.length < 1) {
-      throw new CustomError('Lojista deve fazer parte de pelo menos 1 loja', '400');
-    }
-
-    if (validatedUser.credential === 'Estoquista' && validatedUser.store.length > 0) {
+    if (joiValidated.credential === 'Estoquista' && joiValidated.store.length > 0) {
       throw new CustomError('Estoquista não pode fazer parte de lojas', '400');
     }
-    const newUser = await this.odm.createUser(validatedUser);
+
+    const dbValidated = await ConsistencyChecker.checkStoreName(joiValidated);
+
+    const newUser = await this.odm.createUser(dbValidated);
     const domain = DomainFactory.createDomain('user', newUser);
     return domain as User;
   }
