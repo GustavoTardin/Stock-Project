@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { Product, User } from '../Domains';
 import CustomError from '../Errors/CustomError';
 import IProduct from '../interfaces/products/IProduct';
@@ -11,6 +12,9 @@ class DomainFactory {
     }
     if (type === DomainTypes.PRODUCT) {
       return new Product(obj as IProduct);
+    }
+    if (type === DomainTypes.STORE) {
+      log('a');
     }
     throw new CustomError('Tipo de domínio inválido', '500');
   }

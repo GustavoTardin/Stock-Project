@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import path from 'path';
 
 interface RequestWithUploadType extends express.Request {
   uploadType?: string;
@@ -16,7 +17,7 @@ const storage = multer.diskStorage({
     if (req.uploadType === 'users') {
       uploadPath = 'uploads/users/';
     } else if (req.uploadType === 'store') {
-      uploadPath = 'uploads/store/';
+      uploadPath = './src/api/Uploads/storeLogos';
     } // Adicione mais casos conforme necessário
 
     callback(null, uploadPath);
@@ -26,8 +27,9 @@ const storage = multer.diskStorage({
     _file: Express.Multer.File,
     callback: (error: Error | null, filename: string) => void,
   ) => {
-    const { storeName } = req.body;
-    const fileName = `${storeName}.png`;
+    const { name } = req.body;
+    const fileName = `${name.replace(/\s+/g, '')
+    }.png`;
     callback(null, fileName);
   },
 });

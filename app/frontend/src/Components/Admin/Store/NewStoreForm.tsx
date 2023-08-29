@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import MultiSelect from './MultiSelect';
 import { IStoreData } from './types';
 import StoreNameInput from './StoreNameInput';
@@ -20,17 +21,19 @@ function NewStoreForm() {
   const tryToCreate = async (event: React.FormEvent) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('storeName', storeData.storeName);
+    formData.append('name', storeData.storeName);
     formData.append('sellers', JSON.stringify(storeData.sellers));
     if (storeData.storeLogo) {
       formData.append('storeLogo', storeData.storeLogo as File);
-      formData.append('uploadType', 'store');
     }
     try {
-      await createStore(formData);
+      await createStore(formData, 'store');
       apiReturnSetter('Loja criada com sucesso');
-    } catch (erro) {
-      apiReturnSetter('Erro ao criar loja');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data.message;
+        apiReturnSetter(errorMessage);
+      }
     }
   };
 

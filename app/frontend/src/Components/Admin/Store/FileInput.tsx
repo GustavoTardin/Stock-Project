@@ -21,6 +21,7 @@ function FileInput({ storeDataSetter }: {
         type="file"
         id="storeImg"
         accept="image/png"
+        name="teste"
         onChange={ (e) => { handleFileInput(e.target.files); } }
       />
     </label>
