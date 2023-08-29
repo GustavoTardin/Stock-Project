@@ -6,10 +6,10 @@ import UserController from '../Controllers/UserController';
 
 const userRouter = Router();
 
-const { usernameRequired, passwordRequired, credentialRequired, storeRequired } = UserValidation;
 const userODM = new UserODM();
 const userService = new UserService(userODM);
 const userController = new UserController(userService);
+const { usernameRequired, passwordRequired, credentialRequired, storeRequired } = UserValidation;
 
 userRouter.get('/', userController.getAll);
 userRouter.get('/names', userController.getUserNames);

@@ -12,12 +12,12 @@ function StoreManagement() {
 */
 
   return (
-    <body>
+    <div>
       <NavBar />
       <button onClick={ showForm }>Criar nova loja</button>
       <button>Administrar lojas</button>
       {create && <NewStoreForm />}
-    </body>
+    </div>
   );
 }
 

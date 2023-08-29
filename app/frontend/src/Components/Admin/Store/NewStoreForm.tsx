@@ -19,8 +19,15 @@ function NewStoreForm() {
 
   const tryToCreate = async (event: React.FormEvent) => {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('storeName', storeData.storeName);
+    formData.append('sellers', JSON.stringify(storeData.sellers));
+    if (storeData.storeLogo) {
+      formData.append('storeLogo', storeData.storeLogo as File);
+      formData.append('uploadType', 'store');
+    }
     try {
-      await createStore(storeData);
+      await createStore(formData);
       apiReturnSetter('Loja criada com sucesso');
     } catch (erro) {
       apiReturnSetter('Erro ao criar loja');
