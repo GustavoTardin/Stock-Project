@@ -1,12 +1,13 @@
 import { Schema } from 'mongoose';
 import productDetailsSchema from './productDetailsSchema';
-import IStoreDetails from '../../../interfaces/stores/IStoreDetails';
+import { IStore } from '../../../interfaces/stores';
 
-const storeSchema = new Schema<IStoreDetails>({
+const storeSchema = new Schema<IStore>({
   name: { type: String, required: true },
   sellers: {
     type: [String],
     required: true,
+    default: [],
     validate: {
       validator(sellers: string[]) {
         return sellers.length === 0 || sellers.every((seller) => typeof seller === 'string');

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import CustomError from '../Errors/CustomError';
-// eslint-disable-next-line import/no-cycle
 import { StoreODM, UserODM } from '../Models';
 import { IStore, IStoreODM } from '../interfaces/stores';
 import { IUser, IUserODM } from '../interfaces/users';
