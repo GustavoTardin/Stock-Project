@@ -1,4 +1,3 @@
-import CustomError from '../Errors/CustomError';
 import { IStoreODM } from '../interfaces/stores';
 import IStore from '../interfaces/stores/IStore';
 import storeSchema from './Schemas/store/storeSchema';
@@ -9,15 +8,15 @@ class StoreODM extends AbstractODM<IStore> implements IStoreODM {
     super(storeSchema, 'Store');
   }
 
-  getStoreNames = async () => {
+  getStoreNames = async (): Promise<string[]> => {
     const storeNamesModel = await this.model.find({}, { name: 1 });
     const storeNames = storeNamesModel.map((store) => store.name);
     return storeNames;
   };
 
-  createStore = async (newStore: IStore) => {
-    const duplicateStore = await this.model.findOne({ name: newStore.name });
-    if (duplicateStore) throw new CustomError('Nome de loja já em uso!', '409');
+  createStore = async (store: IStore): Promise<IStore> => {
+    const newStore = await this.model.create({ ...store });
+    return newStore;
   };
 }
 

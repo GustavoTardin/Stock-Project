@@ -23,7 +23,7 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
       throw new CustomError('Estoquista não pode fazer parte de lojas', '400');
     }
 
-    const dbValidated = await ConsistencyChecker.checkStoreName(joiValidated);
+    const dbValidated = await ConsistencyChecker.checkUserConsistency(joiValidated);
 
     const newUser = await this.odm.createUser(dbValidated);
     const domain = DomainFactory.createDomain('user', newUser);
