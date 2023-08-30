@@ -15,12 +15,11 @@ const storage = multer.diskStorage({
     callback: (error: Error | null, destination: string) => void,
   ) => {
     let uploadPath = '';
-    console.log(__dirname);
     const { uploadtype } = req.headers;
     if (uploadtype === 'users') {
       uploadPath = 'uploads/users/';
     } else if (uploadtype === 'store') {
-      uploadPath = './backend/src/Uploads/stores/';
+      uploadPath = path.join(__dirname, 'stores');
     } // Adicione mais casos conforme necessário
 
     callback(null, uploadPath);
