@@ -1,6 +1,8 @@
+// import { log } from 'console';
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
+// import CustomError from '../Errors/CustomError';
 
 interface RequestWithUploadType extends express.Request {
   uploadType?: string;
@@ -13,11 +15,12 @@ const storage = multer.diskStorage({
     callback: (error: Error | null, destination: string) => void,
   ) => {
     let uploadPath = '';
-
-    if (req.uploadType === 'users') {
+    console.log(__dirname);
+    const { uploadtype } = req.headers;
+    if (uploadtype === 'users') {
       uploadPath = 'uploads/users/';
-    } else if (req.uploadType === 'store') {
-      uploadPath = './src/api/Uploads/storeLogos';
+    } else if (uploadtype === 'store') {
+      uploadPath = './backend/src/Uploads/stores/';
     } // Adicione mais casos conforme necessário
 
     callback(null, uploadPath);

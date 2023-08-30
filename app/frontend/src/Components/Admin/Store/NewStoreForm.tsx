@@ -27,7 +27,7 @@ function NewStoreForm() {
       formData.append('storeLogo', storeData.storeLogo as File);
     }
     try {
-      await createStore(formData, 'store');
+      await createStore(formData, storeData.storeLogo ? 'store' : null);
       apiReturnSetter('Loja criada com sucesso');
     } catch (error) {
       if (axios.isAxiosError(error)) {

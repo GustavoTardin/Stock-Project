@@ -1,12 +1,12 @@
-import { log } from 'console';
-import { Product, User } from '../Domains';
+import { Product, Store, User } from '../Domains';
 import CustomError from '../Errors/CustomError';
 import IProduct from '../interfaces/products/IProduct';
 import { IUser } from '../interfaces/users';
 import DomainTypes from './DomainTypes';
+import { IStore } from '../interfaces/stores';
 
 class DomainFactory {
-  public static createDomain(type: string, obj: unknown): User | Product | Error {
+  public static createDomain(type: string, obj: unknown): User | Product | Store {
     if (type === DomainTypes.USER) {
       return new User(obj as IUser);
     }
@@ -14,7 +14,7 @@ class DomainFactory {
       return new Product(obj as IProduct);
     }
     if (type === DomainTypes.STORE) {
-      log('a');
+      return new Store(obj as IStore);
     }
     throw new CustomError('Tipo de domínio inválido', '500');
   }

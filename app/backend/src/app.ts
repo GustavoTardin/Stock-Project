@@ -10,6 +10,7 @@ const accessControl: express.RequestHandler = (_req, res, next) => {
 };
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(accessControl);
 app.use('/user', userRouter);
