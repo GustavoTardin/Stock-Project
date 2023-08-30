@@ -11,7 +11,7 @@ const storeODM = new StoreODM();
 const storeService = new StoreService(storeODM);
 const storeController = new StoreController(storeService);
 
-const { nameRequired, sellersRequired } = StoreValidation;
+const { nameRequired } = StoreValidation;
 
 storeRouter.get('/', storeController.getAll);
 storeRouter.get('/names', storeController.getStoreNames);
@@ -20,7 +20,6 @@ storeRouter.post(
   TokenValidation.credentialRequired(),
   upload.single('storeLogo'),
   nameRequired,
-  sellersRequired,
   storeController.createStore,
 );
 

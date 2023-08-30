@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+// import mongoose from 'mongoose';
 import CustomError from '../Errors/CustomError';
 import { StoreODM, UserODM } from '../Models';
 import { IStore, IStoreODM } from '../interfaces/stores';
@@ -27,10 +28,6 @@ class ConsistencyChecker {
     const storeNames = await this._StoreODM.getStoreNames();
     const duplicateStoreName = storeNames.find((e) => e === store.name);
     if (duplicateStoreName) throw new CustomError('Nome de loja já em uso!', '409');
-    const users = await this._UserODM.getAll();
-    if (!(store.sellers.every((e) => users.find((user) => user.userName === e)))) {
-      throw new CustomError('Algum desses colaboradores não existe no banco de dados!', '400');
-    }
   };
 }
 

@@ -5,7 +5,7 @@ import IToken from '../interfaces/users/IToken';
 class Jwt {
   private static _mySecret = process.env.JWT_SECRET as string;
   private static _jwtConfig: jwt.SignOptions = {
-    expiresIn: '7d',
+    expiresIn: '2d',
     algorithm: 'HS256',
   };
 

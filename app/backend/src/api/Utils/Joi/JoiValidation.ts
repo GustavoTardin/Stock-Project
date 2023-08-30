@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
-import CustomError from '../Errors/CustomError';
+import CustomError from '../../Errors/CustomError';
 
 class JoiValidation {
   private _schema;

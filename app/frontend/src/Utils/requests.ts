@@ -19,6 +19,8 @@ const requestLogin = async (
   return data;
 };
 
+// const checkUser = async ()
+
 export {
   api,
   requestLogin,

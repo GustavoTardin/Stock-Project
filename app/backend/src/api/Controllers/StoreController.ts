@@ -19,7 +19,6 @@ class StoreController extends AbstractController<IStore, IStoreODM, IStoreServic
 
   createStore = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      console.log(req.headers.authorization);
       const storeObj = { ...req.body, logoPath: req.file ? req.file.path : null };
       const newStore = await this.service.createStore(storeObj);
       res.status(201).json(newStore);

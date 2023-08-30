@@ -1,6 +1,6 @@
-import JoiValidation from '../Utils/JoiValidation';
+import JoiValidation from '../Utils/Joi/JoiValidation';
 import User from '../Domains/User';
-import { userSchema, loginSchema } from '../Utils/JoiSchemas';
+import { userSchema, loginSchema } from '../Utils/Joi/JoiSchemas';
 import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/users';
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';

@@ -1,6 +1,6 @@
 import ConsistencyChecker from '../Utils/ConsistencyChecker';
-import newStoreSchema from '../Utils/JoiSchemas/newStoreSchema';
-import JoiValidation from '../Utils/JoiValidation';
+import newStoreSchema from '../Utils/Joi/JoiSchemas/newStoreSchema';
+import JoiValidation from '../Utils/Joi/JoiValidation';
 import { IStoreODM, IStore } from '../interfaces/stores';
 import IStoreService from '../interfaces/stores/IStoreService';
 import AbstractService from './AbstractService';
