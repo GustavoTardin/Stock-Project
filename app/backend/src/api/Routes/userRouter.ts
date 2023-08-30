@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import UserValidation from '../MIdllewares/UserValidation';
+import { UserValidation, TokenValidation } from '../Midllewares';
 import UserODM from '../Models/UserODM';
 import UserService from '../Services/UserService';
 import UserController from '../Controllers/UserController';
@@ -16,6 +16,7 @@ userRouter.get('/names', userController.getUserNames);
 userRouter.post('/login', usernameRequired, passwordRequired, userController.checkLogin);
 userRouter.post(
   '/create', 
+  TokenValidation.credentialRequired(),
   usernameRequired,
   passwordRequired, 
   credentialRequired, 
