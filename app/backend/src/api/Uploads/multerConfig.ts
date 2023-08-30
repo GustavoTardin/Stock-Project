@@ -1,8 +1,6 @@
-// import { log } from 'console';
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-// import CustomError from '../Errors/CustomError';
 
 interface RequestWithUploadType extends express.Request {
   uploadType?: string;
@@ -30,8 +28,7 @@ const storage = multer.diskStorage({
     callback: (error: Error | null, filename: string) => void,
   ) => {
     const { name } = req.body;
-    const fileName = `${name.replace(/\s+/g, '')
-    }.png`;
+    const fileName = `${Date.now()}_${name.replace(/\s+/g, '')}.png`;
     callback(null, fileName);
   },
 });

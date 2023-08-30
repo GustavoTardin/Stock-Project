@@ -3,7 +3,7 @@ import CustomError from '../Errors/CustomError';
 
 class StoreValidation {
   static nameRequired = (req: Request, _res: Response, next: NextFunction) => {
-    console.log(req.body);
+    console.log(req.file);
     const { name } = req.body;
     if (name) {
       next();
