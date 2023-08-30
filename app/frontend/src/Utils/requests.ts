@@ -5,6 +5,12 @@ const api = axios.create({
   baseURL: 'http://localhost:3009',
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  config.headers.Authorization = token || '';
+  return config;
+});
+
 const requestLogin = async (
   endpoint: string,
   body: { userName: string, password: string },
@@ -13,12 +19,7 @@ const requestLogin = async (
   return data;
 };
 
-const setToken = (token: string) => {
-  api.defaults.headers.common.Authorization = token;
-};
-
 export {
   api,
   requestLogin,
-  setToken,
 };

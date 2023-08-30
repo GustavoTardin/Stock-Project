@@ -11,12 +11,13 @@ const storeODM = new StoreODM();
 const storeService = new StoreService(storeODM);
 const storeController = new StoreController(storeService);
 
-const { nameRequired, sellersRequired } = StoreValidation;
+const { nameRequired, sellersRequired, credentialRequired } = StoreValidation;
 
 storeRouter.get('/', storeController.getAll);
 storeRouter.get('/names', storeController.getStoreNames);
 storeRouter.post(
   '/create',
+  credentialRequired,
   upload.single('storeLogo'),
   nameRequired,
   sellersRequired,

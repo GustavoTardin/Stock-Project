@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { requestLogin, setToken } from '../Utils/requests';
+import { requestLogin } from '../Utils/requests';
 import LoginForm from '../Components/LoginForm';
 
 export default function Login() {
@@ -11,7 +11,6 @@ export default function Login() {
       '/user/login',
       { userName, password },
     );
-    setToken(token);
 
     localStorage.setItem('token', token);
     localStorage.setItem('credential', credential);
