@@ -15,7 +15,8 @@
     "react-auth-kit": "^2.12.6",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.2",
-    "react-select": "^5.7.4"
+    "react-select": "^5.7.4",
+    "safe-buffer": "^5.2.1"
   },
   "devDependencies": {
     "@trybe/eslint-config-frontend": "^1.11.3",

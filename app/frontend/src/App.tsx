@@ -24,7 +24,7 @@ function App() {
   ];
 
   const auth = useAuthUser();
-
+  if (!auth) return <Navigate to="/" replace />;
   const { credential } = auth() as AuthStateUserObject;
   const isAdmin = credential === 'Administrador';
   const storeAccess = isAdmin || credential === 'lojista';
