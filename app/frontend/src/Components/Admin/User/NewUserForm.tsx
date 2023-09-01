@@ -8,7 +8,7 @@ import { createUser } from '../../../Utils/userRequests';
 
 function NewUserForm() {
   const [userData, userDataSetter] = useState<TNewUser>({
-    name: '',
+    userName: '',
     password: '',
     credential: 'Administrador',
     stores: [],
@@ -17,7 +17,7 @@ function NewUserForm() {
   const [isSeller, isSellerSetter] = useState(false);
 
   const disabledButton = () => {
-    return userData.name.length < 4
+    return userData.userName.length < 4
      || userData.password.length < 5 || userData.credential.length < 4;
   };
 
@@ -43,7 +43,7 @@ function NewUserForm() {
     <form action="" autoComplete="off">
       <NamePassword
         userDataSetter={ userDataSetter }
-        userName={ userData.name }
+        userName={ userData.userName }
         password={ userData.password }
       />
       <SelectCredential userDataSetter={ userDataSetter } />

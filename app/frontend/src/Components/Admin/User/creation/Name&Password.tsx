@@ -18,7 +18,7 @@ function NamePassword({ userDataSetter, userName, password }: {
       <input
         type="text"
         placeholder="Nome"
-        name="name"
+        name="userName"
         value={ userName }
         onChange={ handleChange }
         autoComplete="new-user"
