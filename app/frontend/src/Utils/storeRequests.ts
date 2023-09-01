@@ -10,4 +10,9 @@ const createStore = async (storeData: FormData, uploadType: string | null) => {
   return response;
 };
 
-export { createStore };
+const getStoreNames = async () => {
+  const { data } = await api.get('/stores/names');
+  return data;
+};
+
+export { createStore, getStoreNames };

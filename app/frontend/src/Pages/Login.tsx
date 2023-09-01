@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { useIsAuthenticated } from 'react-auth-kit';
-import { Navigate } from 'react-router-dom';
 import { useSignIn } from 'react-auth-kit';
+import { Navigate } from 'react-router-dom';
 import { requestLogin } from '../Utils/requests';
 import LoginForm from '../Components/LoginForm';
 
 export default function Login() {
-  if (useIsAuthenticated()()) return <Navigate to="/menu" />;
-
   const [isLogged, isLoggedSetter] = useState(false);
   const signin = useSignIn();
 
@@ -30,7 +27,6 @@ export default function Login() {
     isLoggedSetter(true);
   };
   if (isLogged) return <Navigate to="/menu" />;
-
 
   return (
     <main>

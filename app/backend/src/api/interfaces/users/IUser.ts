@@ -5,5 +5,5 @@ export default interface IUser extends Document {
   userName: string,
   credential: string,
   store: string[],
-  password: string
+  password: string,
 }
