@@ -23,13 +23,17 @@ function App() {
     { path: 'valuation', element: <Valuation /> },
   ];
 
-  const auth = useAuthUser();
-  if (!auth) return <Navigate to="/" replace />;
-  const { credential } = auth() as AuthStateUserObject;
-  const isAdmin = credential === 'Administrador';
-  const storeAccess = isAdmin || credential === 'lojista';
-  const stockAccess = isAdmin || credential === 'Estoquista';
+  let isAdmin = false;
+  let storeAccess = false;
+  let stockAccess = false;
 
+  const auth = useAuthUser();
+  if (auth()) {
+    const { credential } = auth() as AuthStateUserObject;
+    isAdmin = credential === 'Administrador';
+    storeAccess = isAdmin || credential === 'lojista';
+    stockAccess = isAdmin || credential === 'Estoquista';
+  }
   return (
     <Routes>
       <Route path="/" element={ <Login /> } />
@@ -41,6 +45,14 @@ function App() {
             <Home />
           </RequireAuth>
         }
+      />
+      <Route
+        path="/produtos-em-falta"
+        element={
+          <RequireAuth loginPath="/">
+            <LowStockItems />
+          </RequireAuth>
+  }
       />
       {adminRoutes.map((route, index) => (
         <Route
@@ -67,14 +79,6 @@ function App() {
             ) : (
               <Navigate to="/menu" replace />
             )}
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/produtos-em-falta"
-        element={
-          <RequireAuth loginPath="/">
-            <LowStockItems />
           </RequireAuth>
         }
       />

@@ -23,7 +23,7 @@ function NewUserForm() {
   useEffect(() => {
     const getStores = async () => {
       const names = await getStoreNames();
-      console.log(names);
+      storeNamesSetter(names);
     };
     getStores();
   }, []);

@@ -3,15 +3,15 @@ import Select, { MultiValue } from 'react-select';
 import { getUsernames } from '../../../Utils/userRequests';
 import { IOptionType, IStoreData } from './types';
 
-function MultiSelect({ storeDataSetter, sellers }: {
-  storeDataSetter: (value: React.SetStateAction<IStoreData>) => void,
-  sellers: string[], }) {
+function MultiSelect({ userDataSetter, stores }: {
+  userDataSetter: (value: React.SetStateAction<IStoreData>) => void,
+  stores: string[], }) {
   const [users, usersSetter] = useState([]);
 
   const handleMultiSelectChange = (selected: MultiValue<IOptionType>) => {
-    storeDataSetter((prevData) => ({
+    userDataSetter((prevData) => ({
       ...prevData,
-      sellers: selected.map((option) => option.value),
+      stores: selected.map((option) => option.value),
     }));
   };
 
@@ -41,7 +41,7 @@ function MultiSelect({ storeDataSetter, sellers }: {
         onChange={ (selected) => {
           handleMultiSelectChange(selected);
         } }
-        value={ options.filter((option) => sellers.includes(option.value)) }
+        value={ options.filter((option) => stores.includes(option.value)) }
         isClearable
       />
     </label>
