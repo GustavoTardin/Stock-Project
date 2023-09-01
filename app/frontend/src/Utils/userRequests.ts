@@ -1,3 +1,4 @@
+import TNewUser from '../Components/Admin/User/creation/TypeNewUser';
 import { api } from './requests';
 
 const getUsernames = async () => {
@@ -5,6 +6,12 @@ const getUsernames = async () => {
   return data;
 };
 
+const createUser = async (userData: TNewUser) => {
+  const response = await api.post('/user/create', userData);
+  return response;
+};
+
 export {
   getUsernames,
+  createUser,
 };

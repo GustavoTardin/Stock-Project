@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
-import { getUsernames } from '../../../Utils/userRequests';
-import { IOptionType, IStoreData } from './types';
+import { IOptionType } from '../../Store/types';
+import { getStoreNames } from '../../../../Utils/storeRequests';
+import TNewUser from './TypeNewUser';
 
 function MultiSelect({ userDataSetter, stores }: {
-  userDataSetter: (value: React.SetStateAction<IStoreData>) => void,
+  userDataSetter: React.Dispatch<React.SetStateAction<TNewUser>>,
   stores: string[], }) {
-  const [users, usersSetter] = useState([]);
+  const [storeNames, storeNamesSetter] = useState([]);
 
   const handleMultiSelectChange = (selected: MultiValue<IOptionType>) => {
     userDataSetter((prevData) => ({
@@ -15,28 +16,28 @@ function MultiSelect({ userDataSetter, stores }: {
     }));
   };
 
-  const options = users.map((user) => ({
+  const options = storeNames.map((user) => ({
     value: user,
     label: user,
   }));
 
   useEffect(() => {
-    const getNames = async () => {
-      const userNames = await getUsernames();
-      usersSetter(userNames);
+    const getStores = async () => {
+      const names = await getStoreNames();
+      storeNamesSetter(names);
     };
-    getNames();
+    getStores();
   }, []);
 
   return (
 
-    <label htmlFor="salesPeople">
-      Vendedores
+    <label htmlFor="stores">
+      Trabalha na(s) loja(s):
 
       <Select
-        id="salesPeople"
+        id="stores"
         isMulti
-        placeholder="Vendedores"
+        placeholder="Lojas"
         options={ options }
         onChange={ (selected) => {
           handleMultiSelectChange(selected);

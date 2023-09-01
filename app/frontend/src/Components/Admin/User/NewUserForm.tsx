@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getStoreNames } from '../../../Utils/storeRequests';
+import MultiSelect from './creation/MultiSelect';
+import TNewUser from './creation/TypeNewUser';
+import SelectCredential from './creation/SelectCredential';
+import NamePassword from './creation/Name&Password';
+import { createUser } from '../../../Utils/userRequests';
 
 function NewUserForm() {
-  const [userData, userDataSetter] = useState({
+  const [userData, userDataSetter] = useState<TNewUser>({
     name: '',
     password: '',
-    credential: '',
+    credential: 'Administrador',
+    stores: [],
   });
   const [apiReturn, apiReturnSetter] = useState('');
-  const [storeNames, storeNamesSetter] = useState(['']);
+  const [isSeller, isSellerSetter] = useState(false);
 
   const disabledButton = () => {
     return userData.name.length < 4
@@ -18,48 +23,35 @@ function NewUserForm() {
 
   const tryToCreate = async (event: React.FormEvent) => {
     event.preventDefault();
+    try {
+      await createUser(userData);
+      apiReturnSetter('Colaborador criado com sucesso');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data.message;
+        apiReturnSetter(errorMessage);
+      }
+    }
   };
 
   useEffect(() => {
-    const getStores = async () => {
-      const names = await getStoreNames();
-      storeNamesSetter(names);
-    };
-    getStores();
-  }, []);
-
-  useEffect(() => { apiReturnSetter(''); }, [userData]);
+    apiReturnSetter('');
+    isSellerSetter(userData.credential === 'Vendedor');
+  }, [userData]);
 
   return (
-    <form action="">
-      <input
-        type="text"
-        placeholder="Nome"
-        value={ userData.name }
-        onChange={ ({ target }) => userDataSetter({ ...userData, name: target.value }) }
+    <form action="" autoComplete="off">
+      <NamePassword
+        userDataSetter={ userDataSetter }
+        userName={ userData.name }
+        password={ userData.password }
       />
-      <input
-        type="password"
-        placeholder="Senha"
-        value={ userData.password }
-        onChange={
-            ({ target }) => userDataSetter({ ...userData, password: target.value })
-        }
-      />
-      <label htmlFor="credential">
-        Função
-        <select
-          name="credential"
-          id="credential"
-          onChange={
-            ({ target }) => userDataSetter({ ...userData, credential: target.value })
-}
-        >
-          <option value="Administrador">Administrador</option>
-          <option value="Vendedor">Vendedor</option>
-          <option value="Estoquista">Estoquista</option>
-        </select>
-      </label>
+      <SelectCredential userDataSetter={ userDataSetter } />
+      {
+        isSeller && (
+          <MultiSelect userDataSetter={ userDataSetter } stores={ userData.stores } />
+        )
+      }
       <button onClick={ tryToCreate } disabled={ disabledButton() }>Criar</button>
       { apiReturn && <p>{ apiReturn }</p> }
     </form>

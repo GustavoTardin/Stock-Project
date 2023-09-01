@@ -17,7 +17,7 @@ import {
 
 function App() {
   const adminRoutes: RouteProps[] = [
-    { path: 'usuarios', element: <UserManagement /> },
+    { path: 'colaboradores', element: <UserManagement /> },
     { path: 'produtos', element: <ProductManagement /> },
     { path: 'lojas', element: <StoreManagement /> },
     { path: 'valuation', element: <Valuation /> },

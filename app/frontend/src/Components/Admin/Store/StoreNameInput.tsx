@@ -22,6 +22,7 @@ function StoreNameInput({ storeDataSetter, storeName }: {
         id="storeName"
         value={ storeName }
         onChange={ handleChange }
+        autoComplete="new-store"
       />
     </label>
   );

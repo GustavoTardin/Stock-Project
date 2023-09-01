@@ -14,8 +14,8 @@ function UserManagement() {
   return (
     <div>
       <NavBar />
-      <button onClick={ showForm }>Criar novo usuário</button>
-      <button>Administrar usuários</button>
+      <button onClick={ showForm }>Criar novo colaborador</button>
+      <button>Administrar colaboradores</button>
       {create && <NewUserForm />}
     </div>
   );
