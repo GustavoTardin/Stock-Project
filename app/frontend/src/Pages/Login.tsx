@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSignIn } from 'react-auth-kit';
 import { Navigate } from 'react-router-dom';
+import '../index.css';
 import { requestLogin } from '../Utils/requests';
 import LoginForm from '../Components/LoginForm';
 
@@ -29,7 +30,7 @@ export default function Login() {
   if (isLogged) return <Navigate to="/menu" />;
 
   return (
-    <main>
+    <main className="bg-red-500 text-white p-4">
       <LoginForm tryLogin={ tryLogin } />
     </main>
   );

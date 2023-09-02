@@ -24,7 +24,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
   }, [userName, password]);
 
   return (
-    <form action="">
+    <form action="" className="bg-red-500 text-white p-4">
       <label htmlFor="user">
         Nome de Usuário
         <input
