@@ -19,13 +19,15 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
 
     const joiValidated = user as IUser;
 
-    if (joiValidated.credential === 'Estoquista' && joiValidated.store.length > 0) {
+    if (joiValidated.credential === 'Estoquista' && joiValidated.stores) {
       throw new CustomError('Estoquista não pode fazer parte de lojas', '400');
     }
 
-    const dbValidated = await ConsistencyChecker.checkUserConsistency(joiValidated);
+    // Valida se nome de usuário já existe e se as lojas no campo "stores" realmente existem.
+    await ConsistencyChecker.checkUserConsistency(joiValidated);
 
-    const newUser = await this.odm.createUser(dbValidated);
+    const newUser = await this.odm.createUser(joiValidated);
+    
     const domain = DomainFactory.createDomain('user', newUser);
     return domain as User;
   }

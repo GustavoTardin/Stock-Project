@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-// import mongoose from 'mongoose';
 import CustomError from '../Errors/CustomError';
 import { StoreODM, UserODM } from '../Models';
 import { IStore, IStoreODM } from '../interfaces/stores';
@@ -13,15 +11,12 @@ class ConsistencyChecker {
     const users = await this._UserODM.getAll();
     const duplicateUsername = users.find((e) => e.userName === user.userName);
     if (duplicateUsername) throw new CustomError('Nome de usuário já em uso!', '409');
-    const storeNames = await this._StoreODM.getStoreNames();
-    if (!(user.store.every((e) => storeNames.includes(e)))) {
-      throw new CustomError('Esta loja não existe no banco de dados!', '400');
+    if (user.stores) {
+      const storeNames = await this._StoreODM.getStoreNames();
+      if (!(user.stores.every((e) => storeNames.includes(e)))) {
+        throw new CustomError('Esta loja não existe no banco de dados!', '400');
+      }
     }
-    if (user.credential === 'Adminstrador' && user.store.length !== storeNames.length) {
-      user.store = storeNames;
-    }
-
-    return user;
   };
 
   static checkStoreConsistency = async (store: IStore) => {

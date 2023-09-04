@@ -17,12 +17,13 @@ function NewUserForm() {
   const [isSeller, isSellerSetter] = useState(false);
 
   const disabledButton = () => {
-    return userData.userName.length < 4
-     || userData.password.length < 5 || userData.credential.length < 4;
+    return userData.userName.length < 3
+     || userData.password.length < 4 || userData.credential.length < 4;
   };
 
   const tryToCreate = async (event: React.FormEvent) => {
     event.preventDefault();
+
     try {
       await createUser(userData);
       apiReturnSetter('Colaborador criado com sucesso');
@@ -36,7 +37,7 @@ function NewUserForm() {
 
   useEffect(() => {
     apiReturnSetter('');
-    isSellerSetter(userData.credential === 'Vendedor');
+    isSellerSetter(userData.credential === 'Lojista');
   }, [userData]);
 
   return (

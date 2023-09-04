@@ -21,7 +21,7 @@ function SelectCredential({ userDataSetter }: {
         onChange={ handleCredential }
       >
         <option value="Administrador">Administrador</option>
-        <option value="Vendedor">Vendedor</option>
+        <option value="Lojista">Lojista</option>
         <option value="Estoquista">Estoquista</option>
       </select>
     </label>

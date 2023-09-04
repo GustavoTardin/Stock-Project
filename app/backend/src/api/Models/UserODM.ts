@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as bcrypt from 'bcrypt';
 import CustomError from '../Errors/CustomError';
-import { ILoginResponse, IUser, IUserODM } from '../interfaces/users';
+import { ILoginResponse, IToken, IUser, IUserODM } from '../interfaces/users';
 import userSchema from './Schemas/user/userSchema';
 import Jwt from '../Auth/Jwt';
 import AbstractODM from './AbstractODM';
@@ -20,12 +20,14 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
   };
 
   generateUserAuthToken = (user: (IUser & { _id: string; })) => {
-    const payload = {
+    const payload: IToken = {
       id: user._id,
       userName: user.userName,
       credential: user.credential,
-      store: user.store,
     };
+    if (user.stores) {
+      payload.stores = user.stores;
+    }
     const token = Jwt.generateToken(payload);
     return token;
   };

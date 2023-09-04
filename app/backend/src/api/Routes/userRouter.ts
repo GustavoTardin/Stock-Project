@@ -9,7 +9,8 @@ const userRouter = Router();
 const userODM = new UserODM();
 const userService = new UserService(userODM);
 const userController = new UserController(userService);
-const { usernameRequired, passwordRequired, credentialRequired, storeRequired } = UserValidation;
+const {
+  usernameRequired, passwordRequired, credentialRequired, ifSellerStoreRequired } = UserValidation;
 
 userRouter.get('/', userController.getAll);
 userRouter.get('/names', userController.getUserNames);
@@ -18,8 +19,8 @@ userRouter.post(
   '/create', 
   usernameRequired,
   passwordRequired, 
-  credentialRequired, 
-  storeRequired, 
+  credentialRequired,
+  ifSellerStoreRequired,
   userController.createUser,
 );
 export default userRouter;
