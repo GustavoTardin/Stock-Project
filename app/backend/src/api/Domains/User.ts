@@ -4,13 +4,13 @@ class User {
   protected id: string | undefined;
   protected userName: string;
   protected credential: string;
-  protected store: string[];
+  protected stores?: string[];
 
   constructor(user: IUser) {
     this.id = user.id;
     this.userName = user.userName;
     this.credential = user.credential;
-    this.store = user.store;
+    this.stores = user.stores;
   }
 }
 

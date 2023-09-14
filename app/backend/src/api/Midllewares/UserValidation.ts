@@ -16,7 +16,7 @@ class UserValidation {
     if (password) {
       next();
     } else {
-      next(new CustomError('password field must be filled', '400'));
+      next(new CustomError('Você deve fornecer uma senha para o novo colaborador', '400'));
     }
   };
 
@@ -25,17 +25,17 @@ class UserValidation {
     if (credential) {
       next();
     } else {
-      next(new CustomError('credential field must be filled', '400'));
+      next(new CustomError('Você deve fornecer a função do novo colaborador', '400'));
     }
   };
 
-  static storeRequired = (req: Request, _res: Response, next: NextFunction) => {
-    const { store } = req.body;
-    if (store) {
-      next();
-    } else {
-      next(new CustomError('store field must be filled', '400'));
+  static ifSellerStoreRequired = (req: Request, _res: Response, next: NextFunction) => {
+    const { credential, stores } = req.body;
+    if (credential === 'Lojista' && !stores) {
+      throw new CustomError('Lojista deve ter o campo Vendedores preenchido', '400');
     }
+    if (credential !== 'Lojista') delete req.body.stores;
+    next();
   };
 }
 

@@ -1,26 +1,33 @@
-import JoiValidation from '../Utils/JoiValidation';
+import JoiValidation from '../Utils/Joi/JoiValidation';
 import User from '../Domains/User';
-import { userSchema, loginSchema } from '../Utils/JoiSchemas';
+import { userSchema, loginSchema } from '../Utils/Joi/JoiSchemas';
 import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/users';
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';
+import ConsistencyChecker from '../Utils/ConsistencyChecker';
 
 class UserService extends AbstractService<IUser, IUserODM> implements IUserService {
+  async getUserNames(): Promise<string[]> {
+    const userNames = await this.odm.getUserNames();
+    return userNames;
+  }
+
   async createUser(user: unknown): Promise<User | Error> {
     const newUserJoi = new JoiValidation(userSchema);
     newUserJoi.validateData(user);
 
-    const validatedUser = user as IUser;
+    const joiValidated = user as IUser;
 
-    if (validatedUser.credential === 'Lojista' && validatedUser.store.length < 1) {
-      throw new CustomError('Lojista deve fazer parte de pelo menos 1 loja', '400');
-    }
-
-    if (validatedUser.credential === 'Estoquista' && validatedUser.store.length > 0) {
+    if (joiValidated.credential === 'Estoquista' && joiValidated.stores) {
       throw new CustomError('Estoquista não pode fazer parte de lojas', '400');
     }
-    const newUser = await this.odm.createUser(validatedUser);
+
+    // Valida se nome de usuário já existe e se as lojas no campo "stores" realmente existem.
+    await ConsistencyChecker.checkUserConsistency(joiValidated);
+
+    const newUser = await this.odm.createUser(joiValidated);
+    
     const domain = DomainFactory.createDomain('user', newUser);
     return domain as User;
   }

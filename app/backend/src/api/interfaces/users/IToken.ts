@@ -4,5 +4,5 @@ export default interface IToken {
   id: Types.ObjectId,
   userName: string,
   credential: string,
-  store: string[]
+  stores?: string[]
 }

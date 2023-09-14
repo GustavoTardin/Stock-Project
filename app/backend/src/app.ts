@@ -1,6 +1,6 @@
 import express from 'express';
 import ErrorHandler from './api/Errors/ErrorHandler';
-import userRouter from './api/Routes/userRouter';
+import { storeRouter, userRouter } from './api/Routes';
 
 const accessControl: express.RequestHandler = (_req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -10,9 +10,11 @@ const accessControl: express.RequestHandler = (_req, res, next) => {
 };
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(accessControl);
 app.use('/user', userRouter);
+app.use('/stores', storeRouter);
 
 app.use(ErrorHandler.handle);
 

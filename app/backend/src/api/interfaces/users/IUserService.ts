@@ -7,6 +7,7 @@ import IUserODM from './IUserODM';
 interface IUserService extends AbstractService<IUser, IUserODM> {
   createUser(user: unknown): Promise<User | Error>;
   checkLogin(credentials: unknown): Promise<ILoginResponse>;
+  getUserNames(): Promise<string[]>
 }
 
 export default IUserService;
