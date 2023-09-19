@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getUsers } from '../../../../Utils/userRequests';
+import { deleteUser, getUsers } from '../../../../Utils/userRequests';
 import IUser from './IUser';
 
 function EditUsers() {
   const [users, usersSetter] = useState<IUser[]>([]);
+  const [delMessage, delMessageSetter] = useState('');
 
-  const deleteUser = async (id: string) => {
-    console.log(id);
+  const tryDelete = async (id: string, index: number) => {
+    try {
+      await deleteUser(id);
+      const updatedUsers = users.filter((_e, i) => i !== index);
+      usersSetter(updatedUsers);
+    } catch {
+      delMessageSetter('Não foi possivel excluir o usuário');
+    }
   };
 
   useEffect(() => {
@@ -54,13 +61,28 @@ function EditUsers() {
               <td>{e.credential}</td>
               <td>{acess || e.stores}</td>
               <td>
-                <button onClick={ () => deleteUser(e.id) }>
+                <button onClick={ () => tryDelete(e.id, i) }>
                   <FontAwesomeIcon icon={ faTrash } />
                 </button>
               </td>
             </tr>
           );
         })
+      }
+        {
+        delMessage
+        && (
+          <tr>
+            <td style={ { color: 'red' } }>{delMessage}</td>
+            <td>
+              {' '}
+              <button onClick={ () => delMessageSetter('') }>
+                <FontAwesomeIcon icon={ faTrash } />
+              </button>
+
+            </td>
+          </tr>
+        )
       }
       </tbody>
     </table>
