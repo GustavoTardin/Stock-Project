@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { getUsers } from '../../../../Utils/userRequests';
 import IUser from './IUser';
 
@@ -6,8 +8,8 @@ function EditUsers() {
   const [users, usersSetter] = useState<IUser[]>([]);
 
   const deleteUser = async (id: string) => {
-
-  }
+    console.log(id);
+  };
 
   useEffect(() => {
     const userGetter = async () => {
@@ -52,7 +54,9 @@ function EditUsers() {
               <td>{e.credential}</td>
               <td>{acess || e.stores}</td>
               <td>
-                <button onClick={() => deleteUser(e.id) }
+                <button onClick={ () => deleteUser(e.id) }>
+                  <FontAwesomeIcon icon={ faTrash } />
+                </button>
               </td>
             </tr>
           );

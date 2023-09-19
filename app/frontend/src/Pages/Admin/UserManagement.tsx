@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import NavBar from '../../Components/Navbar';
 import NewUserForm from '../../Components/Admin/User/creation/NewUserForm';
-import EditUsers from '../../Components/Admin/User/edit/EditUsers.tsx';
+import EditUsers from '../../Components/Admin/User/edit/EditUsers';
 
 function UserManagement() {
   const [create, createSetter] = useState(false);

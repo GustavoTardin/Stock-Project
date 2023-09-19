@@ -16,8 +16,14 @@ const getUsers = async () => {
   return data;
 };
 
+const deleteUser = async (id: string) => {
+  const { data } = await api.delete(`/user/${id}`);
+  return data;
+};
+
 export {
   getUsernames,
   createUser,
   getUsers,
+  deleteUser,
 };
