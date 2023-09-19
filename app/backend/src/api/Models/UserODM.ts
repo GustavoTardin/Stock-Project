@@ -13,7 +13,7 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
 
   getUserNames = async (): Promise<string[]> => {
     const userNames = await this.model.find(
-      { credential: { $ne: 'Estoquista' } },
+      {},
       'userName',
     ).exec();
     return userNames.map((user) => user.userName);

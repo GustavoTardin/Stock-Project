@@ -11,7 +11,13 @@ const createUser = async (userData: TNewUser) => {
   return response;
 };
 
+const getUsers = async () => {
+  const { data } = await api.get('/user');
+  return data;
+};
+
 export {
   getUsernames,
   createUser,
+  getUsers,
 };

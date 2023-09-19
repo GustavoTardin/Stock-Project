@@ -78,6 +78,31 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color:white
   }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+/* Estilizando as células do cabeçalho */
+th {
+  background-color: brown;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+/* Estilizando as células de dados */
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Alterando a cor de fundo das linhas pares para facilitar a leitura */
+tr:nth-child(even) {
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import MultiSelect from './creation/MultiSelect';
-import TNewUser from './creation/TypeNewUser';
-import SelectCredential from './creation/SelectCredential';
-import NamePassword from './creation/Name&Password';
-import { createUser } from '../../../Utils/userRequests';
+import MultiSelect from './MultiSelect';
+import TNewUser from './TypeNewUser';
+import SelectCredential from './SelectCredential';
+import NamePassword from './Name&Password';
+import { createUser } from '../../../../Utils/userRequests';
 
 function NewUserForm() {
   const [userData, userDataSetter] = useState<TNewUser>({
