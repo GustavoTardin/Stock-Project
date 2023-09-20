@@ -12,6 +12,11 @@ abstract class AbstractService<DocumentType extends Document,
     const data = await this.odm.getAll();
     return data;
   }
+
+  async deleteById(id: string): Promise<string> {
+    const message = await this.odm.deleteById(id);
+    return message;
+  }
 }
 
 export default AbstractService;

@@ -17,7 +17,7 @@ storeRouter.get('/', storeController.getAll);
 storeRouter.get('/names', storeController.getStoreNames);
 storeRouter.post(
   '/create',
-  TokenValidation.credentialRequired(),
+  TokenValidation.tokenRequired(),
   upload.single('storeLogo'),
   nameRequired,
   storeController.createStore,

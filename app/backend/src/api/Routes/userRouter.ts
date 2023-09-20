@@ -23,4 +23,6 @@ userRouter.post(
   ifSellerStoreRequired,
   userController.createUser,
 );
+userRouter.delete('/:id', userController.deleteById);
+
 export default userRouter;
