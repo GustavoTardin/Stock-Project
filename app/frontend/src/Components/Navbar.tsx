@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import '../Styles/Navbar.css';
+import { useSignOut } from 'react-auth-kit';
 import AdminPanel from './Admin/AdminPanel';
 
 function NavBar() {
+  const signOut = useSignOut();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const credential = localStorage.getItem('credential');
@@ -46,6 +49,10 @@ function NavBar() {
             )}
           </li>
         )}
+        <li>
+          {' '}
+          <button onClick={ () => signOut() }>Sign Out</button>
+        </li>
       </ul>
     </nav>
   );
