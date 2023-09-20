@@ -9,7 +9,7 @@ class TokenValidation {
     (req: Request, res: Response, next: NextFunction) => {
       const { authorization } = req.headers;
       if (!authorization) return res.status(401).json('Usuário não autorizado');
-      if (!requiredCredential) next();
+      if (requiredCredential === '') return next();
       
       try {
         const decryptedToken = Jwt.decryptToken(authorization);
