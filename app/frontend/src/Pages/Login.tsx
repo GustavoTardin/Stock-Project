@@ -11,18 +11,16 @@ export default function Login() {
   const isAuthenticated = useIsAuthenticated();
 
   const tryLogin = async (userName: string, password: string): Promise<void> => {
-    const { token, credential, expiresIn } = await requestLogin(
+    const { token, credential, expiresIn, id } = await requestLogin(
       '/user/login',
       { userName, password },
     );
-
-    console.log(expiresIn);
 
     if (signin({
       token,
       expiresIn,
       tokenType: 'Bearer',
-      authState: { credential },
+      authState: { credential, id },
     })) {
       localStorage.setItem('token', token);
       localStorage.setItem('credential', credential);

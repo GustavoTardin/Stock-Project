@@ -1,21 +1,38 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useAuthUser, useSignOut } from 'react-auth-kit';
+import { AuthStateUserObject } from 'react-auth-kit/dist/types';
 import { deleteUser, getUsers } from '../../../../Utils/userRequests';
 import IUser from './IUser';
+import DelConfirmation from './DelConfirmation';
 
 function EditUsers() {
   const [users, usersSetter] = useState<IUser[]>([]);
   const [delMessage, delMessageSetter] = useState('');
+  const [showModal, toggleModal] = useState(false);
+  const [idToDelete, setIdToDelete] = useState<string>('');
+  const [indexToDelete, setIndex] = useState<number>(users.length);
 
-  const tryDelete = async (id: string, index: number) => {
+  const userInfo = useAuthUser() as () => AuthStateUserObject;
+  const { id } = userInfo();
+  const signOut = useSignOut();
+
+  const tryDelete = async () => {
     try {
-      await deleteUser(id);
-      const updatedUsers = users.filter((_e, i) => i !== index);
+      await deleteUser(idToDelete);
+      if (id === idToDelete as string) signOut();
+      const updatedUsers = users.filter((_e, i) => i !== indexToDelete);
       usersSetter(updatedUsers);
     } catch {
       delMessageSetter('Não foi possivel excluir o usuário');
     }
+  };
+
+  const handleDelete = (deletedId: string, index: number) => {
+    setIdToDelete(deletedId);
+    setIndex(index);
+    toggleModal(true);
   };
 
   useEffect(() => {
@@ -26,16 +43,17 @@ function EditUsers() {
     userGetter();
   }, []);
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Função</th>
-          <th>Lojas</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Função</th>
+            <th>Lojas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
         users.map((e, i) => {
           let acess = '';
 
@@ -61,7 +79,7 @@ function EditUsers() {
               <td>{e.credential}</td>
               <td>{acess || e.stores}</td>
               <td>
-                <button onClick={ () => tryDelete(e.id, i) }>
+                <button onClick={ () => handleDelete(e.id, i) }>
                   <FontAwesomeIcon icon={ faTrash } />
                 </button>
               </td>
@@ -69,7 +87,7 @@ function EditUsers() {
           );
         })
       }
-        {
+          {
         delMessage
         && (
           <tr>
@@ -84,8 +102,14 @@ function EditUsers() {
           </tr>
         )
       }
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+      <DelConfirmation
+        tryDelete={ tryDelete }
+        showModal={ showModal }
+        toggleModal={ toggleModal }
+      />
+    </div>
   );
 }
 

@@ -27,8 +27,8 @@ class UserController extends AbstractController<IUser, IUserODM, IUserService> {
 
   checkLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { token, credential, expiresIn } = await this.service.checkLogin(req.body);
-      res.status(200).json({ token, credential, expiresIn });
+      const { token, credential, expiresIn, id } = await this.service.checkLogin(req.body);
+      res.status(200).json({ id, token, credential, expiresIn });
     } catch (error) {
       next(error);
     }

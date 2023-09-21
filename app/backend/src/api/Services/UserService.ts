@@ -36,9 +36,9 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
     const loginJoi = new JoiValidation(loginSchema);
     loginJoi.validateData(credentials);
     const validatedCredentials = credentials as { userName: string, password: string };
-    const { token, credential, expiresIn } = await 
+    const { token, credential, expiresIn, id } = await 
     this.odm.checkLogin(validatedCredentials.userName, validatedCredentials.password);
-    return { token, credential, expiresIn };
+    return { id, token, credential, expiresIn };
   }
 }
 

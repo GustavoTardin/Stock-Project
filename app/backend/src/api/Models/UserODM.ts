@@ -45,7 +45,7 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
       throw new CustomError('Nome de usuário ou senha inválidos', '404');
     } else {
       const { token, expiresIn } = this.generateUserAuthToken(user);
-      return { token, credential: user.credential, expiresIn };
+      return { id: user.id as string, token, credential: user.credential, expiresIn };
     }
   };
 }
