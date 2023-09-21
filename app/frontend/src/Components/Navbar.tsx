@@ -10,7 +10,7 @@ function NavBar() {
 
   const credential = localStorage.getItem('credential');
   const isAdmin = credential === 'Administrador';
-  const storeAccess = isAdmin || credential === 'lojista';
+  const storeAccess = isAdmin || credential === 'Lojista';
   const stockAccess = isAdmin || credential === 'Estoquista';
 
   const toggleDropdown = () => {
