@@ -1,4 +1,4 @@
-import TNewUser from '../Components/Admin/User/creation/TypeNewUser';
+import TNewUser from '../../Components/Admin/User/creation/TypeNewUser';
 import { api } from './requests';
 
 const getUsernames = async () => {

@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { AuthStateUserObject } from 'react-auth-kit/dist/types';
-import { deleteUser, getUsers } from '../../../../Utils/userRequests';
+import ReactModal from 'react-modal';
+import { deleteUser, getUsers } from '../../../../Utils/Requests/userRequests';
 import IUser from './IUser';
 import DelConfirmation from './DelConfirmation';
+import defineAcess from '../../../../Utils/defineAcess';
 
 function EditUsers() {
   const [users, usersSetter] = useState<IUser[]>([]);
   const [delMessage, delMessageSetter] = useState('');
   const [showModal, toggleModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState<string>('');
-  const [indexToDelete, setIndex] = useState<number>(users.length);
+  const [indexToDelete, setIndexToDelete] = useState<number>(users.length);
 
   const userInfo = useAuthUser() as () => AuthStateUserObject;
   const { id } = userInfo();
@@ -31,7 +33,7 @@ function EditUsers() {
 
   const handleDelete = (deletedId: string, index: number) => {
     setIdToDelete(deletedId);
-    setIndex(index);
+    setIndexToDelete(index);
     toggleModal(true);
   };
 
@@ -41,6 +43,7 @@ function EditUsers() {
       usersSetter(response);
     };
     userGetter();
+    ReactModal.setAppElement('#root');
   }, []);
   return (
     <div>
@@ -55,32 +58,19 @@ function EditUsers() {
         <tbody>
           {
         users.map((e, i) => {
-          let acess = '';
-
-          switch (e.credential) {
-            case 'Administrador':
-              acess = 'Todas';
-              break;
-            case 'Estoquista':
-              acess = 'Nenhuma';
-              break;
-            default:
-              if (e.stores.length < 1) {
-                acess = 'Ainda não trabalha em nenhuma loja';
-              } else {
-                acess += e.stores.join(', ');
-              }
-              break;
-          }
+          const storeAcess = defineAcess(e);
 
           return (
             <tr key={ i } id={ e.id }>
               <td>{e.userName}</td>
               <td>{e.credential}</td>
-              <td>{acess || e.stores}</td>
+              <td>{storeAcess || e.stores}</td>
               <td>
                 <button onClick={ () => handleDelete(e.id, i) }>
                   <FontAwesomeIcon icon={ faTrash } />
+                </button>
+                <button>
+                  <FontAwesomeIcon icon={ faEdit } />
                 </button>
               </td>
             </tr>

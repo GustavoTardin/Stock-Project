@@ -51,7 +51,7 @@ function NavBar() {
         )}
         <li>
           {' '}
-          <button onClick={ () => signOut() }>Sign Out</button>
+          <button onClick={ () => signOut() }>Sair</button>
         </li>
       </ul>
     </nav>

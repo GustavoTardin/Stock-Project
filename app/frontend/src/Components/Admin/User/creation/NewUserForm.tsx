@@ -4,7 +4,7 @@ import MultiSelect from './MultiSelect';
 import TNewUser from './TypeNewUser';
 import SelectCredential from './SelectCredential';
 import NamePassword from './Name&Password';
-import { createUser } from '../../../../Utils/userRequests';
+import { createUser } from '../../../../Utils/Requests/userRequests';
 
 function NewUserForm() {
   const [userData, userDataSetter] = useState<TNewUser>({

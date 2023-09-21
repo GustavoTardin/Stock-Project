@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit';
 import { Navigate } from 'react-router-dom';
 import '../index.css';
-import { requestLogin } from '../Utils/requests';
+import { requestLogin } from '../Utils/Requests/requests';
 import LoginForm from '../Components/LoginForm';
 
 export default function Login() {

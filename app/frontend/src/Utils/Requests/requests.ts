@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ILoginResponse from '../interfaces/ILoginResponse';
+import ILoginResponse from '../../interfaces/ILoginResponse';
 
 const api = axios.create({
   baseURL: 'http://localhost:3009',
