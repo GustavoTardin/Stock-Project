@@ -6,7 +6,9 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = document.cookie.split('; ')
+    .find((row) => row.startsWith('_auth='))
+    ?.split('=')[1];
   config.headers.Authorization = token || '';
   return config;
 });

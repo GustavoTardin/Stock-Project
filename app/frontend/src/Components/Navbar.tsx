@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import '../Styles/Navbar.css';
-import { useSignOut } from 'react-auth-kit';
+import { useAuthUser, useSignOut } from 'react-auth-kit';
+import { AuthStateUserObject } from 'react-auth-kit/dist/types';
 import AdminPanel from './Admin/AdminPanel';
 
 function NavBar() {
   const signOut = useSignOut();
 
+  const tokenCookie = document.cookie.split('; ')
+    .find((row) => row.startsWith('_auth='))
+    ?.split('=')[1];
+  console.log(tokenCookie);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const credential = localStorage.getItem('credential');
+  const userInfo = useAuthUser() as () => AuthStateUserObject;
+  const { credential } = userInfo();
   const isAdmin = credential === 'Administrador';
   const storeAccess = isAdmin || credential === 'Lojista';
   const stockAccess = isAdmin || credential === 'Estoquista';

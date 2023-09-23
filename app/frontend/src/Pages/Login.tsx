@@ -22,9 +22,6 @@ export default function Login() {
       tokenType: 'Bearer',
       authState: { credential, id },
     })) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('credential', credential);
-
       isLoggedSetter(true);
     }
   };
