@@ -9,30 +9,28 @@ export default interface IProduct {
   sizes: ISizes[]
 }
 
+// cueca thork - 10.99 x 599 = 
+// calcinha - 4.99 x 80 = 
+
 /* const babyDoll2 = {
   id: 1,
-  category: 'Baby Doll',
+  category: 'Baby Doll', //Baby doll PV: 
   model: 'Pv',
+  design: 'llama'
+  size: 'gg'
   buyPrice: 20.99,
   salePrice: 30.99,
-  designs: [
-    { name: 'Llama',
-      sizes: [
-        { size: 'GG', quantity: 30, low: 5 },
-        { size: 'G', quantity: 10, low: 10 },
-        { size: 'M', quantity: 10, low: 10 },
-        { size: 'P', quantity: 5, low: 0 },
-      ] },
-    {
-      name: 'Vasco',
-      sizes: [
-        { size: 'GG', quantity: 30, low: 5 },
-        { size: 'G', quantity: 10, low: 10 },
-        { size: 'M', quantity: 10, low: 10 },
-        { size: 'P', quantity: 5, low: 0 },
-      ] },
-  ],
+  totalQuantity: 5000
+  low: 5 
 };
+
+const newDesign = {
+  name: 'llama'
+  pic: foto,
+  designs
+}
+
+const updatedProducts = [...products, newDesign]
 
 const babyDoll: IProduct = {
   id: 1,

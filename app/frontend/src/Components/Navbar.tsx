@@ -7,11 +7,6 @@ import AdminPanel from './Admin/AdminPanel';
 function NavBar() {
   const signOut = useSignOut();
 
-  const tokenCookie = document.cookie.split('; ')
-    .find((row) => row.startsWith('_auth='))
-    ?.split('=')[1];
-  console.log(tokenCookie);
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const userInfo = useAuthUser() as () => AuthStateUserObject;

@@ -1,102 +1,58 @@
-import React, { useState } from 'react';
-
-interface Product {
-  productName: string;
-  productPrice: number;
-  productCost: number;
-  productQuantity: number;
-}
+import { useState } from 'react';
+/* import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { PlusIcon } from '@heroicons/react/20/solid';
+*/
+import axios from 'axios';
+import { IDate, IProduct } from './interfaces';
+import SalesDate from './SalesDate';
+import SalesProduct from './SalesProduct';
+import ISale from './interfaces/ISale';
+import { postSale } from '../../../Utils/Requests/salesRequests';
 
 function SalesForm() {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      productName: '',
-      productPrice: 0,
-      productCost: 0,
-      productQuantity: 0,
-    },
-  ]);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [date, setDate] = useState<IDate>({ month: 'Janeiro', year: 2023 });
+  const [error, setError] = useState('');
 
-  const handleAddProduct = () => {
-    setProducts([
-      ...products,
-      {
-        productName: '',
-        productPrice: 0,
-        productCost: 0,
-        productQuantity: 0,
-      },
-    ]);
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const { name, value } = e.target;
-    const updatedProducts = [...products];
-    updatedProducts[index] = {
-      ...updatedProducts[index],
-      [name]: name === 'productName' ? value : parseFloat(value),
+  const addProduct = () => {
+    const newProduct = {
+      name: '',
+      price: 0,
+      cost: 0,
+      quantity: 0,
     };
-    setProducts(updatedProducts);
+    setProducts([...products, newProduct]);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Aqui, você pode enviar os dados do resumo de vendas para onde precisar (por exemplo, para o servidor).
-    console.log('Dados do resumo de vendas:', products);
+  const registerNewMonth = async () => {
+    const databaseValidFormat: ISale = {
+      year: date.year,
+      month: date.month,
+      products,
+    };
+    try {
+      const summary = await postSale(databaseValidFormat);
+      console.log(summary);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data.message;
+        setError(errorMessage);
+      }
+    }
   };
 
   return (
-    <form onSubmit={ handleSubmit } style={ { color: 'white' } }>
-      <label htmlFor="month">
-        <input type="text" id="month" />
-      </label>
-      {products.map((product, index) => (
-        <div key={ index }>
-          <label>Nome do Produto:</label>
-          <input
-            type="text"
-            name="productName"
-            value={ product.productName }
-            onChange={ (e) => handleInputChange(e, index) }
-            required
-          />
-          <label>Valor de Venda:</label>
-          <input
-            type="number"
-            name="productPrice"
-            step="0.01"
-            value={ product.productPrice }
-            onChange={ (e) => handleInputChange(e, index) }
-            required
-          />
-          <label>Valor de Compra:</label>
-          <input
-            type="number"
-            name="productCost"
-            step="0.01"
-            value={ product.productCost }
-            onChange={ (e) => handleInputChange(e, index) }
-            required
-          />
-          <label>Quantidade Vendida:</label>
-          <input
-            type="number"
-            name="productQuantity"
-            value={ product.productQuantity }
-            onChange={ (e) => handleInputChange(e, index) }
-            required
-          />
-        </div>
-      ))}
-      <button type="button" onClick={ handleAddProduct }>
-        Adicionar Produto
+    <form>
+      <SalesDate date={ date } setDate={ setDate } />
+      <SalesProduct products={ products } setProducts={ setProducts } />
+      <button type="button" onClick={ addProduct }>
+        Adicionar produto
       </button>
-      <button type="submit">Enviar Resumo de Vendas</button>
+      <br />
+      <button type="button" onClick={ registerNewMonth }>Finalizar</button>
+      {error && <h4>{error}</h4> }
     </form>
-
   );
 }
 
