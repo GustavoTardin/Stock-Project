@@ -7,6 +7,7 @@ function AdminPanel() {
       <AdminCard type="Produtos" />
       <AdminCard type="Lojas" />
       <AdminCard type="Valuation" />
+      <AdminCard type="Vendas" />
     </>
   );
 }
