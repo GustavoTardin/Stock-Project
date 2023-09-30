@@ -16,6 +16,7 @@ function SalesProduct({ products, setProducts }: IProps) {
     };
     setProducts(updatedProducts);
   };
+
   return (
     products.map((product, index) => (
       <div key={ index }>
