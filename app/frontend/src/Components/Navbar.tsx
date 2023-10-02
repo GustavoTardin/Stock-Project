@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import '../Styles/Navbar.css';
+import { useAuthUser, useSignOut } from 'react-auth-kit';
+import { AuthStateUserObject } from 'react-auth-kit/dist/types';
 import AdminPanel from './Admin/AdminPanel';
 
 function NavBar() {
+  const signOut = useSignOut();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const credential = localStorage.getItem('credential');
+  const userInfo = useAuthUser() as () => AuthStateUserObject;
+  const { credential } = userInfo();
   const isAdmin = credential === 'Administrador';
-  const storeAccess = isAdmin || credential === 'lojista';
+  const storeAccess = isAdmin || credential === 'Lojista';
   const stockAccess = isAdmin || credential === 'Estoquista';
 
   const toggleDropdown = () => {
@@ -46,6 +51,10 @@ function NavBar() {
             )}
           </li>
         )}
+        <li>
+          {' '}
+          <button onClick={ () => signOut() }>Sair</button>
+        </li>
       </ul>
     </nav>
   );

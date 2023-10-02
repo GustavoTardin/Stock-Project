@@ -1,28 +1,26 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable complexity */
+
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../Errors/CustomError';
 import Jwt from '../Auth/Jwt';
 
 class TokenValidation {
-  static credentialRequired = (requiredCredential = '') =>
+  static tokenRequired = (requiredCredential = '') =>
     (req: Request, res: Response, next: NextFunction) => {
+      const unauthorizedMessage = 'Usuário não autorizado';
       const { authorization } = req.headers;
-      if (!authorization) return res.status(401).json('Usuário não autorizado');
-      
+      if (!authorization) return res.status(401).json({ message: unauthorizedMessage });
       try {
         const decryptedToken = Jwt.decryptToken(authorization);
         if (decryptedToken.credential === 'Administrador'
-         || decryptedToken.credential === requiredCredential) {
+         || decryptedToken.credential === requiredCredential
+         || requiredCredential === '') {
           next();
         } else {
-          throw new CustomError(
-            `Apenas ${requiredCredential || 'Administradores'} podem acessar`,
-            '401',
-          );
+          throw new CustomError(unauthorizedMessage, '401');
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        const error = new CustomError(unauthorizedMessage, '401');
         next(error);
       }
     };

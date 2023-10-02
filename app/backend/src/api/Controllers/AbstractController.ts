@@ -24,6 +24,16 @@ abstract class AbstractController<
       next(error);
     }
   };
+
+  deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const message = await this.service.deleteById(id);
+      res.status(204).json(message);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default AbstractController;

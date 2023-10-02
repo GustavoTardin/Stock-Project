@@ -12,12 +12,13 @@ const storeService = new StoreService(storeODM);
 const storeController = new StoreController(storeService);
 
 const { nameRequired } = StoreValidation;
+const { tokenRequired } = TokenValidation; 
 
-storeRouter.get('/', storeController.getAll);
-storeRouter.get('/names', storeController.getStoreNames);
+storeRouter.get('/', tokenRequired(), storeController.getAll);
+storeRouter.get('/names', tokenRequired(), storeController.getStoreNames);
 storeRouter.post(
   '/create',
-  TokenValidation.credentialRequired(),
+  tokenRequired('Administrador'),
   upload.single('storeLogo'),
   nameRequired,
   storeController.createStore,

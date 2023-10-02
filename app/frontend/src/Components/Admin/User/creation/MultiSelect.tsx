@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import { IOptionType } from '../../Store/types';
-import { getStoreNames } from '../../../../Utils/storeRequests';
+import { getStoreNames } from '../../../../Utils/Requests/storeRequests';
 import TNewUser from './TypeNewUser';
 
 function MultiSelect({ userDataSetter, stores }: {

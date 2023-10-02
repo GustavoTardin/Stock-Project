@@ -14,6 +14,7 @@ import {
   UserManagement,
   Valuation,
 } from './Pages';
+import SalesManagement from './Pages/Admin/SalesManagement';
 
 function App() {
   const adminRoutes: RouteProps[] = [
@@ -21,6 +22,7 @@ function App() {
     { path: 'produtos', element: <ProductManagement /> },
     { path: 'lojas', element: <StoreManagement /> },
     { path: 'valuation', element: <Valuation /> },
+    { path: 'vendas', element: <SalesManagement /> },
   ];
 
   let isAdmin = false;

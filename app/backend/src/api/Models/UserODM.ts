@@ -13,7 +13,7 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
 
   getUserNames = async (): Promise<string[]> => {
     const userNames = await this.model.find(
-      { credential: { $ne: 'Estoquista' } },
+      {},
       'userName',
     ).exec();
     return userNames.map((user) => user.userName);
@@ -28,8 +28,8 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
     if (user.stores) {
       payload.stores = user.stores;
     }
-    const token = Jwt.generateToken(payload);
-    return token;
+    const auth = Jwt.generateToken(payload);
+    return auth;
   };
   
   createUser = async (user: IUser): Promise<IUser> => {
@@ -44,8 +44,8 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
     if (!bcrypt.compareSync(password, user.password)) {
       throw new CustomError('Nome de usuário ou senha inválidos', '404');
     } else {
-      const token = this.generateUserAuthToken(user);
-      return { token, credential: user.credential };
+      const { token, expiresIn } = this.generateUserAuthToken(user);
+      return { id: user.id as string, token, credential: user.credential, expiresIn };
     }
   };
 }
