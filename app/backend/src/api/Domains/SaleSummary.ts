@@ -18,6 +18,7 @@ class SaleSummary {
       quantity: e.quantity,
       profit: e.profit,
       revenue: e.revenue,
+  
     }));
     this.products = completeProducts;
   }

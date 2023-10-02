@@ -1,13 +1,19 @@
-import ISizes from './ISizes';
+import IDesign from './IDesign';
 
 export default interface IProduct {
   id?: number,
   category: string,
   model: string,
-  buyPrice: number,
-  salePrice: number,
-  sizes: ISizes[]
+  designs: IDesign[]
 }
+
+// Design Variation Table
+const example = {
+  id: 'SUUHSHUDSUIHDUIHUWE',
+  CATEGORY: 'Baby doll',
+  model: 'PV',
+  design: { 'nome da estampa': { sizes: ['P', 'M', 'G', 'GG', 'EGG'] } },
+};
 
 // cueca thork - 10.99 x 599 = 
 // calcinha - 4.99 x 80 = 
@@ -20,8 +26,8 @@ export default interface IProduct {
   size: 'gg'
   buyPrice: 20.99,
   salePrice: 30.99,
-  totalQuantity: 5000
-  low: 5 
+  totalQuantity: 5
+  allertLow: 5 
 };
 
 const newDesign = {
