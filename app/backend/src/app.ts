@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import ErrorHandler from './api/Errors/ErrorHandler';
-import { storeRouter, userRouter } from './api/Routes';
+import { storeRouter, userRouter, saleRouter } from './api/Routes';
 
 const accessControl: express.RequestHandler = (
   _req: Request,
@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(accessControl);
 app.use('/user', userRouter);
 app.use('/stores', storeRouter);
+app.use('/sales', saleRouter);
 
 app.use(ErrorHandler.handle);
 
