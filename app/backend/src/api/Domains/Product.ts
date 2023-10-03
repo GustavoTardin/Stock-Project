@@ -1,5 +1,5 @@
-import IProduct from '../interfaces/products/IProduct';
-import ISizes from '../interfaces/products/ISizes';
+/* import IProduct from '../interfaces/products/IProduct';
+import ISizes from '../interfaces/products/IDesignInfo';
 
 class Product {
   protected _category: string;
@@ -48,3 +48,4 @@ class Product {
 }
 
 export default Product;
+*/
