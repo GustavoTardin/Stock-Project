@@ -1,18 +1,19 @@
-import { Product, Store, User } from '../Domains';
+import { Store, User } from '../Domains';
 import CustomError from '../Errors/CustomError';
-import IProduct from '../interfaces/products/IProduct';
+// import IProduct from '../interfaces/products/IProduct';
 import { IUser } from '../interfaces/users';
 import DomainTypes from './DomainTypes';
 import { IStore } from '../interfaces/stores';
 
 class DomainFactory {
-  public static createDomain(type: string, obj: unknown): User | Product | Store {
+  public static createDomain(type: string, obj: unknown): User | Store {
     if (type === DomainTypes.USER) {
       return new User(obj as IUser);
     }
-    if (type === DomainTypes.PRODUCT) {
+    /* if (type === DomainTypes.PRODUCT) {
       return new Product(obj as IProduct);
     }
+    */
     if (type === DomainTypes.STORE) {
       return new Store(obj as IStore);
     }

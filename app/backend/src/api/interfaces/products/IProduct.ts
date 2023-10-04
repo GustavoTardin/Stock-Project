@@ -19,7 +19,7 @@ export default interface IProduct {
 // Dá uma pensada aí se de fato melhorou, mas acho que sim. Obviamente essa mudança traz um pouco mais de complexidade na 
 // hora de buscar, mas acho que de boa. Visualizei cenários futuros e não vi nenhum problema insolúvel.
 // Abaixo tem exemplo dessa nova estrutura, e embaixo a estrutura anterior.
-// NOte que já estamos usando essa dieia na tabela de sizes/Designs lá
+// Note que já estamos usando essa ideia na tabela de sizes/Designs lá
 
 /* 
 const product2: IProduct2 = {

@@ -5,7 +5,6 @@ import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/use
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';
-import ConsistencyChecker from '../Utils/ConsistencyChecker';
 
 class UserService extends AbstractService<IUser, IUserODM> implements IUserService {
   async getUserNames(): Promise<string[]> {
@@ -22,9 +21,6 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
     if (joiValidated.credential === 'Estoquista' && joiValidated.stores) {
       throw new CustomError('Estoquista não pode fazer parte de lojas', '400');
     }
-
-    // Valida se nome de usuário já existe e se as lojas no campo "stores" realmente existem.
-    await ConsistencyChecker.checkUserConsistency(joiValidated);
 
     const newUser = await this.odm.createUser(joiValidated);
     

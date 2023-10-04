@@ -1,4 +1,3 @@
-import ConsistencyChecker from '../Utils/ConsistencyChecker';
 import newStoreSchema from '../Utils/Joi/JoiSchemas/newStoreSchema';
 import JoiValidation from '../Utils/Joi/JoiValidation';
 import { IStoreODM, IStore } from '../interfaces/stores';
@@ -15,7 +14,6 @@ class StoreService extends AbstractService<IStore, IStoreODM> implements IStoreS
     const storeJoi = new JoiValidation(newStoreSchema);
     storeJoi.validateData(store);
     const validatedStore = store as IStore;
-    await ConsistencyChecker.checkStoreConsistency(validatedStore);
     const newStore = await this.odm.createStore(validatedStore);
     return newStore;
   }
