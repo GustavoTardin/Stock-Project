@@ -9,8 +9,8 @@ class JoiValidation {
     this._schema = schema;
   }
 
-  validateData(vehicle: unknown) {
-    const { error } = this._schema.validate(vehicle, { messages });
+  validateData(data: unknown) {
+    const { error } = this._schema.validate(data, { messages });
     if (error) throw new CustomError(error.message, '400');
   }
 }
