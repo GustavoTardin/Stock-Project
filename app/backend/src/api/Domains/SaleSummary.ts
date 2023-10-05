@@ -1,5 +1,5 @@
-import ISale from '../interfaces/sales/ISale';
-import ISaleProduct from '../interfaces/sales/ISaleProduct';
+import ISale from '../Contracts/interfaces/sales/ISale';
+import ISaleProduct from '../Contracts/interfaces/sales/ISaleProduct';
 
 class SaleSummary {
   protected id: string | undefined;

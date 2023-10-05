@@ -1,7 +1,7 @@
-import JoiValidation from '../Utils/Joi/JoiValidation';
+import JoiValidation from '../Contracts/zod/JoiValidation';
 import User from '../Domains/User';
-import { userSchema, loginSchema } from '../Utils/Joi/JoiSchemas';
-import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/users';
+import { userSchema, loginSchema } from '../Contracts/zod/schemas';
+import { ILoginResponse, IUser, IUserODM, IUserService } from '../Contracts/interfaces/users';
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';

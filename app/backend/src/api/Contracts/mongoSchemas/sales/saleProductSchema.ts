@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import ISaleProduct from '../../../interfaces/sales/ISaleProduct';
+import ISaleProduct from '../../interfaces/sales/ISaleProduct';
 
 const saleProductSchema = new Schema<ISaleProduct>({
   name: { type: String, required: true },

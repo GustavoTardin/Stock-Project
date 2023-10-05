@@ -1,6 +1,6 @@
-import { IStoreODM } from '../interfaces/stores';
-import IStore from '../interfaces/stores/IStore';
-import storeSchema from './Schemas/store/storeSchema';
+import { IStoreODM } from '../Contracts/interfaces/stores';
+import IStore from '../Contracts/interfaces/stores/IStore';
+import storeSchema from '../Contracts/mongoSchemas/store/storeSchema';
 import AbstractODM from './AbstractODM';
 
 class StoreODM extends AbstractODM<IStore> implements IStoreODM {

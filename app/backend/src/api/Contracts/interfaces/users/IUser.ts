@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { z } from 'zod';
 
 export default interface IUser extends Document {
   id?: string,

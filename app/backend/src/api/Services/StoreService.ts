@@ -1,8 +1,8 @@
 import ConsistencyChecker from '../Utils/ConsistencyChecker';
-import newStoreSchema from '../Utils/Joi/JoiSchemas/newStoreSchema';
-import JoiValidation from '../Utils/Joi/JoiValidation';
-import { IStoreODM, IStore } from '../interfaces/stores';
-import IStoreService from '../interfaces/stores/IStoreService';
+import newStoreSchema from '../Contracts/zod/schemas/newStoreSchema';
+import JoiValidation from '../Contracts/zod/JoiValidation';
+import { IStoreODM, IStore } from '../Contracts/interfaces/stores';
+import IStoreService from '../Contracts/interfaces/stores/IStoreService';
 import AbstractService from './AbstractService';
 
 class StoreService extends AbstractService<IStore, IStoreODM> implements IStoreService {
