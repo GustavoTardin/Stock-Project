@@ -1,12 +1,11 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-const validCredentialOptions = ['Lojista', 'Estoquista', 'Administrador'];
+const validCredentialOptions = ['Lojista', 'Estoquista', 'Administrador'] as const;
 
-const userSchema = Joi.object({
-  userName: Joi.string().min(3).required(),
-  password: Joi.string().min(4).required(),
-  credential: Joi.string().valid(...validCredentialOptions).required(),
-  stores: Joi.array().items(Joi.string()),
+const newStoreSchema = z.object({
+  name: z.string().min(4),
+  logoPath: z.string().nullable(),
+  credential: z.enum(validCredentialOptions),
 });
 
-export default userSchema;
+export default newStoreSchema;

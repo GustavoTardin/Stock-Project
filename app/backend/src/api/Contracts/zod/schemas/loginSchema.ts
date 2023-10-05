@@ -1,12 +1,8 @@
 import { z } from 'zod';
 
 const loginSchema = z.object({
-  userName: z.string().min(3).refine((value) => value.trim().length > 0, {
-    message: 'Nome é obrigatório',
-  }),
-  password: z.string().min(4).refine((value) => value.trim().length > 0, {
-    message: 'Senha é obrigatória',
-  }),
+  userName: z.string().min(3),
+  password: z.string().min(4),
 });
 
 export default loginSchema;
