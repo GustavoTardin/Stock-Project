@@ -53,11 +53,14 @@
     "bcrypt": "^5.1.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "i18next": "^23.5.1",
     "joi": "^17.9.1",
     "joi-translation-pt-br": "^0.0.10",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "6.1.8",
     "multer": "^1.4.5-lts.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "zod-i18n": "^0.0.1",
+    "zod-i18n-map": "^2.19.0"
   }
 }
