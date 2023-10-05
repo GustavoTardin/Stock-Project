@@ -1,4 +1,4 @@
-import JoiValidation from '../Contracts/zod/JoiValidation';
+import ZodValidation from '../Contracts/zod/ZodValidation';
 import User from '../Domains/User';
 import { userSchema, loginSchema } from '../Contracts/zod/schemas';
 import { ILoginResponse, IUser, IUserODM, IUserService } from '../Contracts/interfaces/users';
@@ -14,7 +14,7 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
   }
 
   async createUser(user: unknown): Promise<User | Error> {
-    const newUserJoi = new JoiValidation(userSchema);
+    const newUserJoi = new ZodValidation(userSchema);
     newUserJoi.validateData(user);
 
     const joiValidated = user as IUser;
@@ -33,7 +33,7 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
   }
 
   async checkLogin(credentials: unknown): Promise<ILoginResponse> {
-    const loginJoi = new JoiValidation(loginSchema);
+    const loginJoi = new ZodValidation(loginSchema);
     loginJoi.validateData(credentials);
     const validatedCredentials = credentials as { userName: string, password: string };
     const { token, credential, expiresIn, id } = await 

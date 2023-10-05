@@ -1,6 +1,6 @@
 import ConsistencyChecker from '../Utils/ConsistencyChecker';
 import newStoreSchema from '../Contracts/zod/schemas/newStoreSchema';
-import JoiValidation from '../Contracts/zod/JoiValidation';
+import ZodValidation from '../Contracts/zod/ZodValidation';
 import { IStoreODM, IStore } from '../Contracts/interfaces/stores';
 import IStoreService from '../Contracts/interfaces/stores/IStoreService';
 import AbstractService from './AbstractService';
@@ -12,7 +12,7 @@ class StoreService extends AbstractService<IStore, IStoreODM> implements IStoreS
   }
 
   async createStore(store: unknown): Promise<IStore | Error> {
-    const storeJoi = new JoiValidation(newStoreSchema);
+    const storeJoi = new ZodValidation(newStoreSchema);
     storeJoi.validateData(store);
     const validatedStore = store as IStore;
     await ConsistencyChecker.checkStoreConsistency(validatedStore);

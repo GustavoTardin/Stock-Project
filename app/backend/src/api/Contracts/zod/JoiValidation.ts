@@ -1,18 +1,24 @@
-import Joi from 'joi';
-import { messages } from 'joi-translation-pt-br';
+import { z } from 'zod';
 import CustomError from '../../Errors/CustomError';
 
-class JoiValidation {
-  private _schema;
+class ZodValidation<T> {
+  private _schema: z.ZodType<T>;
 
-  constructor(schema: Joi.ObjectSchema<unknown>) {
+  constructor(schema: z.ZodType<T>) {
     this._schema = schema;
   }
 
-  validateData(vehicle: unknown) {
-    const { error } = this._schema.validate(vehicle, { messages });
-    if (error) throw new CustomError(error.message, '400');
+  validateData(data: unknown) {
+    try {
+      this._schema.parse(data);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw new CustomError(error.message, '400');
+      } else {
+        throw error;
+      }
+    }
   }
 }
 
-export default JoiValidation;
+export default ZodValidation;
