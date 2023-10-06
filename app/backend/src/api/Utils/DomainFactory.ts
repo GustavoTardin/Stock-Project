@@ -1,9 +1,9 @@
 import { Product, Store, User } from '../Domains';
 import CustomError from '../Errors/CustomError';
-import IProduct from '../interfaces/products/IProduct';
-import { IUser } from '../interfaces/users';
+import IProduct from '../Contracts/interfaces/products/IProduct';
+import { IUser } from '../Contracts/interfaces/users';
 import DomainTypes from './DomainTypes';
-import { IStore } from '../interfaces/stores';
+import { IStore } from '../Contracts/interfaces/stores';
 
 class DomainFactory {
   public static createDomain(type: string, obj: unknown): User | Product | Store {

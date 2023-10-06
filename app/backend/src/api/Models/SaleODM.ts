@@ -1,7 +1,7 @@
-import ISale from '../interfaces/sales/ISale';
-import ISaleODM from '../interfaces/sales/ISaleODM';
+import ISale from '../Contracts/interfaces/sales/ISale';
+import ISaleODM from '../Contracts/interfaces/sales/ISaleODM';
 import AbstractODM from './AbstractODM';
-import saleSchema from './Schemas/sales/saleSchema';
+import saleSchema from '../Contracts/mongoSchemas/sales/saleSchema';
 
 class SaleODM extends AbstractODM<ISale> implements ISaleODM {
   constructor() {

@@ -1,7 +1,7 @@
 import CustomError from '../Errors/CustomError';
 import { StoreODM, UserODM } from '../Models';
-import { IStore, IStoreODM } from '../interfaces/stores';
-import { IUser, IUserODM } from '../interfaces/users';
+import { IStore, IStoreODM } from '../Contracts/interfaces/stores';
+import { IUser, IUserODM } from '../Contracts/interfaces/users';
 
 class ConsistencyChecker {
   private static _UserODM: IUserODM = new UserODM();

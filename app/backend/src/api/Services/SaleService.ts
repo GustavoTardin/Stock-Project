@@ -1,5 +1,5 @@
-import ISale from '../interfaces/sales/ISale';
-import ISaleODM from '../interfaces/sales/ISaleODM';
+import ISale from '../Contracts/interfaces/sales/ISale';
+import ISaleODM from '../Contracts/interfaces/sales/ISaleODM';
 import AbstractService from './AbstractService';
 
 class SaleService extends AbstractService<ISale, ISaleODM> {

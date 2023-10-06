@@ -1,5 +1,5 @@
-import IProduct from '../interfaces/products/IProduct';
-import ISizes from '../interfaces/products/ISizes';
+import IProduct from '../Contracts/interfaces/products/IProduct';
+import ISizes from '../Contracts/interfaces/products/ISizes';
 
 class Product {
   protected _category: string;

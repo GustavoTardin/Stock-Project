@@ -1,7 +1,7 @@
-import JoiValidation from '../Utils/Joi/JoiValidation';
+import ZodValidation from '../Contracts/zod/ZodValidation';
 import User from '../Domains/User';
-import { userSchema, loginSchema } from '../Utils/Joi/JoiSchemas';
-import { ILoginResponse, IUser, IUserODM, IUserService } from '../interfaces/users';
+import { userSchema, loginSchema } from '../Contracts/zod/schemas';
+import { ILoginResponse, IUser, IUserODM, IUserService } from '../Contracts/interfaces/users';
 import CustomError from '../Errors/CustomError';
 import AbstractService from './AbstractService';
 import DomainFactory from '../Utils/DomainFactory';
@@ -14,27 +14,27 @@ class UserService extends AbstractService<IUser, IUserODM> implements IUserServi
   }
 
   async createUser(user: unknown): Promise<User | Error> {
-    const newUserJoi = new JoiValidation(userSchema);
-    newUserJoi.validateData(user);
+    const newUserZod = new ZodValidation(userSchema);
+    newUserZod.validateData(user);
 
-    const joiValidated = user as IUser;
+    const zodValidated = user as IUser;
 
-    if (joiValidated.credential === 'Estoquista' && joiValidated.stores) {
+    if (zodValidated.credential === 'Estoquista' && zodValidated.stores) {
       throw new CustomError('Estoquista não pode fazer parte de lojas', '400');
     }
 
     // Valida se nome de usuário já existe e se as lojas no campo "stores" realmente existem.
-    await ConsistencyChecker.checkUserConsistency(joiValidated);
+    await ConsistencyChecker.checkUserConsistency(zodValidated);
 
-    const newUser = await this.odm.createUser(joiValidated);
+    const newUser = await this.odm.createUser(zodValidated);
     
     const domain = DomainFactory.createDomain('user', newUser);
     return domain as User;
   }
 
   async checkLogin(credentials: unknown): Promise<ILoginResponse> {
-    const loginJoi = new JoiValidation(loginSchema);
-    loginJoi.validateData(credentials);
+    const loginZod = new ZodValidation(loginSchema);
+    loginZod.validateData(credentials);
     const validatedCredentials = credentials as { userName: string, password: string };
     const { token, credential, expiresIn, id } = await 
     this.odm.checkLogin(validatedCredentials.userName, validatedCredentials.password);

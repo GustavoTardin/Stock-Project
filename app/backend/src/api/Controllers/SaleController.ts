@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import ISale from '../interfaces/sales/ISale';
-import ISaleODM from '../interfaces/sales/ISaleODM';
-import ISaleService from '../interfaces/sales/ISaleService';
+import ISale from '../Contracts/interfaces/sales/ISale';
+import ISaleODM from '../Contracts/interfaces/sales/ISaleODM';
+import ISaleService from '../Contracts/interfaces/sales/ISaleService';
 import AbstractController from './AbstractController';
 import { SaleSummary } from '../Domains';
 

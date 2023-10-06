@@ -7,7 +7,7 @@ class UserValidation {
     if (userName) {
       next();
     } else {
-      next(new CustomError('userName field must be filled', '400'));
+      next(new CustomError('Nome do novo colaborador é obrigatório', '400'));
     }
   };
 

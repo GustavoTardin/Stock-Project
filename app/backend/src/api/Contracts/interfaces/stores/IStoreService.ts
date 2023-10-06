@@ -1,4 +1,4 @@
-import AbstractService from '../../Services/AbstractService';
+import AbstractService from '../../../Services/AbstractService';
 import IStore from './IStore';
 import IStoreODM from './IStoreODM';
 

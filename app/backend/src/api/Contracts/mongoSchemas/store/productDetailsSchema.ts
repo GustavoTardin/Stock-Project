@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import ProductHistorySchema from './productHistorySchema';
-import { IProductDetails } from '../../../interfaces/stores';
+import { IProductDetails } from '../../interfaces/stores';
 
 const productDetailsSchema = new Schema<IProductDetails>({
   productHistory: [ProductHistorySchema],
