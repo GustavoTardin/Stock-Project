@@ -13,7 +13,8 @@ class ZodValidation<T> {
       this._schema.parse(data);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        throw new CustomError(error.message, '400');
+        const firstError = error.errors[0];
+        throw new CustomError(firstError.message, '400');
       } else {
         throw error;
       }
