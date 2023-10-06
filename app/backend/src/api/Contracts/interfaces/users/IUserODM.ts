@@ -1,4 +1,4 @@
-import AbstractODM from '../../Models/AbstractODM';
+import AbstractODM from '../../../Models/AbstractODM';
 import ILoginResponse from './ILoginResponse';
 import IUser from './IUser';
 

@@ -1,4 +1,4 @@
-import IUser from '../interfaces/users/IUser';
+import IUser from '../Contracts/interfaces/users/IUser';
 
 class User {
   protected id: string | undefined;

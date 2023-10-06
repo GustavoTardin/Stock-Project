@@ -1,6 +1,6 @@
 import 'dotenv';
 import * as jwt from 'jsonwebtoken';
-import IToken from '../interfaces/users/IToken';
+import IToken from '../Contracts/interfaces/users/IToken';
 
 class Jwt {
   private static _mySecret = process.env.JWT_SECRET as string;

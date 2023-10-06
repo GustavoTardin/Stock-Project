@@ -1,4 +1,4 @@
-import { AbstractODM } from '../../Models';
+import { AbstractODM } from '../../../Models';
 import ISale from './ISale';
 
 interface ISaleODM extends AbstractODM<ISale> {

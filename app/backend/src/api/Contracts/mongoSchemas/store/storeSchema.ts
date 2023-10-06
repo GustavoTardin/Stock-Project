@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import productDetailsSchema from './productDetailsSchema';
-import { IStore } from '../../../interfaces/stores';
+import { IStore } from '../../interfaces/stores';
 
 const storeSchema = new Schema<IStore>({
   name: { type: String, required: true },

@@ -1,4 +1,4 @@
-import { IProductDetails, IStore } from '../interfaces/stores';
+import { IProductDetails, IStore } from '../Contracts/interfaces/stores';
 
 class Store {
   protected name: string;

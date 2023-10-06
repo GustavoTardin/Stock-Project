@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import * as bcrypt from 'bcrypt';
 import CustomError from '../Errors/CustomError';
-import { ILoginResponse, IToken, IUser, IUserODM } from '../interfaces/users';
-import userSchema from './Schemas/user/userSchema';
+import { ILoginResponse, IToken, IUser, IUserODM } from '../Contracts/interfaces/users';
+import userSchema from '../Contracts/mongoSchemas/user/userSchema';
 import Jwt from '../Auth/Jwt';
 import AbstractODM from './AbstractODM';
 
