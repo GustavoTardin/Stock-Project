@@ -12,8 +12,8 @@ class StoreService extends AbstractService<IStore, IStoreODM> implements IStoreS
   }
 
   async createStore(store: unknown): Promise<IStore | Error> {
-    const storeJoi = new ZodValidation(newStoreSchema);
-    storeJoi.validateData(store);
+    const storeZod = new ZodValidation(newStoreSchema);
+    storeZod.validateData(store);
     const validatedStore = store as IStore;
     await ConsistencyChecker.checkStoreConsistency(validatedStore);
     const newStore = await this.odm.createStore(validatedStore);
