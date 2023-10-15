@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   frontend:
@@ -28,23 +28,27 @@ services:
     command: dev
     env_file:
       - .env
-    environment:
-      - MONGO_URL=${MONGO_URL}
+    # environment:
+    #   - MONGO_URL=${DATABASE_URL}
     depends_on:
-      database:
+      postgres:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3009"] # Caso utilize outra porta interna para o back, altere ela aqui também
       timeout: 10s
       retries: 5
-  database:
+  postgres:
     container_name: Stock_Project_database
-    image: mongo:4
-    restart: always
+    image: postgres:latest
     ports:
-      - 27017:27017
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_DB=stock-project
+      - POSTGRES_USER=tardin
+      - POSTGRES_PASSWORD=admin
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       timeout: 10s
       retries: 5
     cap_add:

@@ -5,15 +5,18 @@ import { ILoginResponse, IToken, IUser, IUserODM } from '../Contracts/interfaces
 import userSchema from '../Contracts/mongoSchemas/user/userSchema';
 import Jwt from '../Auth/Jwt';
 import AbstractODM from './AbstractODM';
+import { IStoreODM } from '../interfaces/stores';
 
 class UserODM extends AbstractODM<IUser> implements IUserODM {
-  constructor() {
+  protected storeODM: IStoreODM;
+  constructor(store: IStoreODM) {
     super(userSchema, 'User');
+    this.storeODM = store;
   }
 
-  getUserNames = async (): Promise<string[]> => {
+  getUserNames = async (userName = ''): Promise<string[]> => {
     const userNames = await this.model.find(
-      {},
+      userName ? { userName } : {},
       'userName',
     ).exec();
     return userNames.map((user) => user.userName);
@@ -33,6 +36,14 @@ class UserODM extends AbstractODM<IUser> implements IUserODM {
   };
   
   createUser = async (user: IUser): Promise<IUser> => {
+    const duplicatedUsername = await this.getUserNames(user.userName); 
+    if (duplicatedUsername) throw new CustomError('Nome de usuário já em uso!', '409');
+    if (user.stores && user.stores.length > 0) {
+      const storeNames = await this.storeODM.getStoreNames();
+      if (!(user.stores.every((e) => storeNames.includes(e)))) {
+        throw new CustomError('Esta loja não existe no banco de dados!', '400');
+      }
+    }
     user.password = bcrypt.hashSync(user.password, 10);
     const newUser = await this.model.create({ ...user });
     return newUser;
