@@ -44,9 +44,9 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      - POSTGRES_DB=stock-project
-      - POSTGRES_USER=tardin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       timeout: 10s
