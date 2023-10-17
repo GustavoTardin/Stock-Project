@@ -159,8 +159,6 @@ const product1 = {
   },
 };
 
-/* Design Variation Table
-
 const product1: IProduct = {
   id: 1,
   category: 'Baby doll',
@@ -236,6 +234,8 @@ const product1: IProduct = {
     },
   ],
 };
+
+/* Design Variation Table
 
 const example = {
   id: 'SUUHSHUDSUIHDUIHUWE',

@@ -10,7 +10,6 @@ class SaleODM extends AbstractODM<ISale> implements ISaleODM {
 
   createSaleSummary = async (sale: ISale): Promise<ISale> => {
     const newSaleSummary = await this.model.create({ ...sale });
-    console.log(newSaleSummary.products[0].profit);
     return newSaleSummary;
   };
 }
