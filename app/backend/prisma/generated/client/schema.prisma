@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// model Products
+
+model Product {
+  id           Int        @id @default(autoincrement())
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId Int        @unique
+  size         Sizes      @relation(fields: [sizeId], references: [id])
+  sizeId       Int        @unique
+  designId     Int        @unique
+  price        Decimal
+  cost         Decimal
+  createdAt    DateTime   @default(now())
+  updateAt     DateTime   @updatedAt
+  Stock        Stock?
+
+  @@map("products")
+}
+
+model ProductCategory {
+  id           Int    @id @default(autoincrement())
+  categoryName String @unique
+}
+
+model ProductModel {
+  id          Int         @id @default(autoincrement())
+  categoryId  Int
+  modelName   String
+  description String
+  collections Collection?
+}
+
+model Stock {
+  id        Int     @id @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @unique
+  quantity  Int
+  allertLow Int
+}
+
+model Collection {
+  id        Int          @id @default(autoincrement())
+  model     ProductModel @relation(fields: [modelId], references: [id])
+  modelId   Int          @unique
+  gender    Gender       @relation(fields: [genderId], references: [id])
+  genderId  Int
+  apparelId Int
+  apparel   Apparel      @relation(fields: [apparelId], references: [id])
+  Product   Product?
+
+  @@map("Collections")
+}
+
+model Gender {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  Collections Collection[]
+}
+
+model Apparel {
+  id         Int          @id @default(autoincrement())
+  type       String       @unique
+  Collection Collection[]
+}
+
+model Sizes {
+  id      Int      @id @default(autoincrement())
+  size    String   @unique
+  Product Product?
+}
+
+model Design {
+  id     Int    @id @default(autoincrement())
+  design String @unique
+}
+
+// model User
+
+model User {
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String?
+  nickName  String  @unique
+  password  String
+  role      Role    @default(LOJISTA)
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  ROOT
+  LOJISTA
+  ESTOQUISTA
+}
