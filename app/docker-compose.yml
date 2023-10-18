@@ -28,8 +28,6 @@ services:
     command: dev
     env_file:
       - .env
-    # environment:
-    #   - MONGO_URL=${DATABASE_URL}
     depends_on:
       postgres:
         condition: service_healthy

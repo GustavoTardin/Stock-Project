@@ -1,4 +1,4 @@
-interface ISaleProduct {
+/* interface ISaleProduct {
   name: string,
   price: number,
   cost: number,
@@ -8,3 +8,4 @@ interface ISaleProduct {
 }
 
 export default ISaleProduct;
+*/

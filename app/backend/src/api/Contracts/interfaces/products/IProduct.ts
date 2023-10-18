@@ -1,4 +1,4 @@
-import IDesignInfo from './IDesignInfo';
+/* import IDesignInfo from './IDesignInfo';
 
 export default interface IProduct {
   id?: string,
