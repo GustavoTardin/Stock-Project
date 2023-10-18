@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+/* import { NextFunction, Request, Response } from 'express';
 import { Document } from 'mongoose';
 import AbstractService from '../Services/AbstractService';
 import AbstractODM from '../Models/AbstractODM';
@@ -37,3 +37,5 @@ abstract class AbstractController<
 }
 
 export default AbstractController;
+
+*/

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+/* import 'dotenv/config';
 import app from './app';
 import connectToDatabase from './api/Models/Connection';
 
@@ -13,3 +13,4 @@ connectToDatabase()
     console.log('\r\nServer initialization cancelled');
     process.exit(0);
   });
+*/

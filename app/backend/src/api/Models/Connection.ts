@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+/* import mongoose from 'mongoose';
 import 'dotenv/config';
 
 const connectToDatabase = (
@@ -6,3 +6,4 @@ const connectToDatabase = (
 ) => mongoose.connect(mongoDatabaseURI);
 
 export default connectToDatabase;
+*/
