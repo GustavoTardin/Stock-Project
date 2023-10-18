@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
+  "prisma": {
+    "seed": "tsnd prisma/seed.ts"
+  },
   "scripts": {
     "build": "/bin/sh tsc_eval.sh && tsc --moduleResolution node",
     "dev": "tsnd src/server.ts",
