@@ -28,8 +28,6 @@ services:
     command: dev
     env_file:
       - .env
-    # environment:
-    #   - MONGO_URL=${DATABASE_URL}
     depends_on:
       postgres:
         condition: service_healthy
@@ -38,17 +36,17 @@ services:
       timeout: 10s
       retries: 5
   postgres:
-    container_name: Stock_Project_database
+    container_name: stock_project_database
     image: postgres:latest
     ports:
       - "5432:5432"
     restart: always
     environment:
-      - POSTGRES_DB=stock-project
-      - POSTGRES_USER=tardin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       timeout: 10s
       retries: 5
     cap_add:
