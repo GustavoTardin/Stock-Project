@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../src/api/database/prisma";
 import users from "./seeds/users";
-
-const prisma = new PrismaClient();
 
 async function main() {
     for (const user of users) {
