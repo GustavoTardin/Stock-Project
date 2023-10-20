@@ -10,7 +10,7 @@
     "up": "cd .. && docker-compose up -d",
     "down": "cd .. && docker-compose down",
     "build": "/bin/sh tsc_eval.sh && tsc --moduleResolution node",
-    "dev": "npm run db && tsnd src/server.ts",
+    "dev": "tsnd src/server.ts",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "db": "npx prisma generate && npx prisma migrate dev && npx prisma db seed",
     "db-view": "npx prisma studio"

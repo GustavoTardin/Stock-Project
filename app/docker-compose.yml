@@ -28,6 +28,8 @@ services:
     command: dev
     env_file:
       - .env
+    # environment:
+    #   - MONGO_URL=${DATABASE_URL}
     depends_on:
       postgres:
         condition: service_healthy
@@ -39,7 +41,8 @@ services:
     container_name: Stock_Project_database
     image: postgres:latest
     ports:
-      - "5432:5432"
+      - 5432:5432
+      - 5555:5555
     restart: always
     environment:
       - POSTGRES_DB=${POSTGRES_DB}

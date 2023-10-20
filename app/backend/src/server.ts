@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 3009;
 
 function serverUp() {
   try {
-    prisma.$connect();
     app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));
   } catch (error) {
     console.log('Connection with database generated an error:\r\n');
