@@ -1,15 +1,14 @@
-FROM node:16-alpine3.11
+FROM node:16.14
 
 WORKDIR /
 
 COPY package*.json ./
+
+RUN apt-get update && apt-get install -y lsof
+
 RUN npm install
 
-COPY . .
-
-RUN chown node:node ./
-
-USER node
+COPY  . /backend
 
 EXPOSE 3009
 

@@ -1,15 +1,19 @@
-FROM node:16.14-alpine
+FROM node:16.14.2
 
-WORKDIR /
+WORKDIR /app
 
-COPY package* ./
+COPY package*.json ./
+
+RUN apt-get update && apt-get install -y lsof
 
 RUN npm install
 
-COPY . .
+COPY . /frontend
 
 EXPOSE 3000
 
 ENTRYPOINT [ "npm", "run" ]
 
-CMD [ "dev" ]       
+CMD [ "dev" ]
+
+

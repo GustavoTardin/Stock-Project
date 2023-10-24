@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",  // Opcional, escolha seu target de acordo com sua necessidade
+    "module": "ES6",  // Use CommonJS para módulos Node.js
+    "rootDir": "./",    // Diretório raiz do código-fonte TypeScript
+    "strict": true,        // Habilita as verificações de tipo rigorosas
+    "esModuleInterop": true, // Habilita interoperabilidade entre módulos ES6 e CommonJS
+    "moduleResolution": "Node"
+  },
+  "include": [
+    "./**/*.ts"  // Inclui os arquivos TypeScript a serem transpilados
+  ]
+}

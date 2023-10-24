@@ -13,7 +13,6 @@
   "prisma": {
     "seed": "tsnd prisma/seed.ts"
   },
-
   "devDependencies": {
     "@tsconfig/node16": "^16.1.0",
     "@types/bcrypt": "^5.0.0",
