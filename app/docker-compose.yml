@@ -22,6 +22,7 @@ services:
     restart: always
     ports:
       - 3009:3009
+      - "5555:5556"
     working_dir: /backend
     volumes:
       - ./backend:/backend
@@ -32,22 +33,24 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3009"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      test: "pg_isready -h db" #Caso utilize outra porta interna para o back, altere ela aqui também
       timeout: 10s
       retries: 5
   postgres:
     container_name: stock_project_database
-    image: postgres:latest
+    image: postgres:14.3
     ports:
       - "5432:5432"
     restart: always
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
+      - PGUSER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
-      test: ["CMD", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      timeout: 10s
+      test: "pg_isready -h db"
+      interval: 3s
+      timeout: 5s
       retries: 5
     cap_add:
       - SYS_NICE # Deve omitir alertas menores
