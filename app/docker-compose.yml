@@ -40,7 +40,8 @@ services:
     container_name: stock_project_database
     image: postgres:14.3
     ports:
-      - "5432:5432"
+      - 5432:5432
+      - 5555:5555
     restart: always
     environment:
       - POSTGRES_DB=${POSTGRES_DB}

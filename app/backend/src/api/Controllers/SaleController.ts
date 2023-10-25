@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+/* import { NextFunction, Request, Response } from 'express';
 import ISale from '../Contracts/interfaces/sales/ISale';
 import ISaleODM from '../Contracts/interfaces/sales/ISaleODM';
 import ISaleService from '../Contracts/interfaces/sales/ISaleService';
@@ -22,3 +22,5 @@ class SaleController extends AbstractController<ISale, ISaleODM, ISaleService> {
 }
 
 export default SaleController;
+
+*/

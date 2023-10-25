@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+/* import { Document } from 'mongoose';
 import ISaleProduct from './ISaleProduct';
 
 interface ISale extends Document {
@@ -9,3 +9,5 @@ interface ISale extends Document {
 }
 
 export default ISale;
+
+*/
