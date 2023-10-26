@@ -6,10 +6,11 @@ services:
     build:
       context: ./frontend
     ports:
-      - 3000:3000
+      - "3000:3000"
     working_dir: /frontend
     networks:
       - stock-app
+    platform: linux/x86_64
     environment:
       DATABASE_URL: ${DATABASE_URL}
     volumes:
@@ -29,7 +30,8 @@ services:
       context: ./backend
     restart: always
     ports:
-      - 3009:3009
+      - "3009:3009"
+    platform: linux/x86_64
     working_dir: /backend
     environment:
       DATABASE_URL: ${DATABASE_URL}
@@ -51,14 +53,19 @@ services:
 
   postgres:
     container_name: stock_project_database
-    image: postgres:14.3
+    image: postgres:14.1-alpine
+    platform: linux/x86_64
     ports:
-      - "5432:5432"
+      - "15432:5432"
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
+      DATABASE_URL: ${DATABASE_URL}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pg-data:/var/lib/postgresql/data
     networks:
       - stock-app
     healthcheck:
@@ -66,7 +73,26 @@ services:
       timeout: 10s
       retries: 5
     cap_add:
-      - SYS_NICE
+      - SYS_NICE # Deve omitir alertas menores
+
+# pgadmin:
+#   container_name: stock-project-pgadmin
+#   image: dpage/pgadmin4
+#   environment:
+#     PGADMIN_DEFAULT_EMAIL: 'admin@admin.com'
+#     PGADMIN_DEFAULT_PASSWORD: 'admin1234'
+#   volumes:
+#     pgadmin-data:/var/lib/pgadmin
+#   ports:
+#     - '5050:80'
+#   networks:
+#     - stock-app
+#   restart: unless-stopped
+
+volumes:
+  pg-data:
+  # pgadmin-data:
 
 networks:
   stock-app:
+    driver: bridge
