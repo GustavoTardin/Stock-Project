@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('Admin', 'Root', 'Lojista', 'Estoquista');
+
 -- CreateTable
 CREATE TABLE "products" (
     "id" SERIAL NOT NULL,
@@ -83,13 +86,21 @@ CREATE TABLE "Design" (
 );
 
 -- CreateTable
+CREATE TABLE "credentials" (
+    "id" SERIAL NOT NULL,
+    "credentialName" TEXT NOT NULL,
+
+    CONSTRAINT "credentials_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT,
     "nickName" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
+    "credentialId" INTEGER NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -125,6 +136,9 @@ CREATE UNIQUE INDEX "Sizes_size_key" ON "Sizes"("size");
 CREATE UNIQUE INDEX "Design_design_key" ON "Design"("design");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "credentials_credentialName_key" ON "credentials"("credentialName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "users_nickName_key" ON "users"("nickName");
 
 -- AddForeignKey
@@ -144,3 +158,6 @@ ALTER TABLE "Collections" ADD CONSTRAINT "Collections_genderId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "Collections" ADD CONSTRAINT "Collections_apparelId_fkey" FOREIGN KEY ("apparelId") REFERENCES "Apparel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "users" ADD CONSTRAINT "users_credentialId_fkey" FOREIGN KEY ("credentialId") REFERENCES "credentials"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

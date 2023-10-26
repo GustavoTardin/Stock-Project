@@ -29,7 +29,7 @@ services:
     restart: always
     ports:
       - "3009:3009"
-    platform: linux/x86_64
+    # platform: linux/x86_64
     working_dir: /backend
     networks:
       - stock-app
@@ -50,9 +50,9 @@ services:
   postgres:
     container_name: stock_project_database
     image: postgres:14.1-alpine
-    platform: linux/x86_64
+    # platform: linux/x86_64
     ports:
-      - "15432:5432"
+      - "5432:5432"
     restart: always
     environment:
       - .env
