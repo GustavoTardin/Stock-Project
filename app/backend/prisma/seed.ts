@@ -1,7 +1,7 @@
 import prisma from "../src/api/database/prisma";
 import users from "./seeds/users";
 
-async function main() {
+async function seedUsers() {
     for (const user of users) {
         const existingUser = await prisma.user.findFirst({
             where: {
@@ -16,6 +16,15 @@ async function main() {
             });
     }
 }
+}
+
+async function seedCredentials() {
+
+}
+
+async function main() {
+    await seedUsers();
+    await seedCredentials()
 }
 
 main().catch(e => {
