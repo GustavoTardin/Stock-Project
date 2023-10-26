@@ -1,15 +1,17 @@
+import { Role } from '@prisma/client'
+
 const credentials = [
   {
-    credentialName: 'Root',
+    credentialName: Role.Root,
   },
   {
-    credentialName: 'Admin',
+    credentialName: Role.Admin,
   },
   {
-    credentialName: 'Lojista',
+    credentialName: Role.Lojista,
   },
   {
-    credentialName: 'Estoquista',
+    credentialName: Role.Estoquista,
   },
 ]
 

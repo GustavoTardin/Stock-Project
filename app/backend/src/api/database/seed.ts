@@ -1,5 +1,5 @@
 import prisma from './prisma'
-import users from './seeds/users'
+import createUsers from './seeds/users'
 import credentials from './seeds/credentials'
 
 async function seedCredentials() {
@@ -19,6 +19,7 @@ async function seedCredentials() {
 }
 
 async function seedUsers() {
+  const users = await createUsers('1234')
   await Promise.all(
     users.map(async (user) => {
       await prisma.user.upsert({
