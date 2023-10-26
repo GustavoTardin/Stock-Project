@@ -11,10 +11,8 @@ services:
     networks:
       - stock-app
     platform: linux/x86_64
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/frontend
     depends_on:
       backend:
         condition: service_healthy
@@ -33,12 +31,10 @@ services:
       - "3009:3009"
     platform: linux/x86_64
     working_dir: /backend
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
     networks:
       - stock-app
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/backend
     command: dev
     env_file:
       - .env
@@ -59,11 +55,7 @@ services:
       - "15432:5432"
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      DATABASE_URL: ${DATABASE_URL}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGDATA: /var/lib/postgresql/data
+      - .env
     volumes:
       - pg-data:/var/lib/postgresql/data
     networks:
