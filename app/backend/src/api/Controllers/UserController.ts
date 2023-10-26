@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+/* import { NextFunction, Request, Response } from 'express';
 import AbstractController from './AbstractController';
 import { IUser, IUserODM, IUserService } from '../Contracts/interfaces/users';
 
@@ -36,3 +36,5 @@ class UserController extends AbstractController<IUser, IUserODM, IUserService> {
 }
 
 export default UserController;
+
+*/

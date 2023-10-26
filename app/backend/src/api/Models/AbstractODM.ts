@@ -1,4 +1,4 @@
-import {
+/* import {
   Model,
   models,
   Schema,
@@ -37,3 +37,4 @@ abstract class AbstractODM<T extends Document> {
 }
 
 export default AbstractODM;
+*/

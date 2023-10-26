@@ -1,4 +1,4 @@
-interface IProductHistory extends Document {
+interface IProductHistory{
   quantity: number;
   buyPrice: number;
   salePrice: number;

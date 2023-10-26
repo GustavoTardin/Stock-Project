@@ -3,16 +3,17 @@
         "outDir": "./dist",
         "rootDir": "./",
         "target": "es2019",
-        "module": "commonjs",
+        "module": "Node16",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "moduleResolution": "Node16"
     },
     "exclude": [
         "**/node_modules*"
     ],
     "include": [
-        "./src/**/*.ts"
+        "./**/**/*.ts"
     ]
 }

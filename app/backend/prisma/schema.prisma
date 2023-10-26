@@ -1,9 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
 }
 
 datasource db {
@@ -86,6 +82,14 @@ model Design {
   design String @unique
 }
 
+model Credential {
+  id  Int @id @default(autoincrement())
+  credentialName  String @unique
+  users User[]
+
+  @@map("credentials")
+}
+
 // model User
 
 model User {
@@ -94,14 +98,15 @@ model User {
   lastName  String?
   nickName  String  @unique
   password  String
-  role      Role    @default(LOJISTA)
+  credential Credential @relation(fields: [credentialId], references: [id])
+  credentialId Int
 
   @@map("users")
 }
 
 enum Role {
-  ADMIN
-  ROOT
-  LOJISTA
-  ESTOQUISTA
+  Admin
+  Root
+  Lojista
+  estoquista
 }
