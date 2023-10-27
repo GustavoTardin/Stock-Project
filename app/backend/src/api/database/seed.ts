@@ -21,7 +21,7 @@ async function seedCredentials() {
 async function seedUsers() {
   await Promise.all(
     users.map(async (user) => {
-      await prisma.user.upsert({
+      const createdUser = await prisma.user.upsert({
         where: {
           nickName: user.nickName,
         },
@@ -30,6 +30,8 @@ async function seedUsers() {
         },
         update: {},
       })
+
+      console.log(`User with id ${createdUser.id} created sucessfully`)
     }),
   )
 }
@@ -38,7 +40,7 @@ async function main() {
   console.log('Start seeding...')
   await seedCredentials()
   await seedUsers()
-  console.log('seed completed')
+  console.log('seed completed!!!')
 }
 
 main()
