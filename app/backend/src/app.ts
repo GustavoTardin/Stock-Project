@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import ErrorHandler from './api/Errors/ErrorHandler'
-import prisma from './api/database/prisma'
+import { userRouter } from './api/Routes'
 
 const accessControl: express.RequestHandler = (
   _req: Request,
@@ -20,11 +20,7 @@ const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(accessControl)
-app.get('/users', async (req, res) => {
-  console.log('a')
-  const users = await prisma.user.findMany()
-  res.status(200).json(users)
-})
+app.use('/users', userRouter)
 
 app.use(ErrorHandler.handle)
 
