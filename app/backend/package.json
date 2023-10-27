@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "prisma": {
-    "seed": "tsnd prisma/seed.ts"
+    "seed": "ts-node src/api/database/seed.ts"
   },
   "scripts": {
     "dev": "tsnd src/server.ts",
@@ -12,21 +12,23 @@
     "db:generate": "npx prisma generate",
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "npx prisma db seed",
-    "db-view": "npx prisma studio"
+    "db:view": "npx prisma studio"
   },
   "outDir": "dist",
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
     "@tsconfig/node16": "^16.1.0",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
-    "@types/multer": "^1.4.7",
     "@types/jsonwebtoken": "^9.0.2",
-    "eslint": "8.49.0",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^20.6.2",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.49.0",
     "prisma": "^5.4.2",
     "ts-node": "^10.8.0",
     "ts-node-dev": "^2.0.0",
-    "@types/node": "^20.6.2",
-    "dotenv": "^16.3.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
