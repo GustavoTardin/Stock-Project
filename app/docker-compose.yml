@@ -54,12 +54,12 @@ services:
     ports:
       - "5432:5432"
     restart: always
-    environment:
+    env_file:
       - .env
     volumes:
       - pg-data:/var/lib/postgresql/data
-    networks:
-      - stock-app
+    # networks:
+    #   - stock-app
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       timeout: 10s
@@ -87,4 +87,4 @@ volumes:
 
 networks:
   stock-app:
-    driver: bridge
+    # driver: bridge
