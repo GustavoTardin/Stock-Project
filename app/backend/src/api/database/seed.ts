@@ -1,7 +1,6 @@
 import prisma from './prisma'
 import users from './seeds/users'
 import credentials from './seeds/credentials'
-import { HashedPassword } from '../Utils/hashPassword'
 
 async function seedCredentials() {
   await Promise.all(
@@ -22,16 +21,17 @@ async function seedCredentials() {
 async function seedUsers() {
   await Promise.all(
     users.map(async (user) => {
-      const usertest = await new HashedPassword(user).crypta()
-      await prisma.user.upsert({
+      const createdUser = await prisma.user.upsert({
         where: {
           nickName: user.nickName,
         },
         create: {
-          ...usertest,
+          ...user,
         },
         update: {},
       })
+
+      console.log(`User with id ${createdUser.id} created sucessfully`)
     }),
   )
 }
@@ -40,7 +40,7 @@ async function main() {
   console.log('Start seeding...')
   await seedCredentials()
   await seedUsers()
-  console.log('seed completed')
+  console.log('seed completed!!!')
 }
 
 main()

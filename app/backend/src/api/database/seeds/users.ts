@@ -1,30 +1,32 @@
+import * as bcrypt from 'bcrypt'
+
 const users = [
   {
     firstName: 'root',
     lastName: 'dev',
     nickName: 'root',
-    password: '123456',
+    password: bcrypt.hashSync('1234', 10),
     credentialId: 1,
   },
   {
     firstName: 'Gustavo',
     lastName: 'Tardin',
     nickName: 'admin',
-    password: '123456',
+    password: bcrypt.hashSync('1234', 10),
     credentialId: 2,
   },
   {
     firstName: 'Guilherme',
     lastName: 'Tardin',
     nickName: 'lojista',
-    password: '123456',
+    password: bcrypt.hashSync('1234', 10),
     credentialId: 3,
   },
   {
     firstName: 'Richard',
     lastName: 'Machado',
     nickName: 'estoquista',
-    password: '123456',
+    password: bcrypt.hashSync('1234', 10),
     credentialId: 4,
   },
 ]
