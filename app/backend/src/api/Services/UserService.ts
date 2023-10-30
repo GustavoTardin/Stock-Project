@@ -1,3 +1,19 @@
+import IUserModel from '../Contracts/interfaces/users/IUserModel'
+
+class UserService {
+  private _model: IUserModel
+
+  constructor(model: IUserModel) {
+    this._model = model
+  }
+
+  async getAll() {
+    return this._model.getAll()
+  }
+}
+
+export default UserService
+
 // import ZodValidation from '../Contracts/zod/ZodValidation';
 // import User from '../Domains/User';
 // import { userSchema, loginSchema } from '../Contracts/zod/schemas';
@@ -26,7 +42,7 @@
 //     await ConsistencyChecker.checkUserConsistency(zodValidated);
 
 //     const newUser = await this.odm.createUser(zodValidated);
-    
+
 //     const domain = DomainFactory.createDomain('user', newUser);
 //     return domain as User;
 //   }
@@ -35,7 +51,7 @@
 //     const loginZod = new ZodValidation(loginSchema);
 //     loginZod.validateData(credentials);
 //     const validatedCredentials = credentials as { userName: string, password: string };
-//     const { token, credential, expiresIn, id } = await 
+//     const { token, credential, expiresIn, id } = await
 //     this.odm.checkLogin(validatedCredentials.userName, validatedCredentials.password);
 //     return { id, token, credential, expiresIn };
 //   }

@@ -1,40 +1,21 @@
-/* import { NextFunction, Request, Response } from 'express';
-import AbstractController from './AbstractController';
-import { IUser, IUserODM, IUserService } from '../Contracts/interfaces/users';
+import { NextFunction, Request, Response } from 'express'
+import { IUserService } from '../Contracts/interfaces/users'
 
-class UserController extends AbstractController<IUser, IUserODM, IUserService> {
+class UserController {
+  private _service: IUserService
+
   constructor(service: IUserService) {
-    super('user', service);
+    this._service = service
   }
 
-  getUserNames = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getAll = async (_req: Request, res: Response, next: NextFunction) => {
     try {
-      const userNames = await this.service.getUserNames();
-      res.status(200).json(userNames);
+      const users = await this._service.getAll()
+      res.status(200).json(users)
     } catch (error) {
-      next(error);
+      next(error)
     }
-  };
-
-  createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const newUser = await this.service.createUser(req.body);
-      res.status(201).json(newUser);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  checkLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { token, credential, expiresIn, id } = await this.service.checkLogin(req.body);
-      res.status(200).json({ id, token, credential, expiresIn });
-    } catch (error) {
-      next(error);
-    }
-  };
+  }
 }
 
-export default UserController;
-
-*/
+export default UserController

@@ -4,10 +4,16 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
+import ICompleteUser from './ICompleteUser'
+
+interface IUserService {
+  getAll(): Promise<ICompleteUser[]>
+}
+
 // interface IUserService extends AbstractService<IUser, IUserODM> {
 //   createUser(user: unknown): Promise<User | Error>;
 //   checkLogin(credentials: unknown): Promise<ILoginResponse>;
 //   getUserNames(): Promise<string[]>
 // }
 
-// export default IUserService;
+export default IUserService

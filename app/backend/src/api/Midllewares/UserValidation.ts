@@ -7,8 +7,8 @@ class UserValidation {
     _res: Response,
     next: NextFunction,
   ) => {
-    const { userName } = req.body
-    if (userName) {
+    const { nickName } = req.body
+    if (nickName) {
       next()
     } else {
       next(new CustomError('Nome do novo colaborador é obrigatório', '400'))
@@ -38,8 +38,8 @@ class UserValidation {
     _res: Response,
     next: NextFunction,
   ) => {
-    const { credential } = req.body
-    if (credential) {
+    const { credentialId } = req.body
+    if (credentialId) {
       next()
     } else {
       next(
@@ -56,14 +56,14 @@ class UserValidation {
     _res: Response,
     next: NextFunction,
   ) => {
-    const { credential, stores } = req.body
-    if (credential === 'Lojista' && !stores) {
+    const { credentialId, stores } = req.body
+    if (credentialId === 'Lojista' && !stores) {
       throw new CustomError(
         'Lojista deve ter o campo Vendedores preenchido',
         '400',
       )
     }
-    if (credential !== 'Lojista') delete req.body.stores
+    if (credentialId !== 'Lojista') delete req.body.stores
     next()
   }
 }

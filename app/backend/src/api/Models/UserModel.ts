@@ -1,11 +1,34 @@
 import { PrismaClient } from '@prisma/client'
-import prisma from '../database/prisma'
+import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
 
 class UserModel {
-  db: PrismaClient
+  private _db: PrismaClient
 
   constructor(prisma: PrismaClient) {
-    this.db = prisma
+    this._db = prisma
+  }
+
+  async getAll(): Promise<ICompleteUser[]> {
+    const users = await this._db.user.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        nickName: true,
+        password: false,
+        credential: {
+          select: {
+            credentialName: true,
+          },
+        },
+      },
+    })
+
+    const domains = users.map((user) => ({
+      ...user,
+      credential: user.credential.credentialName,
+    }))
+    return domains
   }
 }
 
