@@ -20,6 +20,7 @@ const userController = new UserController(userService)
 const { tokenRequired } = TokenValidation
 
 userRouter.get('/', userController.getAll)
+userRouter.get('/:nickName', userController.getByNickName)
 // userRouter.get('/names', tokenRequired(), userController.getUserNames)
 // userRouter.post(
 //   '/login',

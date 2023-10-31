@@ -1,14 +1,21 @@
+import { IUserService } from '../Contracts/interfaces/users'
 import IUserModel from '../Contracts/interfaces/users/IUserModel'
+import { User } from '../Domains'
 
-class UserService {
+class UserService implements IUserService {
   private _model: IUserModel
 
   constructor(model: IUserModel) {
     this._model = model
   }
 
-  async getAll() {
+  async getAll(): Promise<User[]> {
     return this._model.getAll()
+  }
+
+  async getByNickName(nickName: string): Promise<User> {
+    const user = await this._model.getByNickName(nickName)
+    return user
   }
 }
 

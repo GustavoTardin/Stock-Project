@@ -4,10 +4,11 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
-import ICompleteUser from './ICompleteUser'
+import { User } from '../../../Domains'
 
 interface IUserService {
-  getAll(): Promise<ICompleteUser[]>
+  getAll(): Promise<User[]>
+  getByNickName(nickName: string): Promise<User>
 }
 
 // interface IUserService extends AbstractService<IUser, IUserODM> {

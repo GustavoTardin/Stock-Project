@@ -7,5 +7,5 @@ import { Role } from '@prisma/client'
 export default interface IUser {
   id: number
   nickName: string
-  credential: Role
+  credential: Role | { credentialName: string }
 }

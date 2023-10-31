@@ -1,7 +1,8 @@
-import ICompleteUser from './ICompleteUser'
+import { User } from '../../../Domains'
 
 interface IUserModel {
-  getAll(): Promise<ICompleteUser[]>
+  getAll(): Promise<User[]>
+  getByNickName(credential: string): Promise<User>
 }
 
 export default IUserModel
