@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
 import { IUserService } from '../Contracts/interfaces/users'
-import { NotFoundError } from '@prisma/client/runtime/library'
 
 class UserController {
   private _service: IUserService

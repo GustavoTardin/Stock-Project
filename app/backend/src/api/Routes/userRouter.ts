@@ -17,7 +17,7 @@ const userController = new UserController(userService)
 //   credentialRequired,
 //   ifSellerStoreRequired,
 // } = UserValidation
-const { tokenRequired } = TokenValidation
+// const { tokenRequired } = TokenValidation
 
 userRouter.get('/', userController.getAll)
 userRouter.get('/:nickName', userController.getByNickName)

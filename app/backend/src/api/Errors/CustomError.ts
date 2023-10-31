@@ -1,8 +1,8 @@
 class CustomError extends Error {
   constructor(mess: string, statusCode: string) {
-    super(mess);
-    this.stack = statusCode;
+    super(mess)
+    this.stack = statusCode
   }
 }
 
-export default CustomError;
+export default CustomError

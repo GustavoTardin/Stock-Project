@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { User } from '../Domains'
 import IUserModel from '../Contracts/interfaces/users/IUserModel'
+import CustomError from '../Errors/CustomError'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
@@ -31,10 +32,13 @@ class UserModel implements IUserModel {
   }
 
   async getByNickName(nickName: string): Promise<User> {
-    const user = await this._db.user.findUniqueOrThrow({
+    const user = await this._db.user.findUnique({
       where: { nickName },
       select: this._selectUser,
     })
+
+    if (!user) throw new CustomError('User not found', '404')
+
     const domain = new User(user)
     return domain
   }
