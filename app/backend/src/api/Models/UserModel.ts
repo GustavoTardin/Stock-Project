@@ -1,11 +1,12 @@
 import { PrismaClient } from '@prisma/client'
-import { User } from '../Domains'
 import IUserModel from '../Contracts/interfaces/users/IUserModel'
-import CustomError from '../Errors/CustomError'
+import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
+import { hashPassword } from '../Utils/hashPassword'
+import IDbUser from '../Contracts/interfaces/users/IDbUser'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
-  private _selectUser = {
+  private _includeCredential = {
     id: true,
     firstName: true,
     lastName: true,
@@ -22,25 +23,29 @@ class UserModel implements IUserModel {
     this._db = prisma
   }
 
-  async getAll(): Promise<User[]> {
+  async getAll(): Promise<IDbUser[]> {
     const users = await this._db.user.findMany({
-      select: this._selectUser,
+      select: this._includeCredential,
     })
 
-    const domains = users.map((user) => new User(user))
-    return domains
+    return users
   }
 
-  async getByNickName(nickName: string): Promise<User> {
+  async getByNickName(nickName: string): Promise<IDbUser | null> {
     const user = await this._db.user.findUnique({
       where: { nickName },
-      select: this._selectUser,
+      select: this._includeCredential,
     })
 
-    if (!user) throw new CustomError('User not found', '404')
+    return user
+  }
 
-    const domain = new User(user)
-    return domain
+  async createUser(user: ICompleteUser): Promise<IDbUser> {
+    const newUser = await this._db.user.create({
+      data: { ...user, password: hashPassword(user.password) },
+      select: this._includeCredential,
+    })
+    return newUser
   }
 }
 

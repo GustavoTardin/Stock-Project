@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import CustomError from '../Errors/CustomError'
 
 class UserValidation {
-  static usernameRequired = (
+  static nicknameRequired = (
     req: Request,
     _res: Response,
     next: NextFunction,
@@ -12,6 +12,19 @@ class UserValidation {
       next()
     } else {
       next(new CustomError('Nome do novo colaborador é obrigatório', '400'))
+    }
+  }
+
+  static firstNameRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { firstName } = req.body
+    if (firstName) {
+      next()
+    } else {
+      next(new CustomError('O nome de usuário é obrigatório!', '400'))
     }
   }
 
@@ -49,22 +62,6 @@ class UserValidation {
         ),
       )
     }
-  }
-
-  static ifSellerStoreRequired = (
-    req: Request,
-    _res: Response,
-    next: NextFunction,
-  ) => {
-    const { credentialId, stores } = req.body
-    if (credentialId === 'Lojista' && !stores) {
-      throw new CustomError(
-        'Lojista deve ter o campo Vendedores preenchido',
-        '400',
-      )
-    }
-    if (credentialId !== 'Lojista') delete req.body.stores
-    next()
   }
 }
 

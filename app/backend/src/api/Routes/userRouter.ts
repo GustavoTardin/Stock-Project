@@ -7,20 +7,22 @@ import prisma from '../database/prisma'
 import UserController from '../Controllers/UserController'
 
 const userRouter = Router()
-
 const userModel = new UserModel(prisma)
 const userService = new UserService(userModel)
 const userController = new UserController(userService)
-// const {
-//   usernameRequired,
-//   passwordRequired,
-//   credentialRequired,
-//   ifSellerStoreRequired,
-// } = UserValidation
+const { nicknameRequired, passwordRequired, credentialRequired } =
+  UserValidation
 // const { tokenRequired } = TokenValidation
 
 userRouter.get('/', userController.getAll)
 userRouter.get('/:nickName', userController.getByNickName)
+userRouter.post(
+  '/create',
+  nicknameRequired,
+  passwordRequired,
+  credentialRequired,
+  userController.createUser,
+)
 // userRouter.get('/names', tokenRequired(), userController.getUserNames)
 // userRouter.post(
 //   '/login',

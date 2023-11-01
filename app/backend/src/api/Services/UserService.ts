@@ -1,6 +1,10 @@
 import { IUserService } from '../Contracts/interfaces/users'
+import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
 import IUserModel from '../Contracts/interfaces/users/IUserModel'
+import ZodValidation from '../Contracts/zod/ZodValidation'
+import { userSchema } from '../Contracts/zod/schemas'
 import { User } from '../Domains'
+import CustomError from '../Errors/CustomError'
 
 class UserService implements IUserService {
   private _model: IUserModel
@@ -10,12 +14,29 @@ class UserService implements IUserService {
   }
 
   async getAll(): Promise<User[]> {
-    return this._model.getAll()
+    const users = await this._model.getAll()
+    const domains = users.map((user) => new User(user))
+    return domains
   }
 
   async getByNickName(nickName: string): Promise<User> {
     const user = await this._model.getByNickName(nickName)
-    return user
+    if (!user) throw new CustomError('Usuário não encontrado', '404')
+    const domain = new User(user)
+    return domain
+  }
+
+  async createUser(user: unknown): Promise<User> {
+    ZodValidation.validateData(userSchema, user)
+    const validatedUser = user as ICompleteUser
+    const duplicatedUser = await this._model.getByNickName(
+      validatedUser.nickName,
+    )
+    if (duplicatedUser)
+      throw new CustomError('Nome de usuário já existe!!', '409')
+    const newUser = await this._model.createUser(validatedUser)
+    const domain = new User(newUser)
+    return domain
   }
 }
 
