@@ -8,6 +8,9 @@ class ZodValidation {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const firstError = error.errors[0]
+        if (firstError.message === 'Required') {
+          firstError.message = `Campo ${firstError.path[0]} é obrigatório!!`
+        }
         throw new CustomError(firstError.message, '400')
       } else {
         throw error
