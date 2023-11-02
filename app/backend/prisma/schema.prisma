@@ -8,6 +8,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Credential {
+  id             Int     @id @default(autoincrement())
+  credentialName Role    @unique
+  users          User[]
+
+  @@map("credentials")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  firstName    String
+  lastName     String?
+  nickName     String     @unique
+  password     String
+  credential   Credential @relation(fields: [credentialId], references: [id])
+  credentialId Int        @default(3)
+  stores       StoreSellers[]
+
+  @@map("users")
+}
+
+model Store {
+  id             Int     @id @default(autoincrement())
+  storeName      String
+  contactNumber  String  @unique
+  storeAddress   StoreAdress?
+  users          StoreSellers[]
+
+  @@map("stores")
+}
+
+model StoreAdress {
+  id           Int    @id @default(autoincrement())
+  storeId      Int    @unique
+  state        String
+  city         String
+  street       String
+  addressNumber Int
+
+  store        Store  @relation(fields: [storeId], references: [id])
+}
+
+model StoreSellers {
+  userId Int
+  storeId Int
+
+  user  User   @relation(fields: [userId], references: [id])
+  store Store  @relation(fields: [storeId], references: [id])
+
+  @@id([userId, storeId])
+}
+
 model Product {
   id           Int        @id @default(autoincrement())
   collection   Collection @relation(fields: [collectionId], references: [id])
@@ -95,25 +147,6 @@ model Design {
   @@map("designs")
 }
 
-model Credential {
-  id             Int    @id @default(autoincrement())
-  credentialName Role   @unique
-  users          User[]
-
-  @@map("credentials")
-}
-
-model User {
-  id           Int        @id @default(autoincrement())
-  firstName    String
-  lastName     String?
-  nickName     String     @unique
-  password     String
-  credential   Credential @relation(fields: [credentialId], references: [id])
-  credentialId Int        @default(3)
-
-  @@map("users")
-}
 
 enum Role {
   Admin

@@ -23,6 +23,10 @@ class UserModel implements IUserModel {
     this._db = prisma
   }
 
+  async getCredentials(): Promise<{ id: number; credentialName: string }[]> {
+    return this._db.credential.findMany()
+  }
+
   async getAll(): Promise<IDbUser[]> {
     const users = await this._db.user.findMany({
       select: this._includeCredential,
