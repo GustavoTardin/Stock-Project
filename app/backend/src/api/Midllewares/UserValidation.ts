@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import CustomError from '../Errors/CustomError'
 
 class UserValidation {
-  static nicknameRequired = (
+  static nickNameRequired = (
     req: Request,
     _res: Response,
     next: NextFunction,

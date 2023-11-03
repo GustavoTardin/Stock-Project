@@ -10,18 +10,29 @@ const userRouter = Router()
 const userModel = new UserModel(prisma)
 const userService = new UserService(userModel)
 const userController = new UserController(userService)
-const { nicknameRequired, passwordRequired, credentialRequired } =
-  UserValidation
+const {
+  nickNameRequired,
+  passwordRequired,
+  credentialRequired,
+  firstNameRequired,
+} = UserValidation
 // const { tokenRequired } = TokenValidation
 
 userRouter.get('/', userController.getAll)
 userRouter.get('/:nickName', userController.getByNickName)
 userRouter.post(
   '/create',
-  nicknameRequired,
+  nickNameRequired,
+  firstNameRequired,
   passwordRequired,
   credentialRequired,
   userController.createUser,
+)
+userRouter.post(
+  '/login',
+  nickNameRequired,
+  passwordRequired,
+  userController.login,
 )
 // userRouter.get('/names', tokenRequired(), userController.getUserNames)
 // userRouter.post(
