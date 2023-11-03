@@ -1,6 +1,6 @@
 {
   "extends": "@trybe/eslint-config-frontend/typescript",
   "parserOptions": {
-    "project": "/home/gustavo/Stock-Project/app/frontend/tsconfig.json"
+    "project": "/home/richard/Documentos/trybe-projetos/stock/Stock-Project/app/frontend/tsconfig.json"
   }
 }
