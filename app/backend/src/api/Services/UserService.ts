@@ -1,4 +1,3 @@
-import Jwt from '../Auth/Jwt'
 import {
   IUserService,
   IUserModel,
@@ -11,8 +10,8 @@ import ZodValidation from '../Contracts/zod/ZodValidation'
 import { completeUserSchema, loginSchema } from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
+import generateAcessInfo from '../Utils/generateAcessInfo'
 import { CompareHash } from '../Utils/hashPassword'
-
 class UserService implements IUserService {
   private _model: IUserModel
 
@@ -60,14 +59,7 @@ class UserService implements IUserService {
       userFound.password,
     )
     if (rightPassword) {
-      const userInfo = {
-        id: userFound.id,
-        firstName: userFound.firstName,
-        credentialName: userFound.credential.credentialName,
-      }
-      const token = Jwt.generateToken(userInfo)
-      const loginResponse = { ...userInfo, ...token }
-      return loginResponse
+      return generateAcessInfo(userFound)
     } else {
       throw new CustomError('Nome de usuário ou senha incorretos', '401')
     }

@@ -13,7 +13,7 @@ class UserModel implements IUserModel {
     id: true,
     firstName: true,
     lastName: true,
-    nickName: true,
+    nickName: false,
     password: false,
     credential: {
       select: {
