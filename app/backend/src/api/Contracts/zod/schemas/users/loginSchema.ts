@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import '../zodConfig';
+import { z } from 'zod'
+import '../../zodConfig'
 
 const loginSchema = z.object({
-  userName: z
+  nickName: z
     .string()
     .min(3, { message: 'Nome de usuário deve ter no mínimo 3 caracteres' })
     .refine((value) => value.trim().length > 0, {
@@ -14,6 +14,6 @@ const loginSchema = z.object({
     .refine((value) => value.trim().length > 0, {
       message: 'A senha é obrigatória',
     }),
-});
+})
 
-export default loginSchema;
+export default loginSchema

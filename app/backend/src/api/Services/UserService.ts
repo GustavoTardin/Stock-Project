@@ -1,8 +1,10 @@
-import { IUserService } from '../Contracts/interfaces/users'
-import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
-import IUserModel from '../Contracts/interfaces/users/IUserModel'
+import {
+  IUserService,
+  IUserModel,
+  ICompleteUser,
+} from '../Contracts/interfaces/users'
 import ZodValidation from '../Contracts/zod/ZodValidation'
-import { userSchema } from '../Contracts/zod/schemas'
+import { completeUserSchema } from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
 
@@ -27,7 +29,7 @@ class UserService implements IUserService {
   }
 
   async createUser(user: unknown): Promise<User> {
-    ZodValidation.validateData(userSchema, user)
+    ZodValidation.validateData(completeUserSchema, user)
     const validatedUser = user as ICompleteUser
     const duplicatedUser = await this._model.getByNickName(
       validatedUser.nickName,

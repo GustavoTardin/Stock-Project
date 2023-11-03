@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import newUserSchema from '../../zod/schemas/userSchema'
+import { completeUserSchema } from '../../zod/schemas/users'
 
-interface ICompleteUser extends z.infer<typeof newUserSchema> {
+interface ICompleteUser extends z.infer<typeof completeUserSchema> {
   id?: number
   stores?: number[]
 }
