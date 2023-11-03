@@ -2,10 +2,10 @@
 // import { z } from 'zod';
 
 import { Role } from '@prisma/client'
+import ILoginUser from './ILoginUser'
 
 // import { userSchema } from '../../zod/schemas';
-export default interface IUser {
+export default interface IUser extends ILoginUser {
   id: number
-  nickName: string
   credential: Role | { credentialName: string }
 }

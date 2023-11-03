@@ -1,8 +1,7 @@
 interface ILoginResponse {
-  id: string,
-  token: string,
-  credential: string,
-  expiresIn: number
+  id: number
+  firstName: string
+  credentialName: string
 }
 
-export default ILoginResponse;
+export default ILoginResponse

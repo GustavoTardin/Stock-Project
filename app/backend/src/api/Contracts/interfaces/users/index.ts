@@ -6,6 +6,7 @@ import ICredential from './ICredential'
 import ICompleteUser from './ICompleteUser'
 import IDbUser from './IDbUser'
 import IUserModel from './IUserModel'
+import ILoginUser from './ILoginUser'
 
 export {
   IUser,
@@ -16,4 +17,5 @@ export {
   ICompleteUser,
   IDbUser,
   IUserModel,
+  ILoginUser,
 }

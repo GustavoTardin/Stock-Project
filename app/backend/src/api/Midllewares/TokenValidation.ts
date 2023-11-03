@@ -13,7 +13,7 @@ class TokenValidation {
       }
       try {
         const decryptedToken = Jwt.decryptToken(authorization)
-        const userCredential = decryptedToken.credential
+        const userCredential = decryptedToken.credentialName
         if (requiredCredential.some((e) => e === userCredential)) {
           next()
         } else {

@@ -1,13 +1,9 @@
-import { Role } from '@prisma/client'
+import { ICredential, IUser } from '.'
 
-interface IDbUser {
-  id: number
+interface IDbUser extends IUser {
   firstName: string
   lastName: string | null
-  nickName: string
-  credential: {
-    credentialName: Role
-  }
+  credential: ICredential
 }
 
 export default IDbUser

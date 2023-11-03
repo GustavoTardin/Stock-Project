@@ -1,5 +1,5 @@
 interface ICredential {
-  id: number
+  id?: number
   credentialName: string
 }
 

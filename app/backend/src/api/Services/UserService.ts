@@ -1,12 +1,17 @@
+import Jwt from '../Auth/Jwt'
 import {
   IUserService,
   IUserModel,
   ICompleteUser,
+  ILoginResponse,
+  IToken,
+  ILoginUser,
 } from '../Contracts/interfaces/users'
 import ZodValidation from '../Contracts/zod/ZodValidation'
-import { completeUserSchema } from '../Contracts/zod/schemas/users'
+import { completeUserSchema, loginSchema } from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
+import { CompareHash } from '../Utils/hashPassword'
 
 class UserService implements IUserService {
   private _model: IUserModel
@@ -39,6 +44,33 @@ class UserService implements IUserService {
     const newUser = await this._model.createUser(validatedUser)
     const domain = new User(newUser)
     return domain
+  }
+
+  async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
+    ZodValidation.validateData(loginSchema, loginUser)
+    const validatedLogin = loginUser as ILoginUser
+    const userFound = await this._model.getByNickName(
+      validatedLogin.nickName,
+      true,
+    )
+    if (!userFound)
+      throw new CustomError('Nome de usuário ou senha incorretos', '401')
+    const rightPassword = await CompareHash(
+      validatedLogin.password,
+      userFound.password,
+    )
+    if (rightPassword) {
+      const userInfo = {
+        id: userFound.id,
+        firstName: userFound.firstName,
+        credentialName: userFound.credential.credentialName,
+      }
+      const token = Jwt.generateToken(userInfo)
+      const loginResponse = { ...userInfo, ...token }
+      return loginResponse
+    } else {
+      throw new CustomError('Nome de usuário ou senha incorretos', '401')
+    }
   }
 }
 

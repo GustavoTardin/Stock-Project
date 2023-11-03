@@ -38,7 +38,11 @@ class UserModel implements IUserModel {
     return users
   }
 
-  async getByNickName(nickName: string): Promise<IDbUser | null> {
+  async getByNickName(
+    nickName: string,
+    login: boolean = false,
+  ): Promise<IDbUser | null> {
+    if (login) this._includeCredential.password = true
     const user = await this._db.user.findUnique({
       where: { nickName },
       select: this._includeCredential,

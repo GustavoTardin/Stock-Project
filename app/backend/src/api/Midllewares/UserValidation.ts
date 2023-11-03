@@ -11,7 +11,7 @@ class UserValidation {
     if (nickName) {
       next()
     } else {
-      next(new CustomError('Nome do novo colaborador é obrigatório', '400'))
+      next(new CustomError('Nome de usuário é obrigatório', '400'))
     }
   }
 
@@ -37,12 +37,7 @@ class UserValidation {
     if (password) {
       next()
     } else {
-      next(
-        new CustomError(
-          'Você deve fornecer uma senha para o novo colaborador',
-          '400',
-        ),
-      )
+      next(new CustomError('O campo senha é obrigatório', '400'))
     }
   }
 
