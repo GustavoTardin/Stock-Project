@@ -24,49 +24,65 @@ function LoginForm({ tryLogin }: { tryLogin: (
   }, [userName, password]);
 
   return (
-    <form action="" className="bg-red-500 text-white p-4">
-      <label htmlFor="user">
-        Nome de Usuário
-        <input
-          type="text"
-          placeholder="Digite seu nome de usuário"
-          id="user"
-          value={ userName }
-          onChange={
-             (e: ChangeEvent<HTMLInputElement>) => userNameSetter(e.target.value)
-            }
-        />
-      </label>
-      <label htmlFor="password">
-        Senha
-        <input
-          type="password"
-          placeholder="Digite sua senha"
-          id="password"
-          value={ password }
-          onChange={
-             (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value)
-}
-        />
-      </label>
-      {
-              (failedLogin) && (
-                <p>
-                  {
-                              `O endereço de e-mail ou a senha não estão corretos.
-                    Por favor, tente novamente.`
-                          }
-                </p>
-              )
-          }
-      <button
-        disabled={ handleButton() }
-        onClick={ handleSubmit }
+    <div
+      className="
+        flex justify-center items-center w-screen h-screen
+      "
+    >
+      <form
+        action=""
+        className="flex flex-col max-w-md text-white gap-5"
       >
-        Entrar
+        <label
+          className="flex flex-col max-w-100 text-xl text-slategrey"
+          htmlFor="user"
+        >
+          Nome de Usuário
+          <input
+            className="rounded pl-2 p-1"
+            type="text"
+            placeholder="Digite seu nome de usuário"
+            id="user"
+            value={ userName }
+            onChange={
+                (e: ChangeEvent<HTMLInputElement>) => userNameSetter(e.target.value)
+              }
+          />
+        </label>
+        <label htmlFor="password" className="flex flex-col text-xl text-slategrey">
+          Senha
+          <input
+            className="rounded pl-2 p-1"
+            type="password"
+            placeholder="Digite sua senha"
+            id="password"
+            value={ password }
+            onChange={
+                (e: ChangeEvent<HTMLInputElement>) => passwordSetter(e.target.value)
+    }
+          />
+        </label>
+        {
+                (failedLogin) && (
+                  <p>
+                    {
+                                `O endereço de e-mail ou a senha não estão corretos.
+                      Por favor, tente novamente.`
+                            }
+                  </p>
+                )
+            }
+        <button
+          className="my-2 bg-slategrey cursor-pointer hover:bg-buttonHover
+            active:bg-buttonClick"
+          disabled={ handleButton() }
+          onClick={ handleSubmit }
+        >
+          Entrar
 
-      </button>
-    </form>
+        </button>
+      </form>
+    </div>
   );
 }
 
