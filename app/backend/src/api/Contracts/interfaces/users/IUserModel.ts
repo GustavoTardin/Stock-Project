@@ -1,11 +1,10 @@
-import ICompleteUser from './ICompleteUser'
-import IDbUser from './IDbUser'
+import { ICredential, ICompleteUser, IDbUser } from '.'
 
 interface IUserModel {
   getAll(): Promise<IDbUser[]>
   getByNickName(credential: string): Promise<IDbUser | null>
   createUser(user: ICompleteUser): Promise<IDbUser>
-  getCredentials(): Promise<{ id: number; credentialName: string }[]>
+  getCredentials(): Promise<ICredential[]>
 }
 
 export default IUserModel

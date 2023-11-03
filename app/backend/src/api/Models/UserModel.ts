@@ -1,8 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-import IUserModel from '../Contracts/interfaces/users/IUserModel'
-import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
 import { hashPassword } from '../Utils/hashPassword'
-import IDbUser from '../Contracts/interfaces/users/IDbUser'
+import {
+  ICredential,
+  IDbUser,
+  IUserModel,
+  ICompleteUser,
+} from '../Contracts/interfaces/users'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
@@ -23,7 +26,7 @@ class UserModel implements IUserModel {
     this._db = prisma
   }
 
-  async getCredentials(): Promise<{ id: number; credentialName: string }[]> {
+  async getCredentials(): Promise<ICredential[]> {
     return this._db.credential.findMany()
   }
 
