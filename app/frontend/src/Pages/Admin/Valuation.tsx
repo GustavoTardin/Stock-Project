@@ -1,4 +1,4 @@
-import NavBar from '../../Components/Navbar';
+import NavBar from '../../components/Navbar';
 
 function Valuation() {
   return (

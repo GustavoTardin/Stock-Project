@@ -1,4 +1,4 @@
-import IUser from '../Components/Admin/User/edit/IUser';
+import IUser from '../components/Admin/User/edit/IUser';
 
 const defineAcess = (user: IUser) => {
   let acess = '';

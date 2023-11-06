@@ -3,6 +3,7 @@ import '../Styles/Navbar.css';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { AuthStateUserObject } from 'react-auth-kit/dist/types';
 import AdminPanel from './Admin/AdminPanel';
+import { Theme } from './Theme';
 
 function NavBar() {
   const signOut = useSignOut();
@@ -16,7 +17,7 @@ function NavBar() {
   const stockAccess = isAdmin || credential === 'Estoquista';
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen((prev) => !prev); // se der errado voltar para !isDropdownOpen
   };
 
   return (
@@ -51,6 +52,9 @@ function NavBar() {
             )}
           </li>
         )}
+        <li>
+          <Theme />
+        </li>
         <li>
           {' '}
           <button onClick={ () => signOut() }>Sair</button>

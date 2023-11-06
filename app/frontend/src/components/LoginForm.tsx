@@ -1,4 +1,5 @@
 import { ChangeEvent, useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 
 function LoginForm({ tryLogin }: { tryLogin: (
   userName: string, password: string) => Promise<void> }) {
@@ -31,10 +32,10 @@ function LoginForm({ tryLogin }: { tryLogin: (
     >
       <form
         action=""
-        className="flex flex-col max-w-md text-white gap-5"
+        className="flex flex-col max-w-md gap-5"
       >
         <label
-          className="flex flex-col max-w-100 text-xl text-slategrey"
+          className="flex flex-col max-w-100 text-xl"
           htmlFor="user"
         >
           Nome de Usuário
@@ -49,7 +50,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
               }
           />
         </label>
-        <label htmlFor="password" className="flex flex-col text-xl text-slategrey">
+        <label htmlFor="password" className="flex flex-col text-xl">
           Senha
           <input
             className="rounded pl-2 p-1"
@@ -72,15 +73,16 @@ function LoginForm({ tryLogin }: { tryLogin: (
                   </p>
                 )
             }
-        <button
-          className="my-2 bg-slategrey cursor-pointer hover:bg-buttonHover
-            active:bg-buttonClick"
+
+        <Button 
+          className="my-2 bg-primary cursor-pointer hover:bg-background
+          active:bg-primary"
           disabled={ handleButton() }
           onClick={ handleSubmit }
         >
           Entrar
+        </Button>
 
-        </button>
       </form>
     </div>
   );

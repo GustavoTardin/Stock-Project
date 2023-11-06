@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import SalesForm from '../../Components/Admin/Sales/SalesForm';
-import NavBar from '../../Components/Navbar';
+import SalesForm from '../../components/Admin/Sales/SalesForm';
+import NavBar from '../../components/Navbar';
 
 function SalesManagement() {
   const [showForm, setShowForm] = useState(false);

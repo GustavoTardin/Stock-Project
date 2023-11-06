@@ -1,4 +1,4 @@
-/ @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -6,7 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-  ],
+	],
   theme: {
     container: {
       center: true,
@@ -21,11 +21,7 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
-        background2: "hsl(var(--background2))",
         foreground: "hsl(var(--foreground))",
-        slategrey: "hsl(var(--slate-grey))",
-        buttonHover: "hsl(var(--button-hover))",
-        buttonClick: "hsl(var(--button-click))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

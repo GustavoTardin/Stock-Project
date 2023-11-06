@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import NavBar from '../../Components/Navbar';
-import NewStoreForm from '../../Components/Admin/Store/NewStoreForm';
+import NavBar from '../../components/Navbar';
+import NewStoreForm from '../../components/Admin/Store/NewStoreForm';
 
 function StoreManagement() {
   const [create, createSetter] = useState(false);
