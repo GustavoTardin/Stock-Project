@@ -4,12 +4,14 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
+import { ILoginResponse, IToken } from '.'
 import { User } from '../../../Domains'
 
 interface IUserService {
   getAll(): Promise<User[]>
   getByNickName(nickName: string): Promise<User>
   createUser(user: unknown): Promise<User>
+  login(user: unknown): Promise<ILoginResponse & IToken>
 }
 
 // interface IUserService extends AbstractService<IUser, IUserODM> {

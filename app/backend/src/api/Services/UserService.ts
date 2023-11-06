@@ -1,11 +1,17 @@
-import { IUserService } from '../Contracts/interfaces/users'
-import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
-import IUserModel from '../Contracts/interfaces/users/IUserModel'
+import {
+  IUserService,
+  IUserModel,
+  ICompleteUser,
+  ILoginResponse,
+  IToken,
+  ILoginUser,
+} from '../Contracts/interfaces/users'
 import ZodValidation from '../Contracts/zod/ZodValidation'
-import { userSchema } from '../Contracts/zod/schemas'
+import { completeUserSchema, loginSchema } from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
-
+import generateAcessInfo from '../Utils/generateAcessInfo'
+import { CompareHash } from '../Utils/hashPassword'
 class UserService implements IUserService {
   private _model: IUserModel
 
@@ -27,7 +33,7 @@ class UserService implements IUserService {
   }
 
   async createUser(user: unknown): Promise<User> {
-    ZodValidation.validateData(userSchema, user)
+    ZodValidation.validateData(completeUserSchema, user)
     const validatedUser = user as ICompleteUser
     const duplicatedUser = await this._model.getByNickName(
       validatedUser.nickName,
@@ -37,6 +43,26 @@ class UserService implements IUserService {
     const newUser = await this._model.createUser(validatedUser)
     const domain = new User(newUser)
     return domain
+  }
+
+  async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
+    ZodValidation.validateData(loginSchema, loginUser)
+    const validatedLogin = loginUser as ILoginUser
+    const userFound = await this._model.getByNickName(
+      validatedLogin.nickName,
+      true,
+    )
+    if (!userFound)
+      throw new CustomError('Nome de usuário ou senha incorretos', '401')
+    const rightPassword = await CompareHash(
+      validatedLogin.password,
+      userFound.password,
+    )
+    if (rightPassword) {
+      return generateAcessInfo(userFound)
+    } else {
+      throw new CustomError('Nome de usuário ou senha incorretos', '401')
+    }
   }
 }
 

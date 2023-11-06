@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import '../zodConfig';
+import { z } from 'zod'
+import '../zodConfig'
 
 const newStoreSchema = z.object({
   name: z
@@ -9,6 +9,6 @@ const newStoreSchema = z.object({
       message: 'Nome de usuário é obrigatório',
     }),
   logoPath: z.string().nullable(),
-});
+})
 
-export default newStoreSchema;
+export default newStoreSchema

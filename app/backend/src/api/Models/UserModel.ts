@@ -1,8 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-import IUserModel from '../Contracts/interfaces/users/IUserModel'
-import ICompleteUser from '../Contracts/interfaces/users/ICompleteUser'
 import { hashPassword } from '../Utils/hashPassword'
-import IDbUser from '../Contracts/interfaces/users/IDbUser'
+import {
+  ICredential,
+  IDbUser,
+  IUserModel,
+  ICompleteUser,
+} from '../Contracts/interfaces/users'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
@@ -10,7 +13,7 @@ class UserModel implements IUserModel {
     id: true,
     firstName: true,
     lastName: true,
-    nickName: true,
+    nickName: false,
     password: false,
     credential: {
       select: {
@@ -23,6 +26,10 @@ class UserModel implements IUserModel {
     this._db = prisma
   }
 
+  async getCredentials(): Promise<ICredential[]> {
+    return this._db.credential.findMany()
+  }
+
   async getAll(): Promise<IDbUser[]> {
     const users = await this._db.user.findMany({
       select: this._includeCredential,
@@ -31,7 +38,11 @@ class UserModel implements IUserModel {
     return users
   }
 
-  async getByNickName(nickName: string): Promise<IDbUser | null> {
+  async getByNickName(
+    nickName: string,
+    login: boolean = false,
+  ): Promise<IDbUser | null> {
+    if (login) this._includeCredential.password = true
     const user = await this._db.user.findUnique({
       where: { nickName },
       select: this._includeCredential,
