@@ -11,8 +11,10 @@ class UserController {
   getAll = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this._service.getAll()
+      console.log('oi toaqui')
       res.status(200).json(users)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
@@ -27,16 +29,17 @@ class UserController {
     }
   }
 
-  createUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const newUser = await this._service.createUser(req.body)
-      res.status(201).json(newUser)
-    } catch (error) {
-      next(error)
-    }
-  }
+  // createUser = async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const newUser = await this._service.createUser(req.body)
+  //     res.status(201).json(newUser)
+  //   } catch (error) {
+  //     next(error)
+  //   }
+  // }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('oi')
     try {
       const userInfo = await this._service.login(req.body)
       res.status(200).json(userInfo)

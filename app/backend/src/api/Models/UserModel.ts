@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { hashPassword } from '../Utils/hashPassword'
+// import { hashPassword } from '../Utils/hashPassword'
 import {
   ICredential,
   IDbUser,
   IUserModel,
-  ICompleteUser,
+  // ICompleteUser,
 } from '../Contracts/interfaces/users'
 
 class UserModel implements IUserModel {
@@ -51,13 +51,13 @@ class UserModel implements IUserModel {
     return user
   }
 
-  async createUser(user: ICompleteUser): Promise<IDbUser> {
-    const newUser = await this._db.user.create({
-      data: { ...user, password: hashPassword(user.password) },
-      select: this._includeCredential,
-    })
-    return newUser
-  }
+  // async createUser(user: ICompleteUser): Promise<IDbUser> {
+  //   const newUser = await this._db.user.create({
+  //     data: user
+  //     select: this._includeCredential,
+  //   })
+  //   return newUser
+  // }
 }
 
 export default UserModel
