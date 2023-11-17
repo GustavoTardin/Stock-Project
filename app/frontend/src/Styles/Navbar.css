@@ -1,41 +1,13 @@
-/* Estilos para o container do navbar */
-.nav-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    /* Fixa o navbar no topo */
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* Ocupa toda a largura */
-   background-color: black;
-    padding: 20px;
-    z-index: 1000;
-    /* Ajuste conforme necessário */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    ul {
+        @apply gap-10;
+    }
+    li {
+      @apply hover:text-blueDetails hover:underline active:animate-bounce ;
+    }  
 }
-
-/* Estilos para a lista do navbar */
-.nav-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    /* Alinha horizontalmente */
-}
-
-/* .nav-list li {
-    margin-right: 20px;
-} */
-
-/* .nav-list a {
-    text-decoration: none;
-    color: #6300d7;
-} */
-
-    /* Cor do texto */
-
-/* button {
-    color: #6300d7;
-} */
 

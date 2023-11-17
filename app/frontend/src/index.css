@@ -24,6 +24,10 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
+    --button-hover: 210, 50%, 20%;
+    --yellow-details: 37, 98%, 53%;
+    --blue-details: 192, 99%, 65%;
+    --dark-blue-details: 221, 51%, 16%,
     --radius: 0.5rem;
   }
  
@@ -47,6 +51,11 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9;
+    --button-hover: 212.7 26.8% 83.9;
+    --yellow-details: 37, 98%, 53%;
+    --blue-details: 192, 99%, 65%;
+    --dark-blue-details: 221, 51%, 16%,
+
   }
 }
  

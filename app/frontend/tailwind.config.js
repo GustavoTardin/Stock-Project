@@ -1,3 +1,6 @@
+const plugin = require('tailwindcss/plugin');
+const { blackA, mauve, violet, indigo, purple } = require('@radix-ui/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -22,6 +25,14 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        yellowDetails: "hsl(var(--yellow-details))",
+        blueDetails: "hsl(var(--blue-details))",
+        darkBlueDetails: "hsl(var(--dark-blue-details))",
+        ...blackA,
+        ...mauve,
+        ...violet,
+        ...purple,
+        ...indigo,
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -72,5 +83,15 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(({ matchUtilities }) => {
+      matchUtilities({
+        perspective: (value) => ({
+          perspective: value,
+        }),
+      });
+    }),
+  
+  ],
 }

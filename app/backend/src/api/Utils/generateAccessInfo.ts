@@ -1,7 +1,7 @@
 import Jwt from '../Auth/Jwt'
 import { IDbUser, ILoginResponse, IToken } from '../Contracts/interfaces/users'
 
-function generateAcessInfo(user: IDbUser): ILoginResponse & IToken {
+function generateAccessInfo(user: IDbUser): ILoginResponse & IToken {
   const userInfo = {
     id: user.id,
     firstName: user.firstName,
@@ -12,4 +12,4 @@ function generateAcessInfo(user: IDbUser): ILoginResponse & IToken {
   return loginResponse
 }
 
-export default generateAcessInfo
+export default generateAccessInfo
