@@ -7,7 +7,7 @@ import ReactModal from 'react-modal';
 import { deleteUser, getUsers } from '../../../../Utils/Requests/userRequests';
 import IUser from './IUser';
 import DelConfirmation from './DelConfirmation';
-import defineAcess from '../../../../Utils/defineAcess';
+import defineAccess from '@/Utils/defineAccess';
 
 function EditUsers() {
   const [users, usersSetter] = useState<IUser[]>([]);
@@ -27,7 +27,7 @@ function EditUsers() {
       const updatedUsers = users.filter((_e, i) => i !== indexToDelete);
       usersSetter(updatedUsers);
     } catch {
-      delMessageSetter('Não foi possivel excluir o usuário');
+      delMessageSetter('Não foi possível excluir o usuário');
     }
   };
 
@@ -58,13 +58,13 @@ function EditUsers() {
         <tbody>
           {
         users.map((e, i) => {
-          const storeAcess = defineAcess(e);
+          const storeAccess = defineAccess(e);
 
           return (
-            <tr key={ i } id={ e.id }>
+            <tr key={ e.id } id={ e.id }>
               <td>{e.userName}</td>
               <td>{e.credential}</td>
-              <td>{storeAcess || e.stores}</td>
+              <td>{storeAccess || e.stores}</td>
               <td>
                 <button onClick={ () => handleDelete(e.id, i) }>
                   <FontAwesomeIcon icon={ faTrash } />

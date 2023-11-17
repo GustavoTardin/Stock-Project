@@ -1,27 +1,34 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import '../Styles/Navbar.css';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { AuthStateUserObject } from 'react-auth-kit/dist/types';
 import AdminPanel from './Admin/AdminPanel';
+import { Theme } from './Theme';
 
 function NavBar() {
   const signOut = useSignOut();
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const userInfo = useAuthUser() as () => AuthStateUserObject;
-  const { credential } = userInfo();
-  const isAdmin = credential === 'Administrador';
-  const storeAccess = isAdmin || credential === 'Lojista';
-  const stockAccess = isAdmin || credential === 'Estoquista';
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const { credentialName } = userInfo();
+  
+  const isAdmin = credentialName === 'Admin';
+  const storeAccess = isAdmin || credentialName === 'Lojista';
+  const stockAccess = isAdmin || credentialName === 'Estoquista';
+  // const toggleDropdown = () => {
+  //   setIsDropdownOpen((prev) => {
+  //     console.log(isDropdownOpen);
+      
+  //     return !prev
+  //   }); // se der errado voltar para !isDropdownOpen
+  //   console.log(isDropdownOpen);
+  // };
+  
 
   return (
-    <nav className="nav-container">
-      <ul className="nav-list">
+    <nav className="p-5 pr-10">
+      <ul className="flex items-center">
         <li>
           <a href="/menu">Início</a>
         </li>
@@ -45,12 +52,12 @@ function NavBar() {
         )}
         {isAdmin && (
           <li>
-            <button onClick={ toggleDropdown }>Painel Administrativo</button>
-            {isDropdownOpen && (
-              <AdminPanel />
-            )}
+            <AdminPanel />          
           </li>
         )}
+        <li>
+          <Theme />
+        </li>
         <li>
           {' '}
           <button onClick={ () => signOut() }>Sair</button>

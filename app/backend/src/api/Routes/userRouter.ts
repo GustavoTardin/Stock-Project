@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { TokenValidation, UserValidation } from '../Midllewares'
-import credentialGuard from '../Utils/credentialGuard'
+import { UserValidation } from '../Midllewares'
+// import credentialGuard from '../Utils/credentialGuard'
 import UserModel from '../Models/UserModel'
 import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
@@ -26,7 +26,7 @@ userRouter.post(
   firstNameRequired,
   passwordRequired,
   credentialRequired,
-  userController.createUser,
+  // userController.createUser,
 )
 userRouter.post(
   '/login',
@@ -34,7 +34,7 @@ userRouter.post(
   passwordRequired,
   userController.login,
 )
-// userRouter.get('/names', tokenRequired(), userController.getUserNames)
+// userRouter.get('/names', tokenRequired, userController.getUserNames)
 // userRouter.post(
 //   '/login',
 //   usernameRequired,

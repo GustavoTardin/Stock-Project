@@ -1,11 +1,9 @@
-import NavBar from '../Components/Navbar';
+import NavBar from '../components/Navbar';
 import '../index.css';
 
 export default function Home() {
   return (
-    <div className="bg-black">
-      <p className="text-red">oi</p>
-      <h1 className="text-red">Home</h1>
+    <div className="flex justify-end">
       <NavBar />
     </div>
   );

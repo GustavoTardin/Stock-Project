@@ -8,13 +8,14 @@ import {
   Login,
   LowStockItems,
   PendingOrders,
-  ProductManagement,
   StockRefill,
+  ProductManagement,
   StoreManagement,
   UserManagement,
   Valuation,
 } from './Pages';
 import SalesManagement from './Pages/Admin/SalesManagement';
+import { ThemeProvider } from './components/theme-provider';
 
 function App() {
   const adminRoutes: RouteProps[] = [
@@ -31,84 +32,88 @@ function App() {
 
   const auth = useAuthUser();
   if (auth()) {
-    const { credential } = auth() as AuthStateUserObject;
-    isAdmin = credential === 'Administrador';
-    storeAccess = isAdmin || credential === 'lojista';
-    stockAccess = isAdmin || credential === 'Estoquista';
+    const { credentialName } = auth() as AuthStateUserObject;  
+    isAdmin = credentialName === 'Admin';
+    storeAccess = isAdmin || credentialName === 'lojista';
+    stockAccess = isAdmin || credentialName === 'Estoquista';
   }
   return (
-    <Routes>
-      <Route path="/" element={ <Login /> } />
+    <>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> </ThemeProvider>
+      
+      <Routes>
+        <Route path={"/"} element={ <Login /> } />
 
-      <Route
-        path="/menu"
-        element={
-          <RequireAuth loginPath="/">
-            <Home />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/produtos-em-falta"
-        element={
-          <RequireAuth loginPath="/">
-            <LowStockItems />
-          </RequireAuth>
-  }
-      />
-      {adminRoutes.map((route, index) => (
         <Route
-          key={ index }
-          path={ `/painel-administrativo/${route.path}` }
+          path={"/menu"}
           element={
-            <RequireAuth loginPath="/">
-              {isAdmin ? (
-                route.element as ReactElement
-              ) : (
-                <Navigate to="/menu" replace />
-              )}
+            <RequireAuth loginPath={"/"}>
+              <Home />
             </RequireAuth>
           }
         />
-      ))}
+        <Route
+          path="/produtos-em-falta"
+          element={
+            <RequireAuth loginPath={"/"}>
+              <LowStockItems />
+            </RequireAuth>
+          }
+        />
+        {adminRoutes.map((route, index) => (
+          <Route
+            key={ index }
+            path={ `/painel-administrativo/${route.path}` }
+            element={
+              <RequireAuth loginPath={ "/" }>
+                {isAdmin ? (
+                  route.element as ReactElement
+                  ) : (
+                    <Navigate to="/menu" replace />
+                    )}
+              </RequireAuth>
+            }
+          />
+        ))}
 
-      <Route
-        path="/novo-pedido"
-        element={
-          <RequireAuth loginPath="/">
-            {storeAccess ? (
-              <CreateOrder />
-            ) : (
-              <Navigate to="/menu" replace />
-            )}
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/pedidos-pendentes"
-        element={
-          <RequireAuth loginPath="/">
-            {stockAccess ? (
-              <PendingOrders />
-            ) : (
-              <Navigate to="/menu" replace />
-            )}
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/reposição-de-produtos"
-        element={
-          <RequireAuth loginPath="/">
-            {stockAccess ? (
-              <StockRefill />
-            ) : (
-              <Navigate to="/menu" replace />
-            )}
-          </RequireAuth>
-        }
-      />
-    </Routes>
+        <Route
+          path="/novo-pedido"
+          element={
+            <RequireAuth loginPath="/">
+              {storeAccess ? (
+                <CreateOrder />
+                ) : (
+                  <Navigate to="/menu" replace />
+                  )}
+            </RequireAuth>
+          }
+          />
+        <Route
+          path="/pedidos-pendentes"
+          element={
+            <RequireAuth loginPath="/">
+              {stockAccess ? (
+                <PendingOrders />
+                ) : (
+                  <Navigate to="/menu" replace />
+                  )}
+            </RequireAuth>
+          }
+          />
+        <Route
+          path="/reposição-de-produtos"
+          element={
+            <RequireAuth loginPath="/">
+              {stockAccess ? (
+                <StockRefill />
+                ) : (
+                  <Navigate to="/menu" replace />
+                  )}
+            </RequireAuth>
+          }
+          />
+      </Routes>
+    </>
   );
 }
 

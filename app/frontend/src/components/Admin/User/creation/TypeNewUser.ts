@@ -1,7 +1,7 @@
 type TNewUser = {
   userName: string;
   password: string;
-  credential: string;
+  credentialName: string;
   stores: string[];
 };
 

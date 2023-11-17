@@ -1,4 +1,4 @@
-import AdminPanel from '../Components/Admin/AdminPanel';
+import AdminPanel from '../components/Admin/AdminPanel';
 import CreateOrder from './Sales/CreateOrder';
 import Home from './Home';
 import Login from './Login';

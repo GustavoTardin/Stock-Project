@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import NavBar from '../../Components/Navbar';
-import NewUserForm from '../../Components/Admin/User/creation/NewUserForm';
-import EditUsers from '../../Components/Admin/User/edit/EditUsers';
+import NavBar from '../../components/Navbar';
+import NewUserForm from '../../components/Admin/User/creation/NewUserForm';
+import EditUsers from '../../components/Admin/User/edit/EditUsers';
 
 function UserManagement() {
   const [create, createSetter] = useState(false);
   const [edit, editSetter] = useState(false);
 
   const showForm = () => {
-    createSetter(!create);
+    createSetter((prev) => !prev);
     editSetter(false);
   };
 
   const showEdit = () => {
-    editSetter(!edit);
+    editSetter((prev) => !prev);
     createSetter(false);
   };
 
