@@ -11,7 +11,6 @@ class UserController {
   getAll = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this._service.getAll()
-      console.log('oi toaqui')
       res.status(200).json(users)
     } catch (error) {
       console.log(error)
@@ -39,7 +38,6 @@ class UserController {
   // }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
-    console.log('oi')
     try {
       const userInfo = await this._service.login(req.body)
       res.status(200).json(userInfo)

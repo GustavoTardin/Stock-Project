@@ -7,30 +7,33 @@ import LoginForm from '../components/LoginForm';
 
 export default function Login() {
   const [isLogged, isLoggedSetter] = useState(false);
-  const signin = useSignIn();
+  const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
 
-  const tryLogin = async (userName: string, password: string): Promise<void> => {
-    const { token, credential, expiresIn, id } = await requestLogin(
-      '/user/login',
-      { userName, password },
+  const tryLogin = async (nickName: string, password: string): Promise<void> => {
+    const { token, credentialName, expiresIn, id } = await requestLogin(
+      '/users/login',
+      { nickName, password },
     );
-
-    if (signin({
+    if (signIn({
       token,
       expiresIn,
       tokenType: 'Bearer',
-      authState: { credential, id },
+      authState: { credentialName, id },
     })) {
       isLoggedSetter(true);
     }
   };
-
+  
+  let count = 0 
   useEffect(() => {
-    if (isAuthenticated()) isLoggedSetter(true);
-  }, [isAuthenticated]);
 
-  if (isLogged) return <Navigate to="/menu" />;
+    count += 1
+    console.log(count)
+    if (isAuthenticated()) isLoggedSetter(true);
+  }, [isAuthenticated]); // perguntar pq ele usava como did mount
+
+  if (isLogged) return <Navigate to="/menu" replace />;
 
   return (
     <main className="bg-gradient-to-bl from-slate-700 to-background">

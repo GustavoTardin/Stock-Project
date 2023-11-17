@@ -8,12 +8,12 @@ function UserManagement() {
   const [edit, editSetter] = useState(false);
 
   const showForm = () => {
-    createSetter(!create);
+    createSetter((prev) => !prev);
     editSetter(false);
   };
 
   const showEdit = () => {
-    editSetter(!edit);
+    editSetter((prev) => !prev);
     createSetter(false);
   };
 

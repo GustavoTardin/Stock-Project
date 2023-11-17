@@ -8,7 +8,7 @@ function SelectCredential({ userDataSetter }: {
     const { value } = event.target;
     userDataSetter((prevData) => ({
       ...prevData,
-      credential: value,
+      credentialName: value,
     }));
   };
 
@@ -20,7 +20,7 @@ function SelectCredential({ userDataSetter }: {
         id="credential"
         onChange={ handleCredential }
       >
-        <option value="Administrador">Administrador</option>
+        <option value="Admin">Administrador</option>
         <option value="Lojista">Lojista</option>
         <option value="Estoquista">Estoquista</option>
       </select>

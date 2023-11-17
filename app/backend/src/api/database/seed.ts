@@ -31,7 +31,7 @@ async function seedUsers() {
         update: {},
       })
 
-      console.log(`User with id ${createdUser.id} created sucessfully`)
+      console.log(`User with id ${createdUser.id} created successfully`)
     }),
   )
 }

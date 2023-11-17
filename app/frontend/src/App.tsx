@@ -8,15 +8,14 @@ import {
   Login,
   LowStockItems,
   PendingOrders,
-  ProductManagement,
   StockRefill,
+  ProductManagement,
   StoreManagement,
   UserManagement,
   Valuation,
 } from './Pages';
 import SalesManagement from './Pages/Admin/SalesManagement';
 import { ThemeProvider } from './components/theme-provider';
-import { ModeToggle } from './components/mode-toggle';
 
 function App() {
   const adminRoutes: RouteProps[] = [
@@ -33,24 +32,22 @@ function App() {
 
   const auth = useAuthUser();
   if (auth()) {
-    const { credential } = auth() as AuthStateUserObject;
-    isAdmin = credential === 'Administrador';
-    storeAccess = isAdmin || credential === 'lojista';
-    stockAccess = isAdmin || credential === 'Estoquista';
+    const { credentialName } = auth() as AuthStateUserObject;  
+    isAdmin = credentialName === 'Admin';
+    storeAccess = isAdmin || credentialName === 'lojista';
+    stockAccess = isAdmin || credentialName === 'Estoquista';
   }
   return (
     <>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <ModeToggle />
-      </ThemeProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> </ThemeProvider>
       
       <Routes>
-        <Route path="/" element={ <Login /> } />
+        <Route path={"/"} element={ <Login /> } />
 
         <Route
-          path="/menu"
+          path={"/menu"}
           element={
-            <RequireAuth loginPath="/">
+            <RequireAuth loginPath={"/"}>
               <Home />
             </RequireAuth>
           }
@@ -58,17 +55,17 @@ function App() {
         <Route
           path="/produtos-em-falta"
           element={
-            <RequireAuth loginPath="/">
+            <RequireAuth loginPath={"/"}>
               <LowStockItems />
             </RequireAuth>
-    }
+          }
         />
         {adminRoutes.map((route, index) => (
           <Route
             key={ index }
             path={ `/painel-administrativo/${route.path}` }
             element={
-              <RequireAuth loginPath="/">
+              <RequireAuth loginPath={ "/" }>
                 {isAdmin ? (
                   route.element as ReactElement
                   ) : (
@@ -76,8 +73,8 @@ function App() {
                     )}
               </RequireAuth>
             }
-            />
-            ))}
+          />
+        ))}
 
         <Route
           path="/novo-pedido"

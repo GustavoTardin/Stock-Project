@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
 
 const requestLogin = async (
   endpoint: string,
-  body: { userName: string, password: string },
+  body: { nickName: string, password: string },
 ): Promise<ILoginResponse> => {
   const { data } = await api.post(endpoint, body);
   return data;

@@ -1,5 +1,5 @@
-import { ICredential, IDbUser } from '.'
 // ICompleteUser,
+import { ICredential, IDbUser } from '.'
 
 interface IUserModel {
   getAll(): Promise<IDbUser[]>
