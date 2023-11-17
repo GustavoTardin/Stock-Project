@@ -1,7 +1,7 @@
 interface IUser {
   id: string,
   userName: string,
-  credential: string,
+  credentialName: string,
   stores: string[]
 }
 

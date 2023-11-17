@@ -20,7 +20,11 @@ function LoginForm({ tryLogin }: { tryLogin: (
     }
   };
 
+  let count = 0
   useEffect(() => {
+    count += 1
+    console.log(count, 'login form');
+    
     failedLoginSetter(false);
   }, [userName, password]);
 
@@ -40,7 +44,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
         >
           Nome de Usuário
           <input
-            className="rounded pl-2 p-1"
+            className="rounded pl-2 p-1 text-black"
             type="text"
             placeholder="Digite seu nome de usuário"
             id="user"
@@ -53,7 +57,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
         <label htmlFor="password" className="flex flex-col text-xl">
           Senha
           <input
-            className="rounded pl-2 p-1"
+            className="rounded pl-2 p-1 text-black"
             type="password"
             placeholder="Digite sua senha"
             id="password"
@@ -75,8 +79,8 @@ function LoginForm({ tryLogin }: { tryLogin: (
             }
 
         <Button 
-          className="my-2 bg-primary cursor-pointer hover:bg-background
-          active:bg-primary"
+          className="my-2 bg-yellowDetails cursor-pointer hover:bg-blueDetails hover:text-white
+          active:bg-darkBlueDetails"
           disabled={ handleButton() }
           onClick={ handleSubmit }
         >
