@@ -8,7 +8,6 @@ class UserValidation {
     next: NextFunction,
   ) => {
     const { nickName } = req.body
-    console.log('oi nick')
     if (nickName) {
       next()
     } else {

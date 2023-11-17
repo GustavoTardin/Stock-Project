@@ -47,13 +47,12 @@ class UserModel implements IUserModel {
       where: { nickName },
       select: this._includeCredential,
     })
-
     return user
   }
 
   // async createUser(user: ICompleteUser): Promise<IDbUser> {
   //   const newUser = await this._db.user.create({
-  //     data: user
+  //     data: { ...user, password: hashPassword(user.password) },
   //     select: this._includeCredential,
   //   })
   //   return newUser

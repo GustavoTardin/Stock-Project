@@ -8,11 +8,11 @@ import {
 } from '../Contracts/interfaces/users'
 import ZodValidation from '../Contracts/zod/ZodValidation'
 import { loginSchema } from '../Contracts/zod/schemas/users'
-// completeUserSchema,
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
-import generateAcessInfo from '../Utils/generateAcessInfo'
+import generateAccessInfo from '../Utils/generateAccessInfo'
 import { CompareHash } from '../Utils/hashPassword'
+
 class UserService implements IUserService {
   private _model: IUserModel
 
@@ -60,7 +60,7 @@ class UserService implements IUserService {
       userFound.password,
     )
     if (rightPassword) {
-      return generateAcessInfo(userFound)
+      return generateAccessInfo(userFound)
     } else {
       throw new CustomError('Nome de usuário ou senha incorretos', '401')
     }
