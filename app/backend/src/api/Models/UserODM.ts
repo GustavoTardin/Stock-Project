@@ -34,9 +34,9 @@
 //     const auth = Jwt.generateToken(payload);
 //     return auth;
 //   };
-  
+
 //   createUser = async (user: IUser): Promise<IUser> => {
-//     const duplicatedUsername = await this.getUserNames(user.userName); 
+//     const duplicatedUsername = await this.getUserNames(user.userName);
 //     if (duplicatedUsername) throw new CustomError('Nome de usuário já em uso!', '409');
 //     if (user.stores && user.stores.length > 0) {
 //       const storeNames = await this.storeODM.getStoreNames();
@@ -48,7 +48,7 @@
 //     const newUser = await this.model.create({ ...user });
 //     return newUser;
 //   };
-  
+
 //   checkLogin = async (userName: string, password: string): Promise<ILoginResponse> => {
 //     const user = await this.model.findOne({ userName });
 //     if (!user) throw new CustomError('Nome de usuário ou senha inválidos', '404');

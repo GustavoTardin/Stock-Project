@@ -1,17 +1,18 @@
-import IUser from '../Contracts/interfaces/users/IUser';
-
+import IDbUser from '../Contracts/interfaces/users/IDbUser'
 class User {
-  protected id: string | undefined;
-  protected userName: string;
-  protected credential: string;
-  protected stores?: string[];
+  protected id: number
+  protected nickName: string
+  protected firstName: string
+  protected lastName: string | null
+  protected credential: string
 
-  constructor(user: IUser) {
-    this.id = user.id;
-    this.userName = user.userName;
-    this.credential = user.credential;
-    this.stores = user.stores;
+  constructor(user: IDbUser) {
+    this.id = user.id
+    this.nickName = user.nickName
+    this.firstName = user.firstName
+    this.lastName = user.lastName
+    this.credential = user.credential.credentialName
   }
 }
 
-export default User;
+export default User
