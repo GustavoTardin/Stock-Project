@@ -10,7 +10,7 @@ function NewUserForm() {
   const [userData, userDataSetter] = useState<TNewUser>({
     userName: '',
     password: '',
-    credential: 'Administrador',
+    credentialName: 'Admin',
     stores: [],
   });
   const [apiReturn, apiReturnSetter] = useState('');
@@ -18,7 +18,7 @@ function NewUserForm() {
 
   const disabledButton = () => {
     return userData.userName.length < 3
-     || userData.password.length < 4 || userData.credential.length < 4;
+     || userData.password.length < 4 || userData.credentialName.length < 4;
   };
 
   const tryToCreate = async (event: React.FormEvent) => {
@@ -37,7 +37,7 @@ function NewUserForm() {
 
   useEffect(() => {
     apiReturnSetter('');
-    isSellerSetter(userData.credential === 'Lojista');
+    isSellerSetter(userData.credentialName === 'Lojista');
   }, [userData]);
 
   return (
