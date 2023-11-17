@@ -1,6 +1,6 @@
 interface ILoginResponse {
   token: string,
-  credential: string,
+  credentialName: string,
   expiresIn: number
   id: string,
 }
