@@ -43,7 +43,7 @@ class UserService implements IUserService {
   //     throw new CustomError('Nome de usuário já existe!!', '409')
   //   const newUser = await this._model.createUser(validatedUser)
   //   const domain = new User(newUser)
-  //   return domain
+  //   return domain aaaa
   // }
 
   async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
@@ -55,6 +55,7 @@ class UserService implements IUserService {
     )
     if (!userFound)
       throw new CustomError('Nome de usuário ou senha incorretos', '401')
+    console.log('oi')
     const rightPassword = await CompareHash(
       validatedLogin.password,
       userFound.password,
