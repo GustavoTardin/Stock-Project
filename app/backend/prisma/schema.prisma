@@ -33,7 +33,7 @@ model Store {
   storeName     String
   contactNumber String         @unique
   storeAddress  StoreAdress?
-  users         StoreSellers[]
+  sellers         StoreSellers[]
 
   @@map("stores")
 }
