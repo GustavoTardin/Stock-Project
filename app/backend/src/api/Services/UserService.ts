@@ -5,9 +5,10 @@ import {
   ILoginResponse,
   IToken,
   ILoginUser,
+  ICompleteUser,
 } from '../Contracts/interfaces/users'
 import ZodValidation from '../Contracts/zod/ZodValidation'
-import { loginSchema } from '../Contracts/zod/schemas/users'
+import { completeUserSchema, loginSchema } from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
 import generateAccessInfo from '../Utils/generateAccessInfo'
@@ -33,18 +34,18 @@ class UserService implements IUserService {
     return domain
   }
 
-  // async createUser(user: unknown): Promise<User> {
-  //   ZodValidation.validateData(completeUserSchema, user)
-  //   const validatedUser = user as ICompleteUser
-  //   const duplicatedUser = await this._model.getByNickName(
-  //     validatedUser.nickName,
-  //   )
-  //   if (duplicatedUser)
-  //     throw new CustomError('Nome de usuário já existe!!', '409')
-  //   const newUser = await this._model.createUser(validatedUser)
-  //   const domain = new User(newUser)
-  //   return domain aaaa
-  // }
+  async createUser(user: unknown): Promise<User> {
+    ZodValidation.validateData(completeUserSchema, user)
+    const validatedUser = user as ICompleteUser
+    const duplicatedUser = await this._model.getByNickName(
+      validatedUser.nickName,
+    )
+    if (duplicatedUser)
+      throw new CustomError('Nome de usuário já existe!!', '409')
+    const newUser = await this._model.createUser(validatedUser)
+    const domain = new User(newUser)
+    return domain
+  }
 
   async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
     ZodValidation.validateData(loginSchema, loginUser)

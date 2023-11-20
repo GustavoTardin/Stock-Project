@@ -28,14 +28,14 @@ class UserController {
     }
   }
 
-  // createUser = async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const newUser = await this._service.createUser(req.body)
-  //     res.status(201).json(newUser)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
+  createUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const newUser = await this._service.createUser(req.body)
+      res.status(201).json(newUser)
+    } catch (error) {
+      next(error)
+    }
+  }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
