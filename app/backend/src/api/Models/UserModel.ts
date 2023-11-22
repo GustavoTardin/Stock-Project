@@ -7,7 +7,7 @@ import {
   IUserModel,
   // ICompleteUser,
 } from '../Contracts/interfaces/users'
-import { hashPassword } from '../Utils/hashPassword'
+import { hashPassword } from '../Utils/user/hashPassword'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient

@@ -1,14 +1,15 @@
 import { Router } from 'express'
 import { UserValidation } from '../Midllewares'
 // import credentialGuard from '../Utils/credentialGuard'
-import UserModel from '../Models/UserModel'
 import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
 import UserController from '../Controllers/UserController'
+import { StoreModel, UserModel } from '../Models'
 
 const userRouter = Router()
 const userModel = new UserModel(prisma)
-const userService = new UserService(userModel)
+const storeModel = new StoreModel(prisma)
+const userService = new UserService(userModel, storeModel)
 const userController = new UserController(userService)
 const {
   nickNameRequired,

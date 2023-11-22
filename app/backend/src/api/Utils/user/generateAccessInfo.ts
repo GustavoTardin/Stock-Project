@@ -1,5 +1,9 @@
-import Jwt from '../Auth/Jwt'
-import { IDbUser, ILoginResponse, IToken } from '../Contracts/interfaces/users'
+import Jwt from '../../Auth/Jwt'
+import {
+  IDbUser,
+  ILoginResponse,
+  IToken,
+} from '../../Contracts/interfaces/users'
 
 function generateAccessInfo(user: IDbUser): ILoginResponse & IToken {
   const userInfo = {
