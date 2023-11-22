@@ -53,11 +53,11 @@ class UserModel implements IUserModel {
   }
 
   async createUser(user: ICompleteUser): Promise<IDbUser> {
-    console.log('oi')
     const newUser = await this._db.user.create({
       data: {
         ...user,
         password: hashPassword(user.password),
+        stores: undefined,
       },
       select: this._includeCredential,
     })

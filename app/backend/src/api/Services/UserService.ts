@@ -13,6 +13,7 @@ import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
 import generateAccessInfo from '../Utils/generateAccessInfo'
 import { CompareHash } from '../Utils/hashPassword'
+import validateField from '../Utils/serviceValidation'
 
 class UserService implements IUserService {
   private _model: IUserModel
@@ -35,28 +36,37 @@ class UserService implements IUserService {
   }
 
   async createUser(user: unknown): Promise<User> {
-    ZodValidation.validateData(completeUserSchema, user)
-    const validatedUser = user as ICompleteUser
+    // validação
+    const validatedUser = validateField<ICompleteUser>(completeUserSchema, user)
+
+    // Verifica se nickname já está em uso
     const duplicatedUser = await this._model.getByNickName(
       validatedUser.nickName,
     )
     if (duplicatedUser)
       throw new CustomError('Nome de usuário já existe!!', '409')
+
+    // Cria o usuário
     const newUser = await this._model.createUser(validatedUser)
+    if (validatedUser.stores) {
+    }
     const domain = new User(newUser)
     return domain
   }
 
   async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
-    ZodValidation.validateData(loginSchema, loginUser)
-    const validatedLogin = loginUser as ILoginUser
+    // validação
+    const validatedLogin = validateField<ILoginUser>(loginSchema, loginUser)
+
+    // verifica se nickname existe
     const userFound = await this._model.getByNickName(
       validatedLogin.nickName,
       true,
     )
     if (!userFound)
       throw new CustomError('Nome de usuário ou senha incorretos', '401')
-    console.log('oi')
+
+    // verifica se a senha coincide
     const rightPassword = await CompareHash(
       validatedLogin.password,
       userFound.password,
