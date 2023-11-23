@@ -17,14 +17,20 @@ import { IStoreModel } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
 import createUser from '../Utils/user/createUser'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
+import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSellerModel'
 
 class UserService implements IUserService {
   private _userModel: IUserModel
   private _storeModel: IStoreModel
-
-  constructor(userModel: IUserModel, storeModel: IStoreModel) {
+  private _storeSellerModel: IStoreSellerModel
+  constructor(
+    userModel: IUserModel,
+    storeModel: IStoreModel,
+    storeSellerModel: IStoreSellerModel,
+  ) {
     this._userModel = userModel
     this._storeModel = storeModel
+    this._storeSellerModel = storeSellerModel
   }
 
   async getAll(): Promise<User[]> {
@@ -63,6 +69,7 @@ class UserService implements IUserService {
           validatedUser,
           this._userModel,
           this._storeModel,
+          this._storeSellerModel,
           tx as ITransaction,
         )
         return createdUser

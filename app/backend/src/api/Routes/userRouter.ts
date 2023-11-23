@@ -5,11 +5,13 @@ import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
 import UserController from '../Controllers/UserController'
 import { StoreModel, UserModel } from '../Models'
+import StoreSellerModel from '../Models/StoreSellerModel'
 
 const userRouter = Router()
 const userModel = new UserModel(prisma)
 const storeModel = new StoreModel(prisma)
-const userService = new UserService(userModel, storeModel)
+const storeSellerModel = new StoreSellerModel(prisma)
+const userService = new UserService(userModel, storeModel, storeSellerModel)
 const userController = new UserController(userService)
 const {
   nickNameRequired,
