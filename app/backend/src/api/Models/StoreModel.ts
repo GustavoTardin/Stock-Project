@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import IStoreModel from '../Contracts/interfaces/stores/IStoreModel'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
+import { ISimpleStore } from '../Contracts/interfaces/stores'
 
 class StoreModel implements IStoreModel {
   private _db: PrismaClient
@@ -13,11 +14,9 @@ class StoreModel implements IStoreModel {
     return stores
   }
 
-  async checkIds(ids: number[]): Promise<boolean> {
-    const stores = await Promise.all(
-      ids.map((id) => this._db.store.findUnique({ where: { id } })),
-    )
-    return stores.every((e) => e !== null)
+  async findById(id: number): Promise<ISimpleStore | null> {
+    const store = await this._db.store.findUnique({ where: { id } })
+    return store
   }
 
   async createStoreSellers(

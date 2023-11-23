@@ -16,7 +16,10 @@ async function createUser(
   const createdUser = await userModel.createUser(user, tx as ITransaction)
 
   if (user.stores) {
-    const allIdsExist = await storeModel.checkIds(user.stores)
+    const stores = await Promise.all(
+      user.stores.map((id) => storeModel.findById(id)),
+    )
+    const allIdsExist = stores.every((e) => e !== null)
     if (!allIdsExist) {
       throw new CustomError('1 ou mais lojas não existem!', '404')
     } else {

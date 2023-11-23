@@ -177,16 +177,16 @@ CREATE UNIQUE INDEX "sizes_size_key" ON "sizes"("size");
 CREATE UNIQUE INDEX "designs_design_key" ON "designs"("design");
 
 -- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_credentialId_fkey" FOREIGN KEY ("credentialId") REFERENCES "credentials"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "users" ADD CONSTRAINT "users_credentialId_fkey" FOREIGN KEY ("credentialId") REFERENCES "credentials"("id") ON DELETE SET DEFAULT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreAdress" ADD CONSTRAINT "StoreAdress_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StoreAdress" ADD CONSTRAINT "StoreAdress_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "collections"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,9 +1,10 @@
-import { Store, StoreSellers } from '@prisma/client'
+import { StoreSellers } from '@prisma/client'
 import ITransaction from '../prisma/ITransaction'
+import { ISimpleStore } from '.'
 
 interface IStoreModel {
-  getAll(): Promise<Store[]>
-  checkIds(ids: number[]): Promise<boolean>
+  getAll(): Promise<ISimpleStore[]>
+  findById(id: number): Promise<ISimpleStore | null>
   createStoreSellers(
     userId: number,
     storeIds: number[],

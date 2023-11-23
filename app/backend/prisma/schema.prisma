@@ -51,6 +51,7 @@ model StoreAdress {
 model StoreSellers {
   userId  Int
   storeId Int
+  createdAt    DateTime   @default(now())
   store   Store @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user    User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
