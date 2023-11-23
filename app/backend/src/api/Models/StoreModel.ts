@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import IStoreModel from '../Contracts/interfaces/stores/IStoreModel'
+import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 
 class StoreModel implements IStoreModel {
   private _db: PrismaClient
@@ -16,14 +17,17 @@ class StoreModel implements IStoreModel {
     const stores = await Promise.all(
       ids.map((id) => this._db.store.findUnique({ where: { id } })),
     )
-    console.log(stores, ids.length)
     return stores.every((e) => e !== null)
   }
 
-  async createStoreSellers(userId: number, storeIds: number[]) {
+  async createStoreSellers(
+    userId: number,
+    storeIds: number[],
+    transaction: ITransaction,
+  ) {
     const createdSellers = await Promise.all(
       storeIds.map((storeId) =>
-        this._db.storeSellers.create({
+        transaction.storeSellers.create({
           data: {
             userId,
             storeId,

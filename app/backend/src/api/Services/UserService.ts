@@ -16,6 +16,7 @@ import { CompareHash } from '../Utils/user/hashPassword'
 import validateField from '../Utils/serviceValidation'
 import { IStoreModel } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
+import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 
 class UserService implements IUserService {
   private _userModel: IUserModel
@@ -41,7 +42,10 @@ class UserService implements IUserService {
 
   async createUser(user: unknown): Promise<User> {
     // validação: Caso não tenha o formato correto, retorna erro 400.
-    const validatedUser = validateField<ICompleteUser>(completeUserSchema, user)
+    const validatedUser: ICompleteUser = validateField<ICompleteUser>(
+      completeUserSchema,
+      user,
+    )
 
     // Verifica se nickname já está em uso, se sim, retorna erro.
     const duplicatedUser = await this._userModel.getByNickName(
@@ -50,16 +54,33 @@ class UserService implements IUserService {
     if (duplicatedUser)
       throw new CustomError('Nome de usuário já existe!!', '409')
 
-    const newUser = await prisma.$transaction(async (): Promise<IDbUser> => {
-      const createdUser = await this._userModel.createUser(validatedUser)
+    let allIdsExist = false
+    if (validatedUser.stores) {
+      allIdsExist = await this._storeModel.checkIds(validatedUser.stores)
+    }
 
-      if (validatedUser.stores) {
-        await this._storeModel.createStoreSellers(
-          createdUser.id,
-          validatedUser.stores,
+    const newUser = await prisma.$transaction(async (tx): Promise<IDbUser> => {
+      try {
+        const createdUser = await this._userModel.createUser(
+          validatedUser,
+          tx as ITransaction,
         )
+
+        if (validatedUser.stores && !allIdsExist) {
+          throw new CustomError('1 ou mais lojas não existem!', '404')
+        } else {
+          await this._storeModel.createStoreSellers(
+            createdUser.id,
+            validatedUser.stores as number[],
+            tx as ITransaction,
+          )
+        }
+
+        return createdUser
+      } catch (error) {
+        console.log(error)
+        throw error
       }
-      return createdUser
     })
 
     const domain = new User(newUser)

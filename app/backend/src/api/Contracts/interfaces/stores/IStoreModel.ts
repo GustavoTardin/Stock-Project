@@ -1,4 +1,5 @@
 import { Store, StoreSellers } from '@prisma/client'
+import ITransaction from '../prisma/ITransaction'
 
 interface IStoreModel {
   getAll(): Promise<Store[]>
@@ -6,6 +7,7 @@ interface IStoreModel {
   createStoreSellers(
     userId: number,
     storeIds: number[],
+    tx: ITransaction,
   ): Promise<StoreSellers[]>
 }
 
