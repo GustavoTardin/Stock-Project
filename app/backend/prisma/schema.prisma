@@ -23,7 +23,7 @@ model User {
   password     String
   credentialId Int            @default(3)
   stores       StoreSellers[]
-  credential   Credential     @relation(fields: [credentialId], references: [id])
+  credential   Credential     @relation(fields: [credentialId], references: [id], onDelete: SetDefault)
 
   @@map("users")
 }
@@ -45,14 +45,14 @@ model StoreAdress {
   city          String
   street        String
   addressNumber Int
-  store         Store  @relation(fields: [storeId], references: [id])
+  store         Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
 }
 
 model StoreSellers {
   userId  Int
   storeId Int
-  store   Store @relation(fields: [storeId], references: [id])
-  user    User  @relation(fields: [userId], references: [id])
+  store   Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, storeId])
 }
