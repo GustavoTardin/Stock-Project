@@ -1,7 +1,6 @@
 import {
   IUserService,
   IUserModel,
-  // ICompleteUser,
   ILoginResponse,
   IToken,
   ILoginUser,
@@ -16,6 +15,7 @@ import { CompareHash } from '../Utils/user/hashPassword'
 import validateField from '../Utils/serviceValidation'
 import { IStoreModel } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
+import createUser from '../Utils/user/createUser'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 
 class UserService implements IUserService {
@@ -54,31 +54,20 @@ class UserService implements IUserService {
     if (duplicatedUser)
       throw new CustomError('Nome de usuário já existe!!', '409')
 
-    let allIdsExist = false
-    if (validatedUser.stores) {
-      allIdsExist = await this._storeModel.checkIds(validatedUser.stores)
-    }
-
+    // Cria usuário e caso ele faça parte de alguma loja, cria um registro na tabela auxiliar.
+    // Também faz a validação se as lojas de fato existem, se não, lança erro e graças
+    // a transaction, desfaz a criação do usuário, evitando inconsistências no database.
     const newUser = await prisma.$transaction(async (tx): Promise<IDbUser> => {
       try {
-        const createdUser = await this._userModel.createUser(
+        const createdUser = await createUser(
           validatedUser,
+          this._userModel,
+          this._storeModel,
           tx as ITransaction,
         )
-
-        if (validatedUser.stores && !allIdsExist) {
-          throw new CustomError('1 ou mais lojas não existem!', '404')
-        } else {
-          await this._storeModel.createStoreSellers(
-            createdUser.id,
-            validatedUser.stores as number[],
-            tx as ITransaction,
-          )
-        }
-
         return createdUser
       } catch (error) {
-        console.log(error)
+        console.log(`Erro durante a criação de uma das entidades: ${error}`)
         throw error
       }
     })
@@ -104,6 +93,8 @@ class UserService implements IUserService {
       validatedLogin.password,
       userFound.password,
     )
+
+    // Se a senha coinscidir, gera token de acesso ao usuario; se não, retorna erro.
     if (rightPassword) {
       return generateAccessInfo(userFound)
     } else {
