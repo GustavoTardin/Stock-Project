@@ -7,14 +7,14 @@
         @apply gap-10;
     }
     li {
-      @apply hover:text-blueDetails hover:underline active:animate-bounce ;
+      @apply hover:text-blueDetails hover:underline active:animate-ping;
     }  
 }
 .NavigationMenuIndicator {
   background-color: grey;
 }
 .NavigationMenuIndicator[data-orientation='horizontal'] {
-  height: 3px;
+  height: px;
   transition: width, transform, 250ms ease;
 }
 .NavigationMenuContent {
