@@ -53,7 +53,7 @@ class UserController {
     try {
       const { nickName } = req.params
       const deletedMessage = await this._service.deleteByNickName(nickName)
-      res.status(204).json({ message: deletedMessage })
+      res.status(200).json({ message: deletedMessage })
     } catch (error) {
       next(error)
     }
