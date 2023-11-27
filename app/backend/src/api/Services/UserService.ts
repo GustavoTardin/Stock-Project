@@ -11,7 +11,7 @@ import { completeUserSchema, loginSchema } from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
 import generateAccessInfo from '../Utils/user/generateAccessInfo'
-import { CompareHash } from '../Utils/user/hashPassword'
+import { CompareHash, hashPassword } from '../Utils/user/hashPassword'
 import validateField from '../Utils/serviceValidation'
 import { IStoreModel } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
@@ -130,6 +130,28 @@ class UserService implements IUserService {
       // Se for deletado, retorna mensagem
       const deletedMessage = `Usuário ${nickName} deletado com sucesso`
       return deletedMessage
+    }
+  }
+
+  async updatePassword(nickName: unknown, password: unknown): Promise<string> {
+    // validação: Caso não tenha o formato correto, retorna erro 400.
+    const validatedUser = validateField<ILoginUser>(loginSchema, {
+      nickName,
+      password,
+    })
+    // verifica se nickname existe
+    const userToBeUpdated = await this._userModel.getByNickName(
+      validatedUser.nickName,
+    )
+    if (!userToBeUpdated) {
+      throw new CustomError('Usuário não existe', '404')
+    } else {
+      // Faz o hash da senha
+      const hashedPassword = hashPassword(validatedUser.password)
+      validatedUser.password = hashedPassword
+
+      await this._userModel.updatePassword(validatedUser)
+      return 'Sua senha foi alterada com sucesso!'
     }
   }
 }

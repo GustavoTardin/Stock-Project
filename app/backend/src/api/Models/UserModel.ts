@@ -1,12 +1,12 @@
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 // import { hashPassword } from '../Utils/hashPassword'
 import {
   ICompleteUser,
   ICredential,
   IDbUser,
+  ILoginUser,
   IUserModel,
 } from '../Contracts/interfaces/users'
-import { hashPassword } from '../Utils/user/hashPassword'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 
 class UserModel implements IUserModel {
@@ -64,7 +64,6 @@ class UserModel implements IUserModel {
     const newUser = await tx.user.create({
       data: {
         ...user,
-        password: hashPassword(user.password),
         stores: undefined,
       },
       select: this._includeCredential,
@@ -72,11 +71,14 @@ class UserModel implements IUserModel {
     return newUser
   }
 
-  async deleteByNickName(nickName: string): Promise<User | null> {
-    const deletedUser = await this._db.user.delete({
+  async deleteByNickName(nickName: string): Promise<void> {
+    await this._db.user.delete({
       where: { nickName },
     })
-    return deletedUser
+  }
+
+  async updatePassword({ nickName, password }: ILoginUser): Promise<void> {
+    await this._db.user.update({ where: { nickName }, data: { password } })
   }
 }
 

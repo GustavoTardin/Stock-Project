@@ -18,6 +18,7 @@ const {
   passwordRequired,
   credentialRequired,
   firstNameRequired,
+  paramsCredentialRequired,
 } = UserValidation
 const { tokenRequired } = TokenValidation
 
@@ -29,6 +30,7 @@ userRouter.get(
 userRouter.get(
   '/:nickName',
   tokenRequired(credentialGuard.highLevelAccess),
+  paramsCredentialRequired,
   userController.getByNickName,
 )
 userRouter.post(
@@ -50,8 +52,11 @@ userRouter.post(
 userRouter.delete(
   '/delete/:nickName',
   tokenRequired(credentialGuard.highLevelAccess),
+  paramsCredentialRequired,
   userController.deleteByNickName,
 )
+
+userRouter.patch('/update-password/:nickName')
 // userRouter.get('/names', tokenRequired, userController.getUserNames)
 // userRouter.post(
 //   '/login',

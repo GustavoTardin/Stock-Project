@@ -7,6 +7,7 @@ import {
   IUserModel,
 } from '../../Contracts/interfaces/users'
 import CustomError from '../../Errors/CustomError'
+import { hashPassword } from './hashPassword'
 
 async function createUser(
   user: ICompleteUser,
@@ -15,6 +16,8 @@ async function createUser(
   storeSellerModel: IStoreSellerModel,
   tx: ITransaction,
 ): Promise<IDbUser> {
+  const hashedPassword = hashPassword(user.password)
+  user.password = hashedPassword
   const createdUser = await userModel.createUser(user, tx as ITransaction)
 
   if (user.stores) {

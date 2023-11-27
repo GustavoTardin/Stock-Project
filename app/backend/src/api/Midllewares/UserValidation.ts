@@ -58,6 +58,19 @@ class UserValidation {
       )
     }
   }
+
+  static paramsCredentialRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { nickName } = req.params
+    if (nickName) {
+      next()
+    } else {
+      next(new CustomError('Nome de usuário é obrigatório', '400'))
+    }
+  }
 }
 
 export default UserValidation
