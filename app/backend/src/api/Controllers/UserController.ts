@@ -13,7 +13,6 @@ class UserController {
       const users = await this._service.getAll()
       res.status(200).json(users)
     } catch (error) {
-      console.log(error)
       next(error)
     }
   }
@@ -42,7 +41,20 @@ class UserController {
       const userInfo = await this._service.login(req.body)
       res.status(200).json(userInfo)
     } catch (error) {
-      console.log(error)
+      next(error)
+    }
+  }
+
+  deleteByNickName = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { nickName } = req.params
+      const deletedMessage = await this._service.deleteByNickName(nickName)
+      res.status(204).json({ message: deletedMessage })
+    } catch (error) {
       next(error)
     }
   }

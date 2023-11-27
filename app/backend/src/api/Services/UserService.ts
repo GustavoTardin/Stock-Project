@@ -39,8 +39,12 @@ class UserService implements IUserService {
     return domains
   }
 
-  async getByNickName(nickName: string): Promise<User> {
-    const user = await this._userModel.getByNickName(nickName)
+  async getByNickName(nickName: unknown): Promise<User> {
+    // validação: Caso não tenha o formato correto, retorna erro 400.
+    if (typeof nickName !== 'string') {
+      throw new CustomError('Um nome de usuário deve ser passado', '400')
+    }
+    const user = await this._userModel.getByNickName(nickName as string)
     if (!user) throw new CustomError('Usuário não encontrado', '404')
     const domain = new User(user)
     return domain
@@ -106,6 +110,26 @@ class UserService implements IUserService {
       return generateAccessInfo(userFound)
     } else {
       throw new CustomError('Nome de usuário ou senha incorretos', '401')
+    }
+  }
+
+  async deleteByNickName(nickName: unknown): Promise<string> {
+    // validação: Caso não tenha o formato correto, retorna erro 400.
+    if (typeof nickName !== 'string') {
+      throw new CustomError('Um nome de usuário deve ser passado', '400')
+    }
+
+    // verifica se nickname existe
+    const userToBeDeleted = await this._userModel.getByNickName(
+      nickName as string,
+    )
+    if (!userToBeDeleted) {
+      throw new CustomError('Usuário não existe', '404')
+    } else {
+      await this._userModel.deleteByNickName(nickName as string)
+      // Se for deletado, retorna mensagem
+      const deletedMessage = `Usuário ${nickName} deletado com sucesso`
+      return deletedMessage
     }
   }
 }

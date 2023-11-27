@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { UserValidation } from '../Midllewares'
-// import credentialGuard from '../Utils/credentialGuard'
+import { TokenValidation, UserValidation } from '../Midllewares'
+import credentialGuard from '../Utils/credentialGuard'
 import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
 import UserController from '../Controllers/UserController'
@@ -19,12 +19,21 @@ const {
   credentialRequired,
   firstNameRequired,
 } = UserValidation
-// const { tokenRequired } = TokenValidation
+const { tokenRequired } = TokenValidation
 
-userRouter.get('/', userController.getAll)
-userRouter.get('/:nickName', userController.getByNickName)
+userRouter.get(
+  '/',
+  tokenRequired(credentialGuard.highLevelAccess),
+  userController.getAll,
+)
+userRouter.get(
+  '/:nickName',
+  tokenRequired(credentialGuard.highLevelAccess),
+  userController.getByNickName,
+)
 userRouter.post(
   '/create',
+  tokenRequired(credentialGuard.highLevelAccess),
   nickNameRequired,
   firstNameRequired,
   passwordRequired,
@@ -36,6 +45,12 @@ userRouter.post(
   nickNameRequired,
   passwordRequired,
   userController.login,
+)
+
+userRouter.delete(
+  '/delete/:nickName',
+  tokenRequired(credentialGuard.highLevelAccess),
+  userController.deleteByNickName,
 )
 // userRouter.get('/names', tokenRequired, userController.getUserNames)
 // userRouter.post(

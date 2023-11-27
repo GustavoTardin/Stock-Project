@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 // import { hashPassword } from '../Utils/hashPassword'
 import {
   ICompleteUser,
@@ -70,6 +70,13 @@ class UserModel implements IUserModel {
       select: this._includeCredential,
     })
     return newUser
+  }
+
+  async deleteByNickName(nickName: string): Promise<User | null> {
+    const deletedUser = await this._db.user.delete({
+      where: { nickName },
+    })
+    return deletedUser
   }
 }
 
