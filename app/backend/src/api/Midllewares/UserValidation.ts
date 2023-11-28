@@ -11,7 +11,8 @@ class UserValidation {
     if (nickName) {
       next()
     } else {
-      next(new CustomError('Nome de usuário é obrigatório', '400'))
+      const error = new CustomError('Nome de usuário é obrigatório', '400')
+      next(error)
     }
   }
 
@@ -24,7 +25,8 @@ class UserValidation {
     if (firstName) {
       next()
     } else {
-      next(new CustomError('O nome de usuário é obrigatório!', '400'))
+      const error = new CustomError('O nome de usuário é obrigatório!', '400')
+      next(error)
     }
   }
 
@@ -37,7 +39,8 @@ class UserValidation {
     if (password) {
       next()
     } else {
-      next(new CustomError('O campo senha é obrigatório', '400'))
+      const error = new CustomError('O campo senha é obrigatório', '400')
+      next(error)
     }
   }
 
@@ -50,25 +53,29 @@ class UserValidation {
     if (credentialId) {
       next()
     } else {
-      next(
-        new CustomError(
-          'Você deve fornecer a função do novo colaborador',
-          '400',
-        ),
+      const error = new CustomError(
+        'Você deve fornecer a função do novo colaborador',
+        '400',
       )
+      next(error)
     }
   }
 
-  static paramsCredentialRequired = (
+  static paramsIdRequired = (
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
   ) => {
-    const { nickName } = req.params
-    if (nickName) {
-      next()
+    const { id } = req.params
+    // Verifica se o id está presente e se é um número válido
+    if (!id || isNaN(Number(id))) {
+      const error = new CustomError(
+        'O id é obrigatório e deve ser um número!',
+        '400',
+      )
+      next(error)
     } else {
-      next(new CustomError('Nome de usuário é obrigatório', '400'))
+      next()
     }
   }
 }

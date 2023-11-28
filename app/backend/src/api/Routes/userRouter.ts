@@ -18,9 +18,9 @@ const {
   passwordRequired,
   credentialRequired,
   firstNameRequired,
-  paramsCredentialRequired,
+  paramsIdRequired,
 } = UserValidation
-const { tokenRequired } = TokenValidation
+const { tokenRequired, verifyUserOwnership } = TokenValidation
 
 userRouter.get(
   '/',
@@ -28,9 +28,9 @@ userRouter.get(
   userController.getAll,
 )
 userRouter.get(
-  '/:nickName',
-  tokenRequired(credentialGuard.highLevelAccess),
-  paramsCredentialRequired,
+  '/:id',
+  tokenRequired(credentialGuard.freeAccess),
+  verifyUserOwnership,
   userController.getByNickName,
 )
 userRouter.post(
@@ -53,7 +53,7 @@ userRouter.delete(
   '/delete/:nickName',
   tokenRequired(credentialGuard.highLevelAccess),
   paramsCredentialRequired,
-  userController.deleteByNickName,
+  userController.deleteById,
 )
 
 userRouter.patch('/update-password/:nickName')

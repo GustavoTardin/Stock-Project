@@ -39,7 +39,7 @@ class UserService implements IUserService {
     return domains
   }
 
-  async getByNickName(nickName: unknown): Promise<User> {
+  async getById(id: unknown): Promise<User> {
     // validação: Caso não tenha o formato correto, retorna erro 400.
     if (typeof nickName !== 'string') {
       throw new CustomError('Um nome de usuário deve ser passado', '400')
