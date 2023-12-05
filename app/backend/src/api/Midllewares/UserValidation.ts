@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import StatusCode from 'status-code-enum'
 import CustomError from '../Errors/CustomError'
 
 class UserValidation {
@@ -11,7 +12,10 @@ class UserValidation {
     if (nickName) {
       next()
     } else {
-      const error = new CustomError('Nome de usuário é obrigatório', '400')
+      const error = new CustomError(
+        'Nome de usuário é obrigatório',
+        StatusCode.ClientErrorBadRequest.toString(),
+      )
       next(error)
     }
   }
@@ -25,7 +29,10 @@ class UserValidation {
     if (firstName) {
       next()
     } else {
-      const error = new CustomError('O nome de usuário é obrigatório!', '400')
+      const error = new CustomError(
+        'O nome do colaborador é obrigatório!',
+        StatusCode.ClientErrorBadRequest.toString(),
+      )
       next(error)
     }
   }
@@ -39,7 +46,10 @@ class UserValidation {
     if (password) {
       next()
     } else {
-      const error = new CustomError('O campo senha é obrigatório', '400')
+      const error = new CustomError(
+        'O campo senha é obrigatório',
+        StatusCode.ClientErrorBadRequest.toString(),
+      )
       next(error)
     }
   }
@@ -55,7 +65,7 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'Você deve fornecer a função do novo colaborador',
-        '400',
+        StatusCode.ClientErrorBadRequest.toString(),
       )
       next(error)
     }
@@ -71,7 +81,7 @@ class UserValidation {
     if (!id || isNaN(Number(id))) {
       const error = new CustomError(
         'O id é obrigatório e deve ser um número!',
-        '400',
+        StatusCode.ClientErrorBadRequest.toString(),
       )
       next(error)
     } else {
@@ -88,7 +98,10 @@ class UserValidation {
     if (newPassword) {
       next()
     } else {
-      const error = new CustomError('A nova senha é obrigatório', '400')
+      const error = new CustomError(
+        'A nova senha é obrigatório',
+        StatusCode.ClientErrorBadRequest.toString(),
+      )
       next(error)
     }
   }

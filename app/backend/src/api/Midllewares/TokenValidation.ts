@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import CustomError from '../Errors/CustomError'
 import Jwt from '../Auth/Jwt'
+import StatusCode from 'status-code-enum'
 
 class TokenValidation {
   static unauthorizedMessage = 'Usuário não autorizado'
@@ -20,7 +21,10 @@ class TokenValidation {
         }
         next()
       } catch {
-        const error = new CustomError(this.unauthorizedMessage, '401')
+        const error = new CustomError(
+          this.unauthorizedMessage,
+          StatusCode.ClientErrorUnauthorized.toString(),
+        )
         next(error)
       }
     }
@@ -41,7 +45,10 @@ class TokenValidation {
       }
       next()
     } catch {
-      const error = new CustomError(this.unauthorizedMessage, '401')
+      const error = new CustomError(
+        this.unauthorizedMessage,
+        StatusCode.ClientErrorUnauthorized.toString(),
+      )
       next(error)
     }
   }

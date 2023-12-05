@@ -1,4 +1,5 @@
 import { IDbUser, IUserModel } from '../../Contracts/interfaces/users'
+import { StatusCode } from 'status-code-enum'
 import CustomError from '../../Errors/CustomError'
 
 const verifyIfUserExists = async (
@@ -12,7 +13,11 @@ const verifyIfUserExists = async (
   } else if (typeof field === 'string') {
     user = await userModel.getByNickName(field, showPassword)
   }
-  if (!user) throw new CustomError('Usuário não encontrado', '404')
+  if (!user)
+    throw new CustomError(
+      'Usuário não encontrado',
+      StatusCode.ClientErrorNotFound.toString(),
+    )
   return user
 }
 

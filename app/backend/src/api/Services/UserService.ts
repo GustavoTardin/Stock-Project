@@ -25,6 +25,7 @@ import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSeller
 import IChangePassword from '../Contracts/interfaces/users/IChangePassword'
 import verifyIfUserExists from '../Utils/user/verifyIfUserExists'
 import hashAndUpdatePassword from '../Utils/user/hashAndUpdatePassword'
+import { StatusCode } from 'status-code-enum'
 
 class UserService implements IUserService {
   private _userModel: IUserModel
@@ -71,7 +72,10 @@ class UserService implements IUserService {
       validatedUser.nickName,
     )
     if (duplicatedUser)
-      throw new CustomError('Nome de usuário já existe!!', '409')
+      throw new CustomError(
+        'Nome de usuário já existe!!',
+        StatusCode.ClientErrorConflict.toString(),
+      )
 
     // Cria usuário e caso ele faça parte de alguma loja, cria um registro na tabela auxiliar.
     // Também faz a validação se as lojas de fato existem, se não, lança erro e graças
@@ -117,7 +121,10 @@ class UserService implements IUserService {
     if (rightPassword) {
       return generateAccessInfo(userFound)
     } else {
-      throw new CustomError('Nome de usuário ou senha incorretos', '401')
+      throw new CustomError(
+        'Nome de usuário ou senha incorretos',
+        StatusCode.ClientErrorUnauthorized.toString(),
+      )
     }
   }
 
@@ -141,7 +148,10 @@ class UserService implements IUserService {
     const { id, password, newPassword } = changePasswordType
     // Verifica se senhas são iguais antes de chamar o database, aumentando performance em casos de erro
     if (password === newPassword)
-      throw new CustomError('As senhas devem ser diferentes!', '400')
+      throw new CustomError(
+        'As senhas devem ser diferentes!',
+        StatusCode.ClientErrorBadRequest.toString(),
+      )
 
     // verifica se o id existe, se não, lança erro.
     const userToBeUpdated = await verifyIfUserExists(this._userModel, id, true) // Esse true é para mandar a senha antiga junto.
@@ -152,7 +162,10 @@ class UserService implements IUserService {
       // Faz o hash da senha e envia mensagem de sucesso
       return hashAndUpdatePassword(changePasswordType, this._userModel)
     } else {
-      throw new CustomError('Senha antiga incorreta!', '401')
+      throw new CustomError(
+        'Senha antiga incorreta!',
+        StatusCode.ClientErrorUnauthorized.toString(),
+      )
     }
   }
 }

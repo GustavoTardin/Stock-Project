@@ -1,3 +1,4 @@
+import StatusCode from 'status-code-enum'
 import ITransaction from '../../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../../Contracts/interfaces/storeSellers/IStoreSellerModel'
 import { IStoreModel } from '../../Contracts/interfaces/stores'
@@ -26,7 +27,10 @@ async function createUser(
     )
     const allIdsExist = stores.every((e) => e !== null)
     if (!allIdsExist) {
-      throw new CustomError('1 ou mais lojas não existem!', '404')
+      throw new CustomError(
+        '1 ou mais lojas não existem!',
+        StatusCode.ClientErrorNotFound.toString(),
+      )
     } else {
       await storeSellerModel.createStoreSellers(
         createdUser.id,
