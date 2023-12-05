@@ -10,10 +10,11 @@ import { User } from '../../../Domains'
 interface IUserService {
   getAll(): Promise<User[]>
   getByNickName(nickName: unknown): Promise<User>
+  getById(id: number): Promise<User>
   createUser(user: unknown): Promise<User>
   login(user: unknown): Promise<ILoginResponse & IToken>
-  deleteByNickName(nickName: unknown): Promise<string>
-  updatePassword(nickName: unknown, password: unknown): Promise<string>
+  deleteById(id: number): Promise<string>
+  updatePassword(data: unknown): Promise<string>
 }
 
 // interface IUserService extends AbstractService<IUser, IUserODM> {

@@ -6,12 +6,12 @@ class TokenValidation {
   static unauthorizedMessage = 'Usuário não autorizado'
   static tokenRequired =
     (requiredCredential: string[]) =>
-    (req: Request, res: Response, next: NextFunction) => {
-      const { authorization } = req.headers
-      if (!authorization) {
-        return res.status(401).json({ message: this.unauthorizedMessage })
-      }
+    (req: Request, _res: Response, next: NextFunction) => {
       try {
+        const { authorization } = req.headers
+        if (!authorization) {
+          throw new Error('Unauthorized')
+        }
         const decryptedToken = Jwt.decryptToken(authorization)
         const userCredential = decryptedToken.credentialName
         if (requiredCredential.some((e) => e === userCredential) === false) {

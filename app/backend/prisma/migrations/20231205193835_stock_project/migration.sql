@@ -46,6 +46,7 @@ CREATE TABLE "StoreAdress" (
 CREATE TABLE "StoreSellers" (
     "userId" INTEGER NOT NULL,
     "storeId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "StoreSellers_pkey" PRIMARY KEY ("userId","storeId")
 );

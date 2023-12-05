@@ -16,6 +16,7 @@ const userController = new UserController(userService)
 const {
   nickNameRequired,
   passwordRequired,
+  newPasswordRequired,
   credentialRequired,
   firstNameRequired,
   paramsIdRequired,
@@ -30,8 +31,8 @@ userRouter.get(
 userRouter.get(
   '/:id',
   tokenRequired(credentialGuard.freeAccess),
-  verifyUserOwnership,
-  userController.getByNickName,
+  paramsIdRequired,
+  userController.getById,
 )
 userRouter.post(
   '/create',
@@ -50,13 +51,21 @@ userRouter.post(
 )
 
 userRouter.delete(
-  '/delete/:nickName',
+  '/delete/:id',
   tokenRequired(credentialGuard.highLevelAccess),
-  paramsCredentialRequired,
+  paramsIdRequired,
   userController.deleteById,
 )
 
-userRouter.patch('/update-password/:nickName')
+userRouter.patch(
+  '/update-password/:id',
+  paramsIdRequired,
+  tokenRequired(credentialGuard.freeAccess),
+  verifyUserOwnership,
+  passwordRequired,
+  newPasswordRequired,
+  userController.updatePassword,
+)
 // userRouter.get('/names', tokenRequired, userController.getUserNames)
 // userRouter.post(
 //   '/login',

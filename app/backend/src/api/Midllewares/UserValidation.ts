@@ -78,6 +78,20 @@ class UserValidation {
       next()
     }
   }
+
+  static newPasswordRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { newPassword } = req.body
+    if (newPassword) {
+      next()
+    } else {
+      const error = new CustomError('A nova senha é obrigatório', '400')
+      next(error)
+    }
+  }
 }
 
 export default UserValidation

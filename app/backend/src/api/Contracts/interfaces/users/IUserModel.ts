@@ -1,13 +1,17 @@
-import { ICredential, IDbUser, ICompleteUser, ILoginUser } from '.'
+import { ICredential, IDbUser, ICompleteUser, IChangePassword } from '.'
 import ITransaction from '../prisma/ITransaction'
 
 interface IUserModel {
   getAll(): Promise<IDbUser[]>
-  getByNickName(credential: string, login?: boolean): Promise<IDbUser | null>
+  getByNickName(
+    credential: string,
+    showPassword?: boolean,
+  ): Promise<IDbUser | null>
+  getById(id: number, showPassword?: boolean): Promise<IDbUser | null>
   createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser>
   getCredentials(): Promise<ICredential[]>
-  deleteByNickName(nickName: string): Promise<void>
-  updatePassword({ nickName, password }: ILoginUser): Promise<void>
+  deleteById(id: number): Promise<void>
+  updatePassword({ id, password }: IChangePassword): Promise<void>
 }
 
 export default IUserModel

@@ -31,6 +31,7 @@ class UserController {
       const users = await this._service.getAll()
       res.status(200).json(users)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
@@ -38,7 +39,7 @@ class UserController {
   getById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params
-      const user = await this._service.getById(id)
+      const user = await this._service.getById(Number(id))
       res.status(200).json(user)
     } catch (error) {
       next(error)
@@ -58,8 +59,12 @@ class UserController {
   updatePassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params
-      const { password } = req.body
-      const updatedMessage = await this._service.updatePassword(id, password)
+      const { password, newPassword } = req.body
+      const updatedMessage = await this._service.updatePassword({
+        id: Number(id),
+        password,
+        newPassword,
+      })
       res.status(200).json({ message: updatedMessage })
     } catch (error) {
       next(error)

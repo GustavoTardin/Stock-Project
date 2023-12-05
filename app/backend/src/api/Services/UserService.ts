@@ -7,17 +7,24 @@ import {
   ICompleteUser,
   IDbUser,
 } from '../Contracts/interfaces/users'
-import { completeUserSchema, loginSchema } from '../Contracts/zod/schemas/users'
+import {
+  changePasswordSchema,
+  completeUserSchema,
+  loginSchema,
+} from '../Contracts/zod/schemas/users'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
 import generateAccessInfo from '../Utils/user/generateAccessInfo'
-import { CompareHash, hashPassword } from '../Utils/user/hashPassword'
+import { CompareHash } from '../Utils/user/hashPassword'
 import validateField from '../Utils/serviceValidation'
 import { IStoreModel } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
 import createUser from '../Utils/user/createUser'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSellerModel'
+import IChangePassword from '../Contracts/interfaces/users/IChangePassword'
+import verifyIfUserExists from '../Utils/user/verifyIfUserExists'
+import hashAndUpdatePassword from '../Utils/user/hashAndUpdatePassword'
 
 class UserService implements IUserService {
   private _userModel: IUserModel
@@ -39,13 +46,15 @@ class UserService implements IUserService {
     return domains
   }
 
-  async getById(id: unknown): Promise<User> {
+  async getByNickName(nickName: unknown): Promise<User> {
+    const user = await verifyIfUserExists(this._userModel, nickName)
+    const domain = new User(user)
+    return domain
+  }
+
+  async getById(id: number): Promise<User> {
     // validação: Caso não tenha o formato correto, retorna erro 400.
-    if (typeof nickName !== 'string') {
-      throw new CustomError('Um nome de usuário deve ser passado', '400')
-    }
-    const user = await this._userModel.getByNickName(nickName as string)
-    if (!user) throw new CustomError('Usuário não encontrado', '404')
+    const user = await verifyIfUserExists(this._userModel, id)
     const domain = new User(user)
     return domain
   }
@@ -88,18 +97,17 @@ class UserService implements IUserService {
   }
 
   async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
-    // validação: Caso não tenha o formato correto, retorna erro 400.
+    // Validação: Caso não tenha o formato correto, retorna erro 400.
     const validatedLogin = validateField<ILoginUser>(loginSchema, loginUser)
 
-    // verifica se nickname existe
-    const userFound = await this._userModel.getByNickName(
+    // Verifica se nickname existe
+    const userFound = await verifyIfUserExists(
+      this._userModel,
       validatedLogin.nickName,
-      true,
+      true, // Para enviar a senha junto
     )
-    if (!userFound)
-      throw new CustomError('Nome de usuário ou senha incorretos', '401')
 
-    // verifica se a senha coincide
+    // Verifica se a senha coincide
     const rightPassword = await CompareHash(
       validatedLogin.password,
       userFound.password,
@@ -113,45 +121,38 @@ class UserService implements IUserService {
     }
   }
 
-  async deleteByNickName(nickName: unknown): Promise<string> {
-    // validação: Caso não tenha o formato correto, retorna erro 400.
-    if (typeof nickName !== 'string') {
-      throw new CustomError('Um nome de usuário deve ser passado', '400')
-    }
+  async deleteById(id: number): Promise<string> {
+    // verifica se o id existe, se não, lança erro 404.
+    const userToBeDeleted = await verifyIfUserExists(this._userModel, id)
 
-    // verifica se nickname existe
-    const userToBeDeleted = await this._userModel.getByNickName(
-      nickName as string,
-    )
-    if (!userToBeDeleted) {
-      throw new CustomError('Usuário não existe', '404')
-    } else {
-      await this._userModel.deleteByNickName(nickName as string)
-      // Se for deletado, retorna mensagem
-      const deletedMessage = `Usuário ${nickName} deletado com sucesso`
-      return deletedMessage
-    }
+    await this._userModel.deleteById(id)
+    // Se for deletado, retorna mensagem
+    const deletedMessage = `Usuário ${userToBeDeleted.firstName} deletado com sucesso`
+    return deletedMessage
   }
 
-  async updatePassword(nickName: unknown, password: unknown): Promise<string> {
+  async updatePassword(data: unknown): Promise<string> {
     // validação: Caso não tenha o formato correto, retorna erro 400.
-    const validatedUser = validateField<ILoginUser>(loginSchema, {
-      nickName,
-      password,
-    })
-    // verifica se nickname existe
-    const userToBeUpdated = await this._userModel.getByNickName(
-      validatedUser.nickName,
+    const changePasswordType: IChangePassword = validateField<IChangePassword>(
+      changePasswordSchema,
+      data,
     )
-    if (!userToBeUpdated) {
-      throw new CustomError('Usuário não existe', '404')
-    } else {
-      // Faz o hash da senha
-      const hashedPassword = hashPassword(validatedUser.password)
-      validatedUser.password = hashedPassword
 
-      await this._userModel.updatePassword(validatedUser)
-      return 'Sua senha foi alterada com sucesso!'
+    const { id, password, newPassword } = changePasswordType
+    // Verifica se senhas são iguais antes de chamar o database, aumentando performance em casos de erro
+    if (password === newPassword)
+      throw new CustomError('As senhas devem ser diferentes!', '400')
+
+    // verifica se o id existe, se não, lança erro.
+    const userToBeUpdated = await verifyIfUserExists(this._userModel, id, true) // Esse true é para mandar a senha antiga junto.
+
+    // Verifica se a senha coinscide
+    const rightPassword = await CompareHash(password, userToBeUpdated.password)
+    if (rightPassword) {
+      // Faz o hash da senha e envia mensagem de sucesso
+      return hashAndUpdatePassword(changePasswordType, this._userModel)
+    } else {
+      throw new CustomError('Senha antiga incorreta!', '401')
     }
   }
 }
