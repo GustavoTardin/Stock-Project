@@ -1,13 +1,13 @@
 import IUser from './IUser'
-import IUserService from './IUserService'
+import IUserService from './layers/IUserService'
 import IToken from './IToken'
-import ILoginResponse from './ILoginResponse'
+import ILoginResponse from './reqResponse/ILoginResponse'
 import ICredential from './ICredential'
-import ICompleteUser from './ICompleteUser'
+import ICompleteUser from './reqBody/ICompleteUser'
 import IDbUser from './IDbUser'
-import IUserModel from './IUserModel'
-import ILoginUser from './ILoginUser'
-import IChangePassword from './IChangePassword'
+import IUserModel from './layers/IUserModel'
+import ILoginUser from './reqBody/ILoginUser'
+import IChangePassword from './reqBody/IChangePassword'
 
 export {
   IUser,

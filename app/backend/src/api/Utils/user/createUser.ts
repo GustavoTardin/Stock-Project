@@ -32,10 +32,10 @@ async function createUser(
         StatusCode.ClientErrorNotFound.toString(),
       )
     } else {
-      await storeSellerModel.createStoreSellers(
-        createdUser.id,
-        user.stores as number[],
-        tx as ITransaction,
+      await Promise.all(
+        user.stores.map((storeId) =>
+          storeSellerModel.createStoreSeller(createdUser.id, storeId, tx),
+        ),
       )
     }
   }

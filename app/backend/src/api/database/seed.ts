@@ -41,7 +41,7 @@ async function seedStores() {
   await Promise.all(
     stores.map(async (store) => {
       const createdStore = await prisma.store.upsert({
-        where: { id: store.id },
+        where: { storeName: store.storeName },
         create: { ...store },
         update: {},
       })

@@ -4,8 +4,8 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
-import { ICredential, ILoginResponse, IToken } from '.'
-import { User } from '../../../Domains'
+import { ICredential, ILoginResponse, IToken } from '..'
+import { User } from '../../../../Domains'
 
 interface IUserService {
   getAll(): Promise<User[]>

@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt'
 
 const users = [
   {
-    id: 1,
     firstName: 'Richard',
     lastName: 'Machado',
     nickName: 'root',
@@ -10,7 +9,6 @@ const users = [
     credentialId: 1,
   },
   {
-    id: 2,
     firstName: 'Gustavo',
     lastName: 'Tardin',
     nickName: 'admin',
@@ -18,7 +16,6 @@ const users = [
     credentialId: 2,
   },
   {
-    id: 3,
     firstName: 'Guilherme',
     lastName: 'Tardin',
     nickName: 'lojista',
@@ -26,7 +23,6 @@ const users = [
     credentialId: 3,
   },
   {
-    id: 4,
     firstName: 'Seu Joaquin',
     lastName: 'da Silva',
     nickName: 'estoquista',

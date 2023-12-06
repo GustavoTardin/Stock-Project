@@ -29,6 +29,9 @@ CREATE TABLE "stores" (
     "id" SERIAL NOT NULL,
     "storeName" TEXT NOT NULL,
     "contactNumber" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "stores_pkey" PRIMARY KEY ("id")
 );
@@ -50,6 +53,8 @@ CREATE TABLE "StoreSellers" (
     "userId" INTEGER NOT NULL,
     "storeId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "StoreSellers_pkey" PRIMARY KEY ("userId","storeId")
 );
@@ -143,6 +148,9 @@ CREATE UNIQUE INDEX "credentials_credentialName_key" ON "credentials"("credentia
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_nickName_key" ON "users"("nickName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "stores_storeName_key" ON "stores"("storeName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "stores_contactNumber_key" ON "stores"("contactNumber");

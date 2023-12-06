@@ -23,7 +23,7 @@ import prisma from '../database/prisma'
 import createUser from '../Utils/user/createUser'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSellerModel'
-import IChangePassword from '../Contracts/interfaces/users/IChangePassword'
+import IChangePassword from '../Contracts/interfaces/users/reqBody/IChangePassword'
 import verifyIfUserExists from '../Utils/user/verifyIfUserExists'
 import hashAndUpdatePassword from '../Utils/user/hashAndUpdatePassword'
 import { StatusCode } from 'status-code-enum'
@@ -138,7 +138,15 @@ class UserService implements IUserService {
     // verifica se o id existe, se não, lança erro 404.
     const userToBeDeleted = await verifyIfUserExists(this._userModel, id)
 
-    await this._userModel.deleteById(id)
+    await prisma.$transaction(async (tx) => {
+      try {
+        await this._userModel.deleteById(id, tx as ITransaction)
+        await this._storeSellerModel.deleteBySellerId(id, tx as ITransaction)
+      } catch (error) {
+        console.log(`Erro durante a criação de uma das entidades: ${error}`)
+        throw error
+      }
+    })
     // Se for deletado, retorna mensagem
     const deletedMessage = `Usuário ${userToBeDeleted.firstName} deletado com sucesso`
     return deletedMessage

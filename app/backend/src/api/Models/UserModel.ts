@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-// import { hashPassword } from '../Utils/hashPassword'
 import {
   IChangePassword,
   ICompleteUser,
@@ -52,7 +51,7 @@ class UserModel implements IUserModel {
     if (showPassword) this._includeCredential.password = true
 
     const user = await this._db.user.findUnique({
-      where: { nickName },
+      where: { nickName, active: true },
       select: this._includeCredential,
     })
 
@@ -68,7 +67,7 @@ class UserModel implements IUserModel {
     if (showPassword) this._includeCredential.password = true
 
     const user = await this._db.user.findUnique({
-      where: { id },
+      where: { id, active: true },
       select: this._includeCredential,
     })
 
@@ -78,6 +77,7 @@ class UserModel implements IUserModel {
   }
 
   async createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser> {
+    console.log(user)
     const newUser = await tx.user.create({
       data: {
         ...user,
@@ -88,9 +88,10 @@ class UserModel implements IUserModel {
     return newUser
   }
 
-  async deleteById(id: number): Promise<void> {
-    await this._db.user.delete({
+  async deleteById(id: number, transaction: ITransaction): Promise<void> {
+    await transaction.user.update({
       where: { id },
+      data: { active: false },
     })
   }
 
