@@ -8,7 +8,7 @@ import { ICredential, ILoginResponse, IToken } from '..'
 import { User } from '../../../../Domains'
 
 interface IUserService {
-  getAll(): Promise<User[]>
+  getAll(includeInactive: unknown): Promise<User[]>
   getCredentials(): Promise<ICredential[]>
   getByNickName(nickName: unknown): Promise<User>
   getById(id: number): Promise<User>

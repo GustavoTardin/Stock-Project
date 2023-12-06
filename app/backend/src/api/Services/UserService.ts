@@ -42,8 +42,9 @@ class UserService implements IUserService {
     this._storeSellerModel = storeSellerModel
   }
 
-  async getAll(): Promise<User[]> {
-    const users = await this._userModel.getAll()
+  async getAll(query: unknown): Promise<User[]> {
+    const includeInactive = query === 'true'
+    const users = await this._userModel.getAll(includeInactive)
     const domains = users.map((user) => new User(user))
     return domains
   }

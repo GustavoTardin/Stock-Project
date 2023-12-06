@@ -32,9 +32,9 @@ class UserModel implements IUserModel {
     return this._db.credential.findMany()
   }
 
-  async getAll(): Promise<IDbUser[]> {
+  async getAll(includeInactive: boolean): Promise<IDbUser[]> {
     const users = await this._db.user.findMany({
-      where: { active: true },
+      where: includeInactive ? undefined : { active: true },
       select: this._includeCredential,
     })
 
@@ -77,7 +77,6 @@ class UserModel implements IUserModel {
   }
 
   async createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser> {
-    console.log(user)
     const newUser = await tx.user.create({
       data: {
         ...user,

@@ -2,7 +2,7 @@ import { ICredential, IDbUser, ICompleteUser, IChangePassword } from '..'
 import ITransaction from '../../prisma/ITransaction'
 
 interface IUserModel {
-  getAll(): Promise<IDbUser[]>
+  getAll(includeInactive: boolean): Promise<IDbUser[]>
   getByNickName(
     credential: string,
     showPassword?: boolean,

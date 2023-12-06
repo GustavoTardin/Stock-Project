@@ -28,6 +28,7 @@ userRouter.get(
   tokenRequired(credentialGuard.highLevelAccess),
   userController.getAll,
 )
+
 userRouter.get('/credentials', tokenRequired(credentialGuard.highLevelAccess))
 userRouter.get(
   '/:id',

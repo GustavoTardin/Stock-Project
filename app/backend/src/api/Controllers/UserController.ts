@@ -27,9 +27,10 @@ class UserController {
     }
   }
 
-  getAll = async (_req: Request, res: Response, next: NextFunction) => {
+  getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const users = await this._service.getAll()
+      const { includeInactive } = req.query
+      const users = await this._service.getAll(includeInactive)
       res.status(StatusCode.SuccessOK).json(users)
     } catch (error) {
       next(error)
