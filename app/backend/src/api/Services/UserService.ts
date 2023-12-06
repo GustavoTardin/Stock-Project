@@ -6,6 +6,7 @@ import {
   ILoginUser,
   ICompleteUser,
   IDbUser,
+  ICredential,
 } from '../Contracts/interfaces/users'
 import {
   changePasswordSchema,
@@ -45,6 +46,11 @@ class UserService implements IUserService {
     const users = await this._userModel.getAll()
     const domains = users.map((user) => new User(user))
     return domains
+  }
+
+  async getCredentials(): Promise<ICredential[]> {
+    const credentials = await this._userModel.getCredentials()
+    return credentials
   }
 
   async getByNickName(nickName: unknown): Promise<User> {

@@ -28,6 +28,7 @@ userRouter.get(
   tokenRequired(credentialGuard.highLevelAccess),
   userController.getAll,
 )
+userRouter.get('/credentials', tokenRequired(credentialGuard.highLevelAccess))
 userRouter.get(
   '/:id',
   tokenRequired(credentialGuard.freeAccess),
@@ -66,26 +67,5 @@ userRouter.patch(
   newPasswordRequired,
   userController.updatePassword,
 )
-// userRouter.get('/names', tokenRequired, userController.getUserNames)
-// userRouter.post(
-//   '/login',
-//   usernameRequired,
-//   passwordRequired,
-//   userController.checkLogin,
-// )
-// userRouter.post(
-//   '/create',
-//   usernameRequired,
-//   passwordRequired,
-//   credentialRequired,
-//   ifSellerStoreRequired,
-//   userController.createUser,
-// )
-
-// userRouter.delete(
-//   '/:id',
-//   tokenRequired(credentialGuard.admin),
-//   userController.deleteById,
-// )
 
 export default userRouter

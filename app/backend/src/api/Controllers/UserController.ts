@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { IUserService } from '../Contracts/interfaces/users'
+import StatusCode from 'status-code-enum'
 
 class UserController {
   private _service: IUserService
@@ -11,7 +12,7 @@ class UserController {
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = await this._service.createUser(req.body)
-      res.status(201).json(newUser)
+      res.status(StatusCode.SuccessCreated).json(newUser)
     } catch (error) {
       next(error)
     }
@@ -20,7 +21,7 @@ class UserController {
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userInfo = await this._service.login(req.body)
-      res.status(200).json(userInfo)
+      res.status(StatusCode.SuccessOK).json(userInfo)
     } catch (error) {
       next(error)
     }
@@ -29,9 +30,8 @@ class UserController {
   getAll = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this._service.getAll()
-      res.status(200).json(users)
+      res.status(StatusCode.SuccessOK).json(users)
     } catch (error) {
-      console.log(error)
       next(error)
     }
   }
@@ -40,7 +40,16 @@ class UserController {
     try {
       const { id } = req.params
       const user = await this._service.getById(Number(id))
-      res.status(200).json(user)
+      res.status(StatusCode.SuccessOK).json(user)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  getCredentials = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const credentials = await this._service.getCredentials()
+      res.status(StatusCode.SuccessOK).json(credentials)
     } catch (error) {
       next(error)
     }
@@ -50,7 +59,7 @@ class UserController {
     try {
       const { id } = req.params
       const deletedMessage = await this._service.deleteById(Number(id))
-      res.status(200).json({ message: deletedMessage })
+      res.status(StatusCode.SuccessOK).json({ message: deletedMessage })
     } catch (error) {
       next(error)
     }
@@ -65,7 +74,7 @@ class UserController {
         password,
         newPassword,
       })
-      res.status(200).json({ message: updatedMessage })
+      res.status(StatusCode.SuccessOK).json({ message: updatedMessage })
     } catch (error) {
       next(error)
     }

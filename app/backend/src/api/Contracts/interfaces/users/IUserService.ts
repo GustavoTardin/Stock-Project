@@ -4,11 +4,12 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
-import { ILoginResponse, IToken } from '.'
+import { ICredential, ILoginResponse, IToken } from '.'
 import { User } from '../../../Domains'
 
 interface IUserService {
   getAll(): Promise<User[]>
+  getCredentials(): Promise<ICredential[]>
   getByNickName(nickName: unknown): Promise<User>
   getById(id: number): Promise<User>
   createUser(user: unknown): Promise<User>

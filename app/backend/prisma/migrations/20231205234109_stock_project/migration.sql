@@ -16,6 +16,9 @@ CREATE TABLE "users" (
     "lastName" TEXT,
     "nickName" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
     "credentialId" INTEGER NOT NULL DEFAULT 3,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")

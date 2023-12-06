@@ -15,6 +15,7 @@ class UserModel implements IUserModel {
     id: true,
     firstName: true,
     lastName: true,
+    active: true,
     nickName: false,
     password: false,
     credential: {
@@ -34,6 +35,7 @@ class UserModel implements IUserModel {
 
   async getAll(): Promise<IDbUser[]> {
     const users = await this._db.user.findMany({
+      where: { active: true },
       select: this._includeCredential,
     })
 
