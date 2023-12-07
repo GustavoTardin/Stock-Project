@@ -14,7 +14,7 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'Nome de usuário é obrigatório',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
       next(error)
     }
@@ -31,7 +31,7 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'O nome do colaborador é obrigatório!',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
       next(error)
     }
@@ -48,7 +48,7 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'O campo senha é obrigatório',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
       next(error)
     }
@@ -65,7 +65,7 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'Você deve fornecer a função do novo colaborador',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
       next(error)
     }
@@ -81,7 +81,7 @@ class UserValidation {
     if (!id || isNaN(Number(id))) {
       const error = new CustomError(
         'O id é obrigatório e deve ser um número!',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
       next(error)
     } else {
@@ -100,7 +100,7 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'A nova senha é obrigatório',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
       next(error)
     }

@@ -16,6 +16,7 @@ interface IUserService {
   login(user: unknown): Promise<ILoginResponse & IToken>
   deleteById(id: number): Promise<string>
   updatePassword(data: unknown): Promise<string>
+  updateUserCredential(data: unknown): Promise<User>
 }
 
 // interface IUserService extends AbstractService<IUser, IUserODM> {

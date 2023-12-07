@@ -23,7 +23,7 @@ class TokenValidation {
       } catch {
         const error = new CustomError(
           this.unauthorizedMessage,
-          StatusCode.ClientErrorUnauthorized.toString(),
+          StatusCode.ClientErrorUnauthorized,
         )
         next(error)
       }
@@ -47,7 +47,7 @@ class TokenValidation {
     } catch {
       const error = new CustomError(
         this.unauthorizedMessage,
-        StatusCode.ClientErrorUnauthorized.toString(),
+        StatusCode.ClientErrorUnauthorized,
       )
       next(error)
     }

@@ -7,8 +7,8 @@ import ICompleteUser from './reqBody/ICompleteUser'
 import IDbUser from './IDbUser'
 import IUserModel from './layers/IUserModel'
 import ILoginUser from './reqBody/ILoginUser'
-import IChangePassword from './reqBody/IChangePassword'
-
+import IChangePassword from './updates/IChangePassword'
+import IChangeUserCredential from './updates/IChangeUserCredential'
 export {
   IUser,
   IUserService,
@@ -20,4 +20,5 @@ export {
   IUserModel,
   ILoginUser,
   IChangePassword,
+  IChangeUserCredential,
 }

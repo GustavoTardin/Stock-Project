@@ -29,7 +29,7 @@ async function createUser(
     if (!allIdsExist) {
       throw new CustomError(
         '1 ou mais lojas não existem!',
-        StatusCode.ClientErrorNotFound.toString(),
+        StatusCode.ClientErrorNotFound,
       )
     } else {
       await Promise.all(

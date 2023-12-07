@@ -14,7 +14,7 @@ class ZodValidation {
         }
         throw new CustomError(
           firstError.message,
-          StatusCode.ClientErrorBadRequest.toString(),
+          StatusCode.ClientErrorBadRequest,
         )
       } else {
         throw error

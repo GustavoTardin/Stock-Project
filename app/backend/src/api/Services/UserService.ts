@@ -7,6 +7,8 @@ import {
   ICompleteUser,
   IDbUser,
   ICredential,
+  IChangePassword,
+  IChangeUserCredential,
 } from '../Contracts/interfaces/users'
 import {
   changePasswordSchema,
@@ -23,10 +25,10 @@ import prisma from '../database/prisma'
 import createUser from '../Utils/user/createUser'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSellerModel'
-import IChangePassword from '../Contracts/interfaces/users/reqBody/IChangePassword'
 import verifyIfUserExists from '../Utils/user/verifyIfUserExists'
 import hashAndUpdatePassword from '../Utils/user/hashAndUpdatePassword'
 import { StatusCode } from 'status-code-enum'
+import updateCredentialSchema from '../Contracts/zod/schemas/users/updateCredentialSchema'
 
 class UserService implements IUserService {
   private _userModel: IUserModel
@@ -81,7 +83,7 @@ class UserService implements IUserService {
     if (duplicatedUser)
       throw new CustomError(
         'Nome de usuário já existe!!',
-        StatusCode.ClientErrorConflict.toString(),
+        StatusCode.ClientErrorConflict,
       )
 
     // Cria usuário e caso ele faça parte de alguma loja, cria um registro na tabela auxiliar.
@@ -130,7 +132,7 @@ class UserService implements IUserService {
     } else {
       throw new CustomError(
         'Nome de usuário ou senha incorretos',
-        StatusCode.ClientErrorUnauthorized.toString(),
+        StatusCode.ClientErrorUnauthorized,
       )
     }
   }
@@ -165,7 +167,7 @@ class UserService implements IUserService {
     if (password === newPassword)
       throw new CustomError(
         'As senhas devem ser diferentes!',
-        StatusCode.ClientErrorBadRequest.toString(),
+        StatusCode.ClientErrorBadRequest,
       )
 
     // verifica se o id existe, se não, lança erro.
@@ -179,9 +181,31 @@ class UserService implements IUserService {
     } else {
       throw new CustomError(
         'Senha antiga incorreta!',
-        StatusCode.ClientErrorUnauthorized.toString(),
+        StatusCode.ClientErrorUnauthorized,
       )
     }
+  }
+
+  async updateUserCredential(data: unknown): Promise<User> {
+    // Valida se os campos estão corretos
+    const ids = validateField<IChangeUserCredential>(
+      updateCredentialSchema,
+      data,
+    )
+    // Verifica se credential existe
+    const credential = await this._userModel.getCredentialById(ids.credentialId)
+    if (!credential)
+      throw new CustomError(
+        'Cargo inexistente!',
+        StatusCode.ClientErrorNotFound,
+      )
+    // Verifica se usuário existe
+    await verifyIfUserExists(this._userModel, ids.id)
+
+    // Ambos existindo, atualiza credential do usuário, e retorna.
+    const updatedUser = await this._userModel.updateUserCredential(ids)
+    const domain = new User(updatedUser)
+    return domain
   }
 }
 

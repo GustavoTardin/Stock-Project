@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import {
   IChangePassword,
+  IChangeUserCredential,
   ICompleteUser,
   ICredential,
   IDbUser,
@@ -30,6 +31,11 @@ class UserModel implements IUserModel {
 
   async getCredentials(): Promise<ICredential[]> {
     return this._db.credential.findMany()
+  }
+
+  async getCredentialById(id: number): Promise<ICredential | null> {
+    const credential = await this._db.credential.findUnique({ where: { id } })
+    return credential
   }
 
   async getAll(includeInactive: boolean): Promise<IDbUser[]> {
@@ -99,6 +105,18 @@ class UserModel implements IUserModel {
       where: { id },
       data: { password: newPassword },
     })
+  }
+
+  async updateUserCredential({
+    id,
+    credentialId,
+  }: IChangeUserCredential): Promise<IDbUser> {
+    const updatedUser = await this._db.user.update({
+      where: { id },
+      data: { credentialId },
+      select: this._includeCredential,
+    })
+    return updatedUser
   }
 }
 

@@ -69,4 +69,12 @@ userRouter.patch(
   userController.updatePassword,
 )
 
+userRouter.patch(
+  '/update-credential/:id',
+  tokenRequired(credentialGuard.highLevelAccess),
+  paramsIdRequired,
+  credentialRequired,
+  userController.updateUserCredential,
+)
+
 export default userRouter

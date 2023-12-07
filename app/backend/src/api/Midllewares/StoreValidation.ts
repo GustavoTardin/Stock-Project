@@ -11,7 +11,7 @@ class StoreValidation {
       next(
         new CustomError(
           'name field must be filled',
-          StatusCode.ClientErrorBadRequest.toString(),
+          StatusCode.ClientErrorBadRequest,
         ),
       )
     }

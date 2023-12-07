@@ -16,7 +16,7 @@ const verifyIfUserExists = async (
   if (!user)
     throw new CustomError(
       'Usuário não encontrado',
-      StatusCode.ClientErrorNotFound.toString(),
+      StatusCode.ClientErrorNotFound,
     )
   return user
 }

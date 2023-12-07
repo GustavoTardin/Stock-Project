@@ -80,6 +80,24 @@ class UserController {
       next(error)
     }
   }
+
+  updateUserCredential = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { id } = req.params
+      const { credentialId } = req.body
+      const updatedUser = await this._service.updateUserCredential({
+        id: Number(id),
+        credentialId,
+      })
+      res.status(StatusCode.SuccessOK).json(updatedUser)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default UserController
