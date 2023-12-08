@@ -6,12 +6,14 @@ import {
   IChangeUserCredential,
 } from '..'
 import ITransaction from '../../prisma/ITransaction'
+import ISelfUpdate from '../updates/ISelfUpdate'
 
 interface IUserModel {
   getAll(includeInactive: boolean): Promise<IDbUser[]>
   getByNickName(
     nickName: string,
     showPassword?: boolean,
+    includeInactive?: boolean,
   ): Promise<IDbUser | null>
   getById(
     id: number,
@@ -31,6 +33,7 @@ interface IUserModel {
     id,
     credentialId,
   }: IChangeUserCredential): Promise<IDbUser>
+  selfUpdateById(id: number, data: ISelfUpdate): Promise<IDbUser>
 }
 
 export default IUserModel

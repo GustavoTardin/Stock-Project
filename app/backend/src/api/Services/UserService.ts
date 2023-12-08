@@ -31,6 +31,8 @@ import verifyIfUserExists from '../Utils/user/verifyIfUserExists'
 import hashAndUpdatePassword from '../Utils/user/hashAndUpdatePassword'
 import { StatusCode } from 'status-code-enum'
 import updateCredentialSchema from '../Contracts/zod/schemas/users/updateCredentialSchema'
+import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
+import selfUpdateUserSchema from '../Contracts/zod/schemas/users/selfUpdateUserSchema'
 
 class UserService implements IUserService {
   private _userModel: IUserModel
@@ -114,7 +116,6 @@ class UserService implements IUserService {
   async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
     // Validação: Caso não tenha o formato correto, retorna erro 400.
     const validatedLogin = validateField<ILoginUser>(loginSchema, loginUser)
-
     // Verifica se nickname existe
     const userFound = await verifyIfUserExists(
       this._userModel,
@@ -222,6 +223,18 @@ class UserService implements IUserService {
 
     // Ambos existindo, atualiza credential do usuário, e retorna.
     const updatedUser = await this._userModel.updateUserCredential(ids)
+    const domain = new User(updatedUser)
+    return domain
+  }
+
+  async selfUpdateById(id: number, data: unknown): Promise<User> {
+    // Valida se os campos estão corretos. Se não, retorna 400
+    const validatedUser = validateField<ISelfUpdate>(selfUpdateUserSchema, data)
+
+    await verifyIfUserExists(this._userModel, id)
+
+    const updatedUser = await this._userModel.selfUpdateById(id, validatedUser)
+
     const domain = new User(updatedUser)
     return domain
   }

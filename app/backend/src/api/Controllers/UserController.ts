@@ -106,6 +106,19 @@ class UserController {
       next(error)
     }
   }
+
+  selfUpdateById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params
+      const updatedUser = await this._service.selfUpdateById(
+        Number(id),
+        req.body,
+      )
+      res.status(StatusCode.SuccessOK).json(updatedUser)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default UserController

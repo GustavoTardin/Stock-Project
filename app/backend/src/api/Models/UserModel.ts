@@ -8,6 +8,7 @@ import {
   IUserModel,
 } from '../Contracts/interfaces/users'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
+import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
@@ -50,15 +51,16 @@ class UserModel implements IUserModel {
   async getByNickName(
     nickName: string,
     showPassword = false,
+    includeInactive = false,
   ): Promise<IDbUser | null> {
     // Quase nunca será necessário devolver o password(com hash) do usuário,
     // mas em alguns poucos casos(por isso o default é false), como em requisição
     // de login ou update de senha, é necessário a senha para comparações.
-    if (showPassword) this._includeCredential.password = true
+    const select = { ...this._includeCredential, password: showPassword }
 
     const user = await this._db.user.findUnique({
-      where: { nickName, active: true },
-      select: this._includeCredential,
+      where: includeInactive ? { nickName } : { nickName, active: true },
+      select,
     })
 
     // Seta a exibição do password para false novamente.
@@ -122,6 +124,15 @@ class UserModel implements IUserModel {
       where: { id },
       data: { active },
     })
+  }
+
+  async selfUpdateById(id: number, data: ISelfUpdate): Promise<IDbUser> {
+    const updatedUser = await this._db.user.update({
+      where: { id },
+      data,
+      select: this._includeCredential,
+    })
+    return updatedUser
   }
 }
 

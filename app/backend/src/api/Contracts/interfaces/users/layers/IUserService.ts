@@ -17,6 +17,7 @@ interface IUserService {
   updatePassword(data: unknown): Promise<string>
   updateUserCredential(data: unknown): Promise<User>
   updateStatusById(data: unknown): Promise<string>
+  selfUpdateById(id: number, data: unknown): Promise<User>
 }
 
 // interface IUserService extends AbstractService<IUser, IUserODM> {

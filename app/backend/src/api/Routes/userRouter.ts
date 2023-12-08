@@ -54,7 +54,7 @@ userRouter.post(
 )
 
 userRouter.patch(
-  '/update-password/:id',
+  '/:id/update-password',
   paramsIdRequired,
   tokenRequired(credentialGuard.freeAccess),
   verifyUserOwnership,
@@ -64,7 +64,7 @@ userRouter.patch(
 )
 
 userRouter.patch(
-  '/update-credential/:id',
+  '/:id/update-credential',
   tokenRequired(credentialGuard.highLevelAccess),
   paramsIdRequired,
   credentialRequired,
@@ -77,6 +77,14 @@ userRouter.patch(
   paramsIdRequired,
   activeRequired,
   userController.updateUserStatus,
+)
+
+userRouter.patch(
+  '/:id/self-update',
+  tokenRequired(credentialGuard.freeAccess),
+  paramsIdRequired,
+  verifyUserOwnership,
+  userController.selfUpdateById,
 )
 
 export default userRouter
