@@ -9,6 +9,7 @@ import IUserModel from './layers/IUserModel'
 import ILoginUser from './reqBody/ILoginUser'
 import IChangePassword from './updates/IChangePassword'
 import IChangeUserCredential from './updates/IChangeUserCredential'
+import IChangeStatus from './updates/IChangeStatus'
 export {
   IUser,
   IUserService,
@@ -21,4 +22,5 @@ export {
   ILoginUser,
   IChangePassword,
   IChangeUserCredential,
+  IChangeStatus,
 }

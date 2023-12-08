@@ -13,11 +13,19 @@ interface IUserModel {
     nickName: string,
     showPassword?: boolean,
   ): Promise<IDbUser | null>
-  getById(id: number, showPassword?: boolean): Promise<IDbUser | null>
+  getById(
+    id: number,
+    showPassword?: boolean,
+    includeInactive?: boolean,
+  ): Promise<IDbUser | null>
   getCredentials(): Promise<ICredential[]>
   getCredentialById(id: number): Promise<ICredential | null>
   createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser>
-  deleteById(id: number, transaction: ITransaction): Promise<void>
+  updateStatusById(
+    id: number,
+    active: boolean,
+    transaction?: ITransaction,
+  ): Promise<void>
   updatePassword({ id, password }: IChangePassword): Promise<void>
   updateUserCredential({
     id,

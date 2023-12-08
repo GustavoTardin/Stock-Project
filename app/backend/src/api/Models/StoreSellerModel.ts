@@ -65,13 +65,14 @@ class StoreSellerModel implements IStoreSellerModel {
    * @param userId - ID do usuário.
    * @param transaction - Transação (opcional).
    */
-  async deleteBySellerId(
+  async updateBySellerId(
     userId: number,
+    active: boolean,
     transaction: ITransaction | null = null,
   ): Promise<void> {
     await (transaction || this._db).storeSellers.updateMany({
       where: { userId },
-      data: { active: false },
+      data: { active },
     })
   }
 

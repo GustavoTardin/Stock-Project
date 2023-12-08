@@ -9,8 +9,10 @@ import {
   ICredential,
   IChangePassword,
   IChangeUserCredential,
+  IChangeStatus,
 } from '../Contracts/interfaces/users'
 import {
+  ChangeStatusSchema,
   changePasswordSchema,
   completeUserSchema,
   loginSchema,
@@ -137,22 +139,38 @@ class UserService implements IUserService {
     }
   }
 
-  async deleteById(id: number): Promise<string> {
-    // verifica se o id existe, se não, lança erro 404.
-    const userToBeDeleted = await verifyIfUserExists(this._userModel, id)
+  async updateStatusById(data: unknown): Promise<string> {
+    // Valida formato, lança erro 400 se estiver incorreto.
+    const { id, active } = validateField<IChangeStatus>(
+      ChangeStatusSchema,
+      data,
+    )
+
+    // Verifica se o id existe, se não, lança erro 404
+    const updatedUser = await verifyIfUserExists(
+      this._userModel,
+      id,
+      false, // Não incluir password
+      true, // Incluir usuários desativados
+    )
 
     await prisma.$transaction(async (tx) => {
       try {
-        await this._userModel.deleteById(id, tx as ITransaction)
-        await this._storeSellerModel.deleteBySellerId(id, tx as ITransaction)
+        await this._userModel.updateStatusById(id, active, tx as ITransaction)
+        await this._storeSellerModel.updateBySellerId(
+          id,
+          active,
+          tx as ITransaction,
+        )
       } catch (error) {
         console.log(`Erro durante a criação de uma das entidades: ${error}`)
         throw error
       }
     })
-    // Se for deletado, retorna mensagem
-    const deletedMessage = `Usuário ${userToBeDeleted.firstName} deletado com sucesso`
-    return deletedMessage
+    const updatedMessage = `Usuário ${updatedUser.firstName} ${
+      active ? 'reativado' : 'desativado'
+    } com sucesso`
+    return updatedMessage
   }
 
   async updatePassword(data: unknown): Promise<string> {

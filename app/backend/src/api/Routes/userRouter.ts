@@ -20,6 +20,7 @@ const {
   credentialRequired,
   firstNameRequired,
   paramsIdRequired,
+  activeRequired,
 } = UserValidation
 const { tokenRequired, verifyUserOwnership } = TokenValidation
 
@@ -52,13 +53,6 @@ userRouter.post(
   userController.login,
 )
 
-userRouter.delete(
-  '/delete/:id',
-  tokenRequired(credentialGuard.highLevelAccess),
-  paramsIdRequired,
-  userController.deleteById,
-)
-
 userRouter.patch(
   '/update-password/:id',
   paramsIdRequired,
@@ -75,6 +69,14 @@ userRouter.patch(
   paramsIdRequired,
   credentialRequired,
   userController.updateUserCredential,
+)
+
+userRouter.patch(
+  '/:id/update-status',
+  tokenRequired(credentialGuard.highLevelAccess),
+  paramsIdRequired,
+  activeRequired,
+  userController.updateUserStatus,
 )
 
 export default userRouter

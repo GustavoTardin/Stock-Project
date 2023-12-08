@@ -66,19 +66,20 @@ class UserModel implements IUserModel {
     return user
   }
 
-  async getById(id: number, showPassword = false): Promise<IDbUser | null> {
+  async getById(
+    id: number,
+    showPassword = false,
+    includeInactive = false,
+  ): Promise<IDbUser | null> {
     // Quase nunca será necessário devolver o password(com hash) do usuário,
     // mas em alguns poucos casos(por isso o default é false), como em requisição
     // de login ou update de senha, é necessário a senha para comparações.
-    if (showPassword) this._includeCredential.password = true
+    const select = { ...this._includeCredential, password: showPassword }
 
     const user = await this._db.user.findUnique({
-      where: { id, active: true },
-      select: this._includeCredential,
+      where: includeInactive ? { id } : { id, active: true },
+      select,
     })
-
-    // Seta a exibição do password para false novamente.
-    this._includeCredential.password = false
     return user
   }
 
@@ -91,13 +92,6 @@ class UserModel implements IUserModel {
       select: this._includeCredential,
     })
     return newUser
-  }
-
-  async deleteById(id: number, transaction: ITransaction): Promise<void> {
-    await transaction.user.update({
-      where: { id },
-      data: { active: false },
-    })
   }
 
   async updatePassword({ id, newPassword }: IChangePassword): Promise<void> {
@@ -117,6 +111,17 @@ class UserModel implements IUserModel {
       select: this._includeCredential,
     })
     return updatedUser
+  }
+
+  async updateStatusById(
+    id: number,
+    active: boolean,
+    transaction?: ITransaction,
+  ): Promise<void> {
+    await (transaction || this._db).user.update({
+      where: { id },
+      data: { active },
+    })
   }
 }
 

@@ -9,8 +9,9 @@ interface IStoreSellerModel {
   ): Promise<IStoreSeller>
   getBySellerId(userId: number): Promise<IStoreSeller[] | null>
   getByStoreId(storeId: number): Promise<IStoreSeller[] | null>
-  deleteBySellerId(
+  updateBySellerId(
     userId: number,
+    active: boolean,
     transaction?: ITransaction | null,
   ): Promise<void>
   deleteByStoreId(

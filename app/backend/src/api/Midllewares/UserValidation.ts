@@ -105,6 +105,23 @@ class UserValidation {
       next(error)
     }
   }
+
+  static activeRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { active } = req.body
+    if (active === undefined) {
+      const error = new CustomError(
+        'o campo active é obrigatório!',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    } else {
+      next()
+    }
+  }
 }
 
 export default UserValidation

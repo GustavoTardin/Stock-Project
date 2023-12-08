@@ -56,16 +56,6 @@ class UserController {
     }
   }
 
-  deleteById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params
-      const deletedMessage = await this._service.deleteById(Number(id))
-      res.status(StatusCode.SuccessOK).json({ message: deletedMessage })
-    } catch (error) {
-      next(error)
-    }
-  }
-
   updatePassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params
@@ -94,6 +84,24 @@ class UserController {
         credentialId,
       })
       res.status(StatusCode.SuccessOK).json(updatedUser)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  updateUserStatus = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { id } = req.params
+      const { active } = req.body
+      const updatedMessage = await this._service.updateStatusById({
+        id: Number(id),
+        active,
+      })
+      res.status(StatusCode.SuccessOK).json({ message: updatedMessage })
     } catch (error) {
       next(error)
     }
