@@ -1,10 +1,7 @@
-import { ModeToggle } from "./mode-toggle";
-import { ThemeProvider } from "./theme-provider";
+import NavBar from "./Navbar";
 
 export  default function Header(){
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <ModeToggle />
-    </ThemeProvider>
+    <NavBar />
   )
 }
