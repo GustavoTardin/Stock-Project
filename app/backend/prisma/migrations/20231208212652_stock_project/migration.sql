@@ -16,6 +16,9 @@ CREATE TABLE "users" (
     "lastName" TEXT,
     "nickName" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
     "credentialId" INTEGER NOT NULL DEFAULT 3,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -26,6 +29,9 @@ CREATE TABLE "stores" (
     "id" SERIAL NOT NULL,
     "storeName" TEXT NOT NULL,
     "contactNumber" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "stores_pkey" PRIMARY KEY ("id")
 );
@@ -38,6 +44,7 @@ CREATE TABLE "StoreAdress" (
     "city" TEXT NOT NULL,
     "street" TEXT NOT NULL,
     "addressNumber" INTEGER NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "StoreAdress_pkey" PRIMARY KEY ("id")
 );
@@ -46,6 +53,9 @@ CREATE TABLE "StoreAdress" (
 CREATE TABLE "StoreSellers" (
     "userId" INTEGER NOT NULL,
     "storeId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "StoreSellers_pkey" PRIMARY KEY ("userId","storeId")
 );
@@ -141,6 +151,9 @@ CREATE UNIQUE INDEX "credentials_credentialName_key" ON "credentials"("credentia
 CREATE UNIQUE INDEX "users_nickName_key" ON "users"("nickName");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "stores_storeName_key" ON "stores"("storeName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "stores_contactNumber_key" ON "stores"("contactNumber");
 
 -- CreateIndex
@@ -177,16 +190,16 @@ CREATE UNIQUE INDEX "sizes_size_key" ON "sizes"("size");
 CREATE UNIQUE INDEX "designs_design_key" ON "designs"("design");
 
 -- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_credentialId_fkey" FOREIGN KEY ("credentialId") REFERENCES "credentials"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "users" ADD CONSTRAINT "users_credentialId_fkey" FOREIGN KEY ("credentialId") REFERENCES "credentials"("id") ON DELETE SET DEFAULT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreAdress" ADD CONSTRAINT "StoreAdress_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StoreAdress" ADD CONSTRAINT "StoreAdress_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "collections"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

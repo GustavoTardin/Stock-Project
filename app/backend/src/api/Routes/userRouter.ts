@@ -1,32 +1,50 @@
 import { Router } from 'express'
-import { UserValidation } from '../Midllewares'
-// import credentialGuard from '../Utils/credentialGuard'
-import UserModel from '../Models/UserModel'
+import { TokenValidation, UserValidation } from '../Midllewares'
+import credentialGuard from '../Utils/credentialGuard'
 import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
 import UserController from '../Controllers/UserController'
+import { StoreModel, UserModel } from '../Models'
+import StoreSellerModel from '../Models/StoreSellerModel'
 
 const userRouter = Router()
 const userModel = new UserModel(prisma)
-const userService = new UserService(userModel)
+const storeModel = new StoreModel(prisma)
+const storeSellerModel = new StoreSellerModel(prisma)
+const userService = new UserService(userModel, storeModel, storeSellerModel)
 const userController = new UserController(userService)
 const {
   nickNameRequired,
   passwordRequired,
+  newPasswordRequired,
   credentialRequired,
   firstNameRequired,
+  paramsIdRequired,
+  activeRequired,
 } = UserValidation
-// const { tokenRequired } = TokenValidation
+const { tokenRequired, verifyUserOwnership } = TokenValidation
 
-userRouter.get('/', userController.getAll)
-userRouter.get('/:nickName', userController.getByNickName)
+userRouter.get(
+  '/',
+  tokenRequired(credentialGuard.highLevelAccess),
+  userController.getAll,
+)
+
+userRouter.get('/credentials', tokenRequired(credentialGuard.freeAccess))
+userRouter.get(
+  '/:id',
+  tokenRequired(credentialGuard.freeAccess),
+  paramsIdRequired,
+  userController.getById,
+)
 userRouter.post(
   '/create',
+  tokenRequired(credentialGuard.highLevelAccess),
   nickNameRequired,
   firstNameRequired,
   passwordRequired,
   credentialRequired,
-  // userController.createUser,
+  userController.createUser,
 )
 userRouter.post(
   '/login',
@@ -34,26 +52,39 @@ userRouter.post(
   passwordRequired,
   userController.login,
 )
-// userRouter.get('/names', tokenRequired, userController.getUserNames)
-// userRouter.post(
-//   '/login',
-//   usernameRequired,
-//   passwordRequired,
-//   userController.checkLogin,
-// )
-// userRouter.post(
-//   '/create',
-//   usernameRequired,
-//   passwordRequired,
-//   credentialRequired,
-//   ifSellerStoreRequired,
-//   userController.createUser,
-// )
 
-// userRouter.delete(
-//   '/:id',
-//   tokenRequired(credentialGuard.admin),
-//   userController.deleteById,
-// )
+userRouter.patch(
+  '/:id/update-password',
+  paramsIdRequired,
+  tokenRequired(credentialGuard.freeAccess),
+  verifyUserOwnership,
+  passwordRequired,
+  newPasswordRequired,
+  userController.updatePassword,
+)
+
+userRouter.patch(
+  '/:id/update-credential',
+  tokenRequired(credentialGuard.highLevelAccess),
+  paramsIdRequired,
+  credentialRequired,
+  userController.updateUserCredential,
+)
+
+userRouter.patch(
+  '/:id/update-status',
+  tokenRequired(credentialGuard.highLevelAccess),
+  paramsIdRequired,
+  activeRequired,
+  userController.updateUserStatus,
+)
+
+userRouter.patch(
+  '/:id/self-update',
+  tokenRequired(credentialGuard.freeAccess),
+  paramsIdRequired,
+  verifyUserOwnership,
+  userController.selfUpdateById,
+)
 
 export default userRouter

@@ -4,14 +4,20 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
-import { ILoginResponse, IToken } from '.'
-import { User } from '../../../Domains'
+import { ICredential, ILoginResponse, IToken } from '..'
+import { User } from '../../../../Domains'
 
 interface IUserService {
-  getAll(): Promise<User[]>
-  getByNickName(nickName: string): Promise<User>
-  // createUser(user: unknown): Promise<User>
+  getAll(includeInactive: unknown): Promise<User[]>
+  getCredentials(): Promise<ICredential[]>
+  getByNickName(nickName: unknown): Promise<User>
+  getById(id: number): Promise<User>
+  createUser(user: unknown): Promise<User>
   login(user: unknown): Promise<ILoginResponse & IToken>
+  updatePassword(data: unknown): Promise<string>
+  updateUserCredential(data: unknown): Promise<User>
+  updateStatusById(data: unknown): Promise<string>
+  selfUpdateById(id: number, data: unknown): Promise<User>
 }
 
 // interface IUserService extends AbstractService<IUser, IUserODM> {

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express'
 import CustomError from './CustomError'
+import StatusCode from 'status-code-enum'
 
 class ErrorHandler {
   public static handle(
@@ -12,7 +13,7 @@ class ErrorHandler {
     if (error instanceof CustomError && error.stack) {
       return res.status(+error.stack).json({ message: error.message })
     }
-    res.status(500).json({
+    res.status(StatusCode.ServerErrorInternal).json({
       message: 'Algum erro aconteceu no servidor, tente novamente mais tarde',
     })
   }
