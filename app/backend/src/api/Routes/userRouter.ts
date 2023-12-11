@@ -30,7 +30,7 @@ userRouter.get(
   userController.getAll,
 )
 
-userRouter.get('/credentials', tokenRequired(credentialGuard.highLevelAccess))
+userRouter.get('/credentials', tokenRequired(credentialGuard.freeAccess))
 userRouter.get(
   '/:id',
   tokenRequired(credentialGuard.freeAccess),
