@@ -59,8 +59,8 @@ class UserValidation {
     _res: Response,
     next: NextFunction,
   ) => {
-    const { credentialId } = req.body
-    if (credentialId) {
+    const { credentialName } = req.body
+    if (credentialName) {
       next()
     } else {
       const error = new CustomError(
