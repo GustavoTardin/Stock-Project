@@ -10,6 +10,9 @@ const defineAccess = (user: IUser) => {
     case 'Estoquista':
       access = 'Nenhuma';
       break;
+    case 'Root':
+      access = 'Nenhuma';
+      break;
     default:
       if (user.stores.length < 1) {
         access = 'Ainda não trabalha em nenhuma loja';
