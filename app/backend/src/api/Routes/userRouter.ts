@@ -19,7 +19,7 @@ const {
 // const { tokenRequired } = TokenValidation
 
 userRouter.get('/', userController.getAll)
-userRouter.get('/:nickName', userController.getByNickName)
+userRouter.get('/random/:nickName', userController.getByNickName)
 userRouter.post(
   '/create',
   nickNameRequired,
