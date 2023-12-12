@@ -8,6 +8,7 @@ import { deleteUser, getUsers } from '../../../../Utils/Requests/userRequests';
 import IUser from './IUser';
 import DelConfirmation from './DelConfirmation';
 import defineAccess from '@/Utils/defineAccess';
+import { token } from '../creation/NewUserForm';
 
 function EditUsers() {
   const [users, usersSetter] = useState<IUser[]>([]);
@@ -22,7 +23,7 @@ function EditUsers() {
 
   const tryDelete = async () => {
     try {
-      await deleteUser(idToDelete);
+      await deleteUser({id: idToDelete, token});
       if (id === idToDelete as string) signOut();
       const updatedUsers = users.filter((_e, i) => i !== indexToDelete);
       usersSetter(updatedUsers);
@@ -39,7 +40,7 @@ function EditUsers() {
 
   useEffect(() => {
     const userGetter = async () => {
-      const response = await getUsers();
+      const response = await getUsers({ token });
       usersSetter(response);
     };
     userGetter();
@@ -63,7 +64,7 @@ function EditUsers() {
           return (
             <tr key={ e.id } id={ e.id }>
               <td>{e.userName}</td>
-              <td>{e.credential}</td>
+              <td>{e.credentialName}</td>
               <td>{storeAccess || e.stores}</td>
               <td>
                 <button onClick={ () => handleDelete(e.id, i) }>
