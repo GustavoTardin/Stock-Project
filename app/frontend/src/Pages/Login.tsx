@@ -25,18 +25,15 @@ export default function Login() {
     }
   };
   
-  let count = 0 
   useEffect(() => {
-
-    count += 1
-    console.log(count)
     if (isAuthenticated()) isLoggedSetter(true);
   }, [isAuthenticated]); // perguntar pq ele usava como did mount
 
   if (isLogged) return <Navigate to="/menu" replace />;
 
   return (
-    <main className="bg-gradient-to-bl from-slate-700 to-background">
+    <main className="bg-background">
+    {/* <main className="bg-gradient-to-bl from-black to-background"> */}
       <LoginForm tryLogin={ tryLogin } />
     </main>
   );
