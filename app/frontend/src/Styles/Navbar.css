@@ -2,19 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
     ul {
         @apply gap-10;
     }
     li {
-      @apply hover:text-blueDetails hover:underline active:animate-ping;
+      @apply hover:text-blueDetails hover:underline active:animate-bounce ;
     }  
-}
-.NavigationMenuIndicator {
+} */
+/* .NavigationMenuIndicator {
   background-color: grey;
 }
 .NavigationMenuIndicator[data-orientation='horizontal'] {
-  height: px;
+  position: absolute;
+  height: 3px;
   transition: width, transform, 250ms ease;
 }
 .NavigationMenuContent {
@@ -42,7 +43,7 @@
   width: var(--radix-navigation-menu-viewport-width);
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 250ms ease;
-}
+} */
 
 @keyframes enterFromRight {
   from {
