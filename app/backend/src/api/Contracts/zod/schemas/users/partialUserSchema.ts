@@ -17,7 +17,7 @@ const partialUserSchema = z.object({
         Role,
       ).join(', ')}`,
     }),
-  // stores: z.array(z.number()).optional(),
+  stores: z.array(z.number()).optional(),
 })
 
 export default partialUserSchema

@@ -12,7 +12,7 @@ class Jwt {
 
   static generateToken(payload: ILoginResponse): IToken {
     const token = jwt.sign(payload, this._mySecret, this._jwtConfig)
-    const expirationInMinutes = 720 // 720 minutos é equivalente à 12 horas
+    const expirationInMinutes = 10.08 // 10.080 minutos é equivalente à 12 horas
     return { token, expiresIn: expirationInMinutes }
   }
 

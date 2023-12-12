@@ -1,15 +1,5 @@
-/* import IProductDetails from './IProductDetails';
-import IStore from './IStore';
-import IStoreODM from './IStoreODM';
-import IStoreDetails from './IStoreDetails';
-import IStoreService from './IStoreService';
+import ISimpleStore from './ISimpleStore'
+import IStoreAdress from './IStoreAdress'
+import IStoreModel from './IStoreModel'
 
-export {
-  IProductDetails,
-  IStore,
-  IStoreODM,
-  IStoreDetails,
-  IStoreService,
-};
-
-*/
+export { ISimpleStore, IStoreAdress, IStoreModel }
