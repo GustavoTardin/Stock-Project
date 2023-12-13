@@ -1,3 +1,4 @@
+
 FROM node:16.14-alpine
 
 WORKDIR /
@@ -8,9 +9,7 @@ RUN npm install
 
 COPY . .
 
-USER node
-
 EXPOSE 3009
 
 ENTRYPOINT [ "npm", "run" ]
-CMD [ "dev" ]
+CMD [ "dev" ]     
