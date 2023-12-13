@@ -33,8 +33,16 @@ import updateCredentialSchema from '../Contracts/zod/schemas/users/updateCredent
 import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
 import selfUpdateUserSchema from '../Contracts/zod/schemas/users/selfUpdateUserSchema'
 import verifyIfExistsById from '../Utils/verifyIfExistsById'
+import AbstractService from './AbstractService'
+import IModel from '../Contracts/interfaces/models/IModel'
 
-class UserService implements IUserService {
+class UserService extends AbstractService<User, IDbUser, ICompleteUser> {
+  constructor(model: IModel<IDbUser, ICompleteUser>) {
+    super(model, 'Usuário')
+  }
+}
+
+class UglyUserService implements IUserService {
   private _userModel: IUserModel
   private _storeModel: IStoreModel
   private _storeSellerModel: IStoreSellerModel
@@ -158,7 +166,7 @@ class UserService implements IUserService {
       userFound.password,
     )
 
-    // Se a senha coinscidir, gera token de acesso ao usuario; se não, retorna erro.
+    // Se a senha coinscidir, gera token de acesso ao Usuário; se não, retorna erro.
     if (rightPassword) {
       return generateAccessInfo(userFound)
     } else {
@@ -231,7 +239,7 @@ class UserService implements IUserService {
         StatusCode.ClientErrorNotFound,
       )
     }
-    // Verifica se a senha coinscide
+    // Verifica se a senha coincide
     const rightPassword = await CompareHash(password, userToBeUpdated.password)
     if (rightPassword) {
       // Faz o hash da senha e envia mensagem de sucesso
@@ -280,4 +288,4 @@ class UserService implements IUserService {
   }
 }
 
-export default UserService
+export default UglyUserService

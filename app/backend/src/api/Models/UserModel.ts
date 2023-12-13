@@ -83,7 +83,7 @@ class UserModel implements IUserModel {
     return user
   }
 
-  async createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser> {
+  async create(user: ICompleteUser, tx: ITransaction): Promise<IDbUser> {
     const newUser = await tx.user.create({
       data: {
         ...user,

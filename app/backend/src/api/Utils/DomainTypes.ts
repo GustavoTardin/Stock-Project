@@ -1,7 +1,6 @@
 enum DomainTypes {
-  USER = 'user',
-  STORE = 'store',
-  PRODUCT = 'product',
+  USER = 'Usuário',
+  PRODUCT = 'Product',
 }
 
-export default DomainTypes;
+export default DomainTypes

@@ -19,7 +19,7 @@ async function createUser(
 ): Promise<IDbUser> {
   const hashedPassword = hashPassword(user.password)
   user.password = hashedPassword
-  const createdUser = await userModel.createUser(user, tx as ITransaction)
+  const createdUser = await userModel.create(user, tx as ITransaction)
 
   if (user.stores) {
     const stores = await Promise.all(

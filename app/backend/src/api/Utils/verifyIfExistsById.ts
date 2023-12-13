@@ -2,8 +2,8 @@ import StatusCode from 'status-code-enum'
 import IModel from '../Contracts/interfaces/models/IModel'
 import CustomError from '../Errors/CustomError'
 
-const verifyIfExistsById = async <T>(
-  model: IModel<T>,
+const verifyIfExistsById = async <T, C>(
+  model: IModel<T, C>,
   id: number,
   includeInactive: boolean,
   objectName: string,
