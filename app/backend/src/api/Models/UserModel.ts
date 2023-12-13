@@ -9,9 +9,8 @@ import {
 } from '../Contracts/interfaces/users'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
-
 class UserModel implements IUserModel {
-  private _db: PrismaClient
+  public db: PrismaClient
   private _includeCredential = {
     id: true,
     firstName: true,
@@ -27,20 +26,20 @@ class UserModel implements IUserModel {
   }
 
   constructor(prisma: PrismaClient) {
-    this._db = prisma
+    this.db = prisma
   }
 
   async getCredentials(): Promise<ICredential[]> {
-    return this._db.credential.findMany()
+    return this.db.credential.findMany()
   }
 
   async getCredentialById(id: number): Promise<ICredential | null> {
-    const credential = await this._db.credential.findUnique({ where: { id } })
+    const credential = await this.db.credential.findUnique({ where: { id } })
     return credential
   }
 
   async getAll(includeInactive: boolean): Promise<IDbUser[]> {
-    const users = await this._db.user.findMany({
+    const users = await this.db.user.findMany({
       where: includeInactive ? undefined : { active: true },
       select: this._includeCredential,
     })
@@ -50,35 +49,34 @@ class UserModel implements IUserModel {
 
   async getByNickName(
     nickName: string,
+    includeInactive: boolean,
     showPassword = false,
-    includeInactive = false,
   ): Promise<IDbUser | null> {
     // Quase nunca será necessário devolver o password(com hash) do usuário,
     // mas em alguns poucos casos(por isso o default é false), como em requisição
     // de login ou update de senha, é necessário a senha para comparações.
     const select = { ...this._includeCredential, password: showPassword }
 
-    const user = await this._db.user.findUnique({
+    const user = await this.db.user.findUnique({
       where: includeInactive ? { nickName } : { nickName, active: true },
       select,
     })
 
     // Seta a exibição do password para false novamente.
-    this._includeCredential.password = false
     return user
   }
 
   async getById(
     id: number,
+    includeInactive: boolean,
     showPassword = false,
-    includeInactive = false,
   ): Promise<IDbUser | null> {
     // Quase nunca será necessário devolver o password(com hash) do usuário,
     // mas em alguns poucos casos(por isso o default é false), como em requisição
     // de login ou update de senha, é necessário a senha para comparações.
     const select = { ...this._includeCredential, password: showPassword }
 
-    const user = await this._db.user.findUnique({
+    const user = await this.db.user.findUnique({
       where: includeInactive ? { id } : { id, active: true },
       select,
     })
@@ -97,7 +95,7 @@ class UserModel implements IUserModel {
   }
 
   async updatePassword({ id, newPassword }: IChangePassword): Promise<void> {
-    await this._db.user.update({
+    await this.db.user.update({
       where: { id },
       data: { password: newPassword },
     })
@@ -107,7 +105,7 @@ class UserModel implements IUserModel {
     id,
     credentialId,
   }: IChangeUserCredential): Promise<IDbUser> {
-    const updatedUser = await this._db.user.update({
+    const updatedUser = await this.db.user.update({
       where: { id },
       data: { credentialId },
       select: this._includeCredential,
@@ -120,14 +118,14 @@ class UserModel implements IUserModel {
     active: boolean,
     transaction?: ITransaction,
   ): Promise<void> {
-    await (transaction || this._db).user.update({
+    await (transaction || this.db).user.update({
       where: { id },
       data: { active },
     })
   }
 
   async selfUpdateById(id: number, data: ISelfUpdate): Promise<IDbUser> {
-    const updatedUser = await this._db.user.update({
+    const updatedUser = await this.db.user.update({
       where: { id },
       data,
       select: this._includeCredential,

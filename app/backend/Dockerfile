@@ -8,8 +8,6 @@ RUN npm install
 
 COPY . .
 
-USER node
-
 EXPOSE 3009
 
 ENTRYPOINT [ "npm", "run" ]

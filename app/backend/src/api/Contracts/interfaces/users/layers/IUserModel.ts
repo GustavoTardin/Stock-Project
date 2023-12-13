@@ -5,20 +5,21 @@ import {
   IChangePassword,
   IChangeUserCredential,
 } from '..'
+import IModel from '../../models/IModel'
 import ITransaction from '../../prisma/ITransaction'
 import ISelfUpdate from '../updates/ISelfUpdate'
 
-interface IUserModel {
+interface IUserModel extends IModel<IDbUser> {
   getAll(includeInactive: boolean): Promise<IDbUser[]>
   getByNickName(
     nickName: string,
+    includeInactive: boolean,
     showPassword?: boolean,
-    includeInactive?: boolean,
   ): Promise<IDbUser | null>
   getById(
     id: number,
+    includeInactive: boolean,
     showPassword?: boolean,
-    includeInactive?: boolean,
   ): Promise<IDbUser | null>
   getCredentials(): Promise<ICredential[]>
   getCredentialById(id: number): Promise<ICredential | null>

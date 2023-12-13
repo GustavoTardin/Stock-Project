@@ -39,8 +39,9 @@ class UserController {
 
   getById = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const { includeInactive } = req.query
       const { id } = req.params
-      const user = await this._service.getById(Number(id))
+      const user = await this._service.getById(Number(id), includeInactive)
       res.status(StatusCode.SuccessOK).json(user)
     } catch (error) {
       next(error)

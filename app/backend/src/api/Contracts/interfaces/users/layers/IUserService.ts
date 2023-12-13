@@ -9,9 +9,9 @@ import { User } from '../../../../Domains'
 
 interface IUserService {
   getAll(includeInactive: unknown): Promise<User[]>
+  getByNickName(nickName: unknown, query: unknown): Promise<User>
+  getById(id: number, query: unknown): Promise<User>
   getCredentials(): Promise<ICredential[]>
-  getByNickName(nickName: unknown): Promise<User>
-  getById(id: number): Promise<User>
   createUser(user: unknown): Promise<User>
   login(user: unknown): Promise<ILoginResponse & IToken>
   updatePassword(data: unknown): Promise<string>
