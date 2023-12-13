@@ -1,42 +1,90 @@
-/* Estilos para o container do navbar */
-.nav-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    /* Fixa o navbar no topo */
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* Ocupa toda a largura */
-   background-color: black;
-    padding: 20px;
-    z-index: 1000;
-    /* Ajuste conforme necessário */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer base {
+    ul {
+        @apply gap-10;
+    }
+    li {
+      @apply hover:text-blueDetails hover:underline active:animate-bounce ;
+    }  
+} */
+/* .NavigationMenuIndicator {
+  background-color: grey;
+}
+.NavigationMenuIndicator[data-orientation='horizontal'] {
+  position: absolute;
+  height: 3px;
+  transition: width, transform, 250ms ease;
+}
+.NavigationMenuContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-duration: 250ms;
+  animation-timing-function: ease;
+}
+.NavigationMenuContent[data-motion='from-start'] {
+  animation-name: enterFromLeft;
+}
+.NavigationMenuContent[data-motion='from-end'] {
+  animation-name: enterFromRight;
+}
+.NavigationMenuContent[data-motion='to-start'] {
+  animation-name: exitToLeft;
+}
+.NavigationMenuContent[data-motion='to-end'] {
+  animation-name: exitToRight;
 }
 
-/* Estilos para a lista do navbar */
-.nav-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    /* Alinha horizontalmente */
+.NavigationMenuViewport {
+  position: relative;
+  width: var(--radix-navigation-menu-viewport-width);
+  height: var(--radix-navigation-menu-viewport-height);
+  transition: width, height, 250ms ease;
+} */
+
+@keyframes enterFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.nav-list li {
-    margin-right: 20px;
-    /* Espaçamento entre os itens da lista */
+@keyframes enterFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.nav-list a {
-    text-decoration: none;
-    color: #6300d7;
-
-    /* Cor do texto */
+@keyframes exitToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(200px);
+  }
 }
 
-button {
-    color: #6300d7;
+@keyframes exitToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
 }
-

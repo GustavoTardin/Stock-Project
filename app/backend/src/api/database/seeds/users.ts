@@ -2,8 +2,8 @@ import * as bcrypt from 'bcrypt'
 
 const users = [
   {
-    firstName: 'root',
-    lastName: 'dev',
+    firstName: 'Richard',
+    lastName: 'Machado',
     nickName: 'root',
     password: bcrypt.hashSync('1234', 10),
     credentialId: 1,
@@ -23,8 +23,8 @@ const users = [
     credentialId: 3,
   },
   {
-    firstName: 'Richard',
-    lastName: 'Machado',
+    firstName: 'Seu Joaquin',
+    lastName: 'da Silva',
     nickName: 'estoquista',
     password: bcrypt.hashSync('1234', 10),
     credentialId: 4,

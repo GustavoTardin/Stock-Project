@@ -1,13 +1,26 @@
-import IUser from './IUser';
-import IUserService from './IUserService';
-import IUserODM from './IUserODM';
-import IToken from './IToken';
-import ILoginResponse from './ILoginResponse';
-
+import IUser from './IUser'
+import IUserService from './layers/IUserService'
+import IToken from './IToken'
+import ILoginResponse from './reqResponse/ILoginResponse'
+import ICredential from './ICredential'
+import ICompleteUser from './reqBody/ICompleteUser'
+import IDbUser from './IDbUser'
+import IUserModel from './layers/IUserModel'
+import ILoginUser from './reqBody/ILoginUser'
+import IChangePassword from './updates/IChangePassword'
+import IChangeUserCredential from './updates/IChangeUserCredential'
+import IChangeStatus from './updates/IChangeStatus'
 export {
   IUser,
-  IUserODM,
   IUserService,
   IToken,
   ILoginResponse,
-};
+  ICredential,
+  ICompleteUser,
+  IDbUser,
+  IUserModel,
+  ILoginUser,
+  IChangePassword,
+  IChangeUserCredential,
+  IChangeStatus,
+}

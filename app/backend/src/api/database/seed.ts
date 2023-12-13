@@ -1,6 +1,7 @@
 import prisma from './prisma'
 import users from './seeds/users'
 import credentials from './seeds/credentials'
+import stores from './seeds/stores'
 
 async function seedCredentials() {
   await Promise.all(
@@ -21,7 +22,7 @@ async function seedCredentials() {
 async function seedUsers() {
   await Promise.all(
     users.map(async (user) => {
-      await prisma.user.upsert({
+      const createdUser = await prisma.user.upsert({
         where: {
           nickName: user.nickName,
         },
@@ -30,6 +31,21 @@ async function seedUsers() {
         },
         update: {},
       })
+
+      console.log(`User with id ${createdUser.id} created successfully`)
+    }),
+  )
+}
+
+async function seedStores() {
+  await Promise.all(
+    stores.map(async (store) => {
+      const createdStore = await prisma.store.upsert({
+        where: { storeName: store.storeName },
+        create: { ...store },
+        update: {},
+      })
+      console.log(`Store with id ${createdStore.id} created successfully`)
     }),
   )
 }
@@ -38,12 +54,12 @@ async function main() {
   console.log('Start seeding...')
   await seedCredentials()
   await seedUsers()
-  console.log('seed completed')
+  await seedStores()
+  console.log('seed completed!!!')
 }
 
 main()
   .catch((e) => {
-    console.log('ola')
     console.log(e)
     process.exit(1)
   })

@@ -1,4 +1,4 @@
-import ISale from '../../Components/Admin/Sales/interfaces/ISale';
+import ISale from '../../components/Admin/Sales/interfaces/ISale';
 import { api } from './requests';
 
 const postSale = async (salesSummary: ISale) => {

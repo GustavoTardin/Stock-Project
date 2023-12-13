@@ -7,17 +7,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Credential {
+  id             Int    @id @default(autoincrement())
+  credentialName Role   @unique
+  users          User[]
+
+  @@map("credentials")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  firstName    String
+  lastName     String?
+  nickName     String     @unique
+  password     String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())   @updatedAt
+  active       Boolean    @default(true)
+  credentialId Int        @default(3)
+  stores       StoreSellers[]
+  credential   Credential @relation(fields: [credentialId], references: [id], onDelete: SetDefault, onUpdate: Cascade)
+
+  @@map("users")
+}
+
+model Store {
+  id            Int            @id @default(autoincrement())
+  storeName     String         @unique
+  contactNumber String         @unique
+  storeAddress  StoreAdress?
+  sellers       StoreSellers[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())   @updatedAt
+  active       Boolean    @default(true)
+
+  @@map("stores")
+}
+
+model StoreAdress {
+  id            Int    @id @default(autoincrement())
+  storeId       Int    @unique
+  state         String
+  city          String
+  street        String
+  addressNumber Int
+  updatedAt    DateTime   @default(now())   @updatedAt
+  store         Store  @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model StoreSellers {
+  userId  Int
+  storeId Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())   @updatedAt
+  active       Boolean     @default(true)
+  store   Store @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, storeId])
+}
+
 model Product {
   id           Int        @id @default(autoincrement())
-  collection   Collection @relation(fields: [collectionId], references: [id])
   collectionId Int        @unique
-  size         Size      @relation(fields: [sizeId], references: [id])
   sizeId       Int        @unique
   designId     Int        @unique
   price        Decimal
   cost         Decimal
   createdAt    DateTime   @default(now())
   updateAt     DateTime   @updatedAt
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  size         Size       @relation(fields: [sizeId], references: [id])
   Stock        Stock?
 
   @@map("products")
@@ -26,7 +86,8 @@ model Product {
 model ProductCategory {
   id           Int    @id @default(autoincrement())
   categoryName String @unique
-   @@map("product_categories")
+
+  @@map("product_categories")
 }
 
 model ProductModel {
@@ -35,26 +96,28 @@ model ProductModel {
   modelName   String
   description String
   collections Collection?
-   @@map("product_models")
+
+  @@map("product_models")
 }
 
 model Stock {
   id        Int     @id @default(autoincrement())
-  product   Product @relation(fields: [productId], references: [id])
   productId Int     @unique
   quantity  Int
   allertLow Int
-   @@map("stocks")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("stocks")
 }
 
 model Collection {
   id        Int          @id @default(autoincrement())
-  model     ProductModel @relation(fields: [modelId], references: [id])
   modelId   Int          @unique
-  gender    Gender       @relation(fields: [genderId], references: [id])
   genderId  Int
   apparelId Int
   apparel   Apparel      @relation(fields: [apparelId], references: [id])
+  gender    Gender       @relation(fields: [genderId], references: [id])
+  model     ProductModel @relation(fields: [modelId], references: [id])
   Product   Product?
 
   @@map("collections")
@@ -64,49 +127,32 @@ model Gender {
   id          Int          @id @default(autoincrement())
   name        String       @unique
   Collections Collection[]
-   @@map("genders")
+
+  @@map("genders")
 }
 
 model Apparel {
   id         Int          @id @default(autoincrement())
   type       String       @unique
   Collection Collection[]
-   @@map("apparels")
+
+  @@map("apparels")
 }
 
 model Size {
   id      Int      @id @default(autoincrement())
   size    String   @unique
   Product Product?
+
   @@map("sizes")
 }
 
 model Design {
   id     Int    @id @default(autoincrement())
   design String @unique
+
   @@map("designs")
 }
-
-model Credential {
-  id             Int  @id @default(autoincrement())
-  credentialName Role @unique
-  users          User[]
-
-  @@map("credentials")
-}
-
-model User {
-  id           Int     @id @default(autoincrement())
-  firstName    String
-  lastName     String?
-  nickName     String  @unique
-  password     String
-  credential   Credential @relation(fields: [credentialId], references: [id])
-  credentialId Int @default(3)
-
-  @@map("users")
-}
-
 
 enum Role {
   Admin

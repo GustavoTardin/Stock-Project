@@ -1,12 +1,13 @@
-import NavBar from '../Components/Navbar';
+import Header from '@/components/Header';
 import '../index.css';
+// import {useAuthUser, useAuthHeader} from 'react-auth-kit'
+// import { useEffect } from 'react';
 
 export default function Home() {
+  // const authHeader = useAuthHeader()
+  // const token = authHeader().split(' ')[1] 
+
   return (
-    <div className="bg-black">
-      <p className="text-red">oi</p>
-      <h1 className="text-red">Home</h1>
-      <NavBar />
-    </div>
+      <Header />
   );
 }

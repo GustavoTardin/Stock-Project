@@ -1,42 +1,127 @@
-import { NextFunction, Request, Response } from 'express';
-import CustomError from '../Errors/CustomError';
+import { NextFunction, Request, Response } from 'express'
+import StatusCode from 'status-code-enum'
+import CustomError from '../Errors/CustomError'
 
 class UserValidation {
-  static usernameRequired = (req: Request, _res: Response, next: NextFunction) => {
-    const { userName } = req.body;
-    if (userName) {
-      next();
+  static nickNameRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { nickName } = req.body
+    if (nickName) {
+      next()
     } else {
-      next(new CustomError('Nome do novo colaborador é obrigatório', '400'));
+      const error = new CustomError(
+        'Nome de usuário é obrigatório',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
     }
-  };
+  }
 
-  static passwordRequired = (req: Request, _res: Response, next: NextFunction) => {
-    const { password } = req.body;
+  static firstNameRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { firstName } = req.body
+    if (firstName) {
+      next()
+    } else {
+      const error = new CustomError(
+        'O nome do colaborador é obrigatório!',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    }
+  }
+
+  static passwordRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { password } = req.body
     if (password) {
-      next();
+      next()
     } else {
-      next(new CustomError('Você deve fornecer uma senha para o novo colaborador', '400'));
+      const error = new CustomError(
+        'O campo senha é obrigatório',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
     }
-  };
+  }
 
-  static credentialRequired = (req: Request, _res: Response, next: NextFunction) => {
-    const { credential } = req.body;
-    if (credential) {
-      next();
+  static credentialRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { credentialName } = req.body
+    if (credentialName) {
+      next()
     } else {
-      next(new CustomError('Você deve fornecer a função do novo colaborador', '400'));
+      const error = new CustomError(
+        'Você deve fornecer a função do novo colaborador',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
     }
-  };
+  }
 
-  static ifSellerStoreRequired = (req: Request, _res: Response, next: NextFunction) => {
-    const { credential, stores } = req.body;
-    if (credential === 'Lojista' && !stores) {
-      throw new CustomError('Lojista deve ter o campo Vendedores preenchido', '400');
+  static paramsIdRequired = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const { id } = req.params
+    // Verifica se o id está presente e se é um número válido
+    if (!id || isNaN(Number(id))) {
+      const error = new CustomError(
+        'O id é obrigatório e deve ser um número!',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    } else {
+      next()
     }
-    if (credential !== 'Lojista') delete req.body.stores;
-    next();
-  };
+  }
+
+  static newPasswordRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { newPassword } = req.body
+    if (newPassword) {
+      next()
+    } else {
+      const error = new CustomError(
+        'A nova senha é obrigatório',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    }
+  }
+
+  static activeRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { active } = req.body
+    if (active === undefined) {
+      const error = new CustomError(
+        'o campo active é obrigatório!',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    } else {
+      next()
+    }
+  }
 }
 
-export default UserValidation;
+export default UserValidation
