@@ -32,56 +32,39 @@ import { StatusCode } from 'status-code-enum'
 import updateCredentialSchema from '../Contracts/zod/schemas/users/updateCredentialSchema'
 import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
 import selfUpdateUserSchema from '../Contracts/zod/schemas/users/selfUpdateUserSchema'
-import verifyIfExistsById from '../Utils/verifyIfExistsById'
 import AbstractService from './AbstractService'
-import IModel from '../Contracts/interfaces/models/IModel'
 
-class UserService extends AbstractService<User, IDbUser, ICompleteUser> {
-  constructor(model: IModel<IDbUser, ICompleteUser>) {
-    super(model, 'Usuário')
-  }
-}
-
-class UglyUserService implements IUserService {
-  private _userModel: IUserModel
+class UserService
+  extends AbstractService<User, IDbUser, ICompleteUser, IUserModel>
+  implements IUserService
+{
   private _storeModel: IStoreModel
   private _storeSellerModel: IStoreSellerModel
   constructor(
-    userModel: IUserModel,
+    model: IUserModel,
     storeModel: IStoreModel,
     storeSellerModel: IStoreSellerModel,
   ) {
-    this._userModel = userModel
+    super(model, 'Usuário')
     this._storeModel = storeModel
     this._storeSellerModel = storeSellerModel
   }
 
-  async getAll(query: unknown): Promise<User[]> {
-    const includeInactive = query === 'true'
-    const users = await this._userModel.getAll(includeInactive)
-    const domains = users.map((user) => new User(user))
-    return domains
-  }
-
-  async getCredentials(): Promise<ICredential[]> {
-    const credentials = await this._userModel.getCredentials()
-    return credentials
-  }
-
   async getByNickName(nickName: unknown, query: unknown): Promise<User> {
-    const includeInactive = query === 'true'
     // valida se nickName é uma string; Se não, lança erro 400.
     const validatedNickName: string = validateField<string>(
       loginSchema.pick({ nickName: true }),
       nickName,
     )
-    const user = await this._userModel.getByNickName(
+
+    const includeInactive = query === 'true'
+    const user = await this._model.getByNickName(
       validatedNickName,
       includeInactive,
     )
     if (!user) {
       throw new CustomError(
-        'Usuário não encontrado',
+        `${this.domainName} não encontrado`,
         StatusCode.ClientErrorNotFound,
       )
     }
@@ -89,20 +72,12 @@ class UglyUserService implements IUserService {
     return domain
   }
 
-  async getById(id: number, query: unknown): Promise<User> {
-    const includeInactive = query === 'true'
-    // validação: Caso não exista, lança erro 404.
-    const user = await verifyIfExistsById<IDbUser>(
-      this._userModel,
-      id,
-      includeInactive,
-      'Usuário',
-    )
-    const domain = new User(user)
-    return domain
+  async getCredentials(): Promise<ICredential[]> {
+    const credentials = await this._model.getCredentials()
+    return credentials
   }
 
-  async createUser(user: unknown): Promise<User> {
+  async create(user: unknown): Promise<User> {
     // validação: Caso não tenha o formato correto, retorna erro 400.
     const validatedUser: ICompleteUser = validateField<ICompleteUser>(
       completeUserSchema,
@@ -110,9 +85,10 @@ class UglyUserService implements IUserService {
     )
 
     // Verifica se nickname já está em uso, se sim, retorna erro.
-    const duplicatedUser = await this._userModel.getByNickName(
+    const includeInactive = true
+    const duplicatedUser = await this._model.getByNickName(
       validatedUser.nickName,
-      true, // para incluir usuários desativados
+      includeInactive, // para incluir usuários desativados
     )
     if (duplicatedUser)
       throw new CustomError(
@@ -127,7 +103,7 @@ class UglyUserService implements IUserService {
       try {
         const createdUser = await createUser(
           validatedUser,
-          this._userModel,
+          this._model,
           this._storeModel,
           this._storeSellerModel,
           tx as ITransaction,
@@ -146,11 +122,14 @@ class UglyUserService implements IUserService {
   async login(loginUser: unknown): Promise<ILoginResponse & IToken> {
     // Validação: Caso não tenha o formato correto, retorna erro 400.
     const validatedLogin = validateField<ILoginUser>(loginSchema, loginUser)
+
     // Verifica se nickname existe
-    const userFound = await this._userModel.getByNickName(
+    const includeInactive = false
+    const showPassword = true
+    const userFound = await this._model.getByNickName(
       validatedLogin.nickName,
-      false, // Não incluir inativos
-      true, // incluir password
+      includeInactive, // Não incluir inativos
+      showPassword, // incluir password
     )
 
     if (!userFound) {
@@ -166,7 +145,7 @@ class UglyUserService implements IUserService {
       userFound.password,
     )
 
-    // Se a senha coinscidir, gera token de acesso ao Usuário; se não, retorna erro.
+    // Se a senha coincidir, gera token de acesso ao usuário; se não, retorna erro.
     if (rightPassword) {
       return generateAccessInfo(userFound)
     } else {
@@ -185,16 +164,12 @@ class UglyUserService implements IUserService {
     )
 
     // Verifica se o id existe, se não, lança erro 404
-    const userToBeUpdated = await verifyIfExistsById<IDbUser>(
-      this._userModel,
-      id,
-      true,
-      'Usuário',
-    )
+    const includeInactive = true
+    const userToBeUpdated = await super.verifyIfExistsById(id, includeInactive)
 
     await prisma.$transaction(async (tx) => {
       try {
-        await this._userModel.updateStatusById(id, active, tx as ITransaction)
+        await this._model.updateStatusById(id, active, tx as ITransaction)
         await this._storeSellerModel.updateBySellerId(
           id,
           active,
@@ -227,10 +202,12 @@ class UglyUserService implements IUserService {
       )
 
     // verifica se o id existe, se não, lança erro.
-    const userToBeUpdated = await this._userModel.getById(
+    const includeInactive = false
+    const showPassword = true
+    const userToBeUpdated = await this._model.getById(
       id,
-      false, // para não incluir inativos
-      true, // para mandar a senha antiga junto.
+      includeInactive, // para não incluir inativos
+      showPassword, // para mandar a senha antiga junto.
     )
 
     if (!userToBeUpdated) {
@@ -243,7 +220,7 @@ class UglyUserService implements IUserService {
     const rightPassword = await CompareHash(password, userToBeUpdated.password)
     if (rightPassword) {
       // Faz o hash da senha e envia mensagem de sucesso
-      return hashAndUpdatePassword(changePasswordType, this._userModel)
+      return hashAndUpdatePassword(changePasswordType, this._model)
     } else {
       throw new CustomError(
         'Senha antiga incorreta!',
@@ -259,17 +236,18 @@ class UglyUserService implements IUserService {
       data,
     )
     // Verifica se credential existe, se não, lança 404
-    const credential = await this._userModel.getCredentialById(ids.credentialId)
+    const credential = await this._model.getCredentialById(ids.credentialId)
     if (!credential)
       throw new CustomError(
         'Cargo inexistente!',
         StatusCode.ClientErrorNotFound,
       )
     // Verifica se usuário existe, se não, lança erro 404.
-    await verifyIfExistsById(this._userModel, ids.id, false, 'usuário')
+    const includeInactive = false
+    await super.verifyIfExistsById(ids.id, includeInactive)
 
     // Ambos existindo, atualiza credential do usuário, e retorna.
-    const updatedUser = await this._userModel.updateUserCredential(ids)
+    const updatedUser = await this._model.updateUserCredential(ids)
     const domain = new User(updatedUser)
     return domain
   }
@@ -279,13 +257,14 @@ class UglyUserService implements IUserService {
     const validatedUser = validateField<ISelfUpdate>(selfUpdateUserSchema, data)
 
     // Verifica se usuário existe, se não, lança erro 404
-    await verifyIfExistsById(this._userModel, id, false, 'Usuário')
+    const includeInactive = false
+    await super.verifyIfExistsById(id, includeInactive)
 
-    const updatedUser = await this._userModel.selfUpdateById(id, validatedUser)
+    const updatedUser = await this._model.selfUpdateById(id, validatedUser)
 
     const domain = new User(updatedUser)
     return domain
   }
 }
 
-export default UglyUserService
+export default UserService

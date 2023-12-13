@@ -1,5 +1,5 @@
 import IUser from './IUser'
-import IUserService from './layers/IUserService'
+import IUserService from '../services/IUserService'
 import IToken from './IToken'
 import ILoginResponse from './reqResponse/ILoginResponse'
 import ICredential from './ICredential'

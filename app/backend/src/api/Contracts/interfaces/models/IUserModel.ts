@@ -10,7 +10,6 @@ import ITransaction from '../prisma/ITransaction'
 import ISelfUpdate from '../users/updates/ISelfUpdate'
 
 interface IUserModel extends IModel<IDbUser, ICompleteUser> {
-  getAll(includeInactive: boolean): Promise<IDbUser[]>
   getByNickName(
     nickName: string,
     includeInactive: boolean,

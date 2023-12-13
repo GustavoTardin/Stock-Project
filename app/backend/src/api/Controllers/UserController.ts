@@ -9,15 +9,6 @@ class UserController {
     this._service = service
   }
 
-  createUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const newUser = await this._service.createUser(req.body)
-      res.status(StatusCode.SuccessCreated).json(newUser)
-    } catch (error) {
-      next(error)
-    }
-  }
-
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userInfo = await this._service.login(req.body)

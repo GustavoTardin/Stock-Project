@@ -9,6 +9,7 @@ import {
 } from '../Contracts/interfaces/users'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
+
 class UserModel implements IUserModel {
   public db: PrismaClient
   private _includeCredential = {

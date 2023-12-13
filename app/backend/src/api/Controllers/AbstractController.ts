@@ -39,3 +39,30 @@ abstract class AbstractController<
 export default AbstractController;
 
 */
+
+import StatusCode from 'status-code-enum'
+import IService from '../Contracts/interfaces/services/IService'
+import { NextFunction, Request, Response } from 'express'
+
+abstract class AbstractController<
+  T,
+  DbRes,
+  Service extends IService<T, DbRes>,
+> {
+  protected service: Service
+
+  constructor(service: Service) {
+    this.service = service
+  }
+
+  create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const createdData = await this.service.create(req.body)
+      res.status(StatusCode.SuccessCreated).json(createdData)
+    } catch (error) {
+      next(error)
+    }
+  }
+}
+
+export default AbstractController

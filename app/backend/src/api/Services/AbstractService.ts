@@ -4,16 +4,22 @@ import IService from '../Contracts/interfaces/services/IService'
 import DomainFactory from '../Utils/DomainFactory'
 import CustomError from '../Errors/CustomError'
 
-abstract class AbstractService<T, dbRes, dbCreate>
-  implements IService<T, dbRes>
+abstract class AbstractService<
+  T,
+  dbRes,
+  dbCreate,
+  Model extends IModel<dbRes, dbCreate>,
+> implements IService<T, dbRes>
 {
-  private _model: IModel<dbRes, dbCreate>
+  protected _model: Model
   domainName: string
 
-  constructor(model: IModel<dbRes, dbCreate>, domain: string) {
+  constructor(model: Model, domain: string) {
     this._model = model
     this.domainName = domain
   }
+
+  abstract create(data: unknown): Promise<T>
 
   async getAll(query: unknown): Promise<T[]> {
     const includeInactive = query === 'true'
