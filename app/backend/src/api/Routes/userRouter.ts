@@ -48,7 +48,7 @@ userRouter.post(
   firstNameRequired,
   passwordRequired,
   credentialRequired,
-  userController.createUser,
+  userController.create,
 )
 userRouter.post(
   '/login',

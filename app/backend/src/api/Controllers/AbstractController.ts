@@ -1,45 +1,3 @@
-/* import { NextFunction, Request, Response } from 'express';
-import { Document } from 'mongoose';
-import AbstractService from '../Services/AbstractService';
-import AbstractODM from '../Models/AbstractODM';
-import DomainFactory from '../Utils/DomainFactory';
-
-abstract class AbstractController<
-    DocumentType extends Document,
-    ODMType extends AbstractODM<DocumentType>,
-    ServiceType extends AbstractService<DocumentType, ODMType>> {
-  protected service: ServiceType;
-  public domainType: string;
-  constructor(domainType: string, service: ServiceType) {
-    this.service = service;
-    this.domainType = domainType;
-  }
-
-  getAll = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const data = await this.service.getAll();
-      const domains = data.map((e) => DomainFactory.createDomain(this.domainType, e));
-      res.status(200).json(domains);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { id } = req.params;
-      const message = await this.service.deleteById(id);
-      res.status(204).json(message);
-    } catch (error) {
-      next(error);
-    }
-  };
-}
-
-export default AbstractController;
-
-*/
-
 import StatusCode from 'status-code-enum'
 import IService from '../Contracts/interfaces/services/IService'
 import { NextFunction, Request, Response } from 'express'
@@ -53,6 +11,27 @@ abstract class AbstractController<
 
   constructor(service: Service) {
     this.service = service
+  }
+
+  getAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { includeInactive } = req.query
+      const domains = await this.service.getAll(includeInactive)
+      res.status(StatusCode.SuccessOK).json(domains)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  getById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { includeInactive } = req.query
+      const { id } = req.params
+      const domain = await this.service.getById(Number(id), includeInactive)
+      res.status(StatusCode.SuccessOK).json(domain)
+    } catch (error) {
+      next(error)
+    }
   }
 
   create = async (req: Request, res: Response, next: NextFunction) => {

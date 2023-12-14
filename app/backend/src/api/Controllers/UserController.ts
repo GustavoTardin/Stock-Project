@@ -1,39 +1,14 @@
 import { NextFunction, Request, Response } from 'express'
-import { IUserService } from '../Contracts/interfaces/users'
+import { IDbUser, IUserService } from '../Contracts/interfaces/users'
 import StatusCode from 'status-code-enum'
+import AbstractController from './AbstractController'
+import { User } from '../Domains'
 
-class UserController {
-  private _service: IUserService
-
-  constructor(service: IUserService) {
-    this._service = service
-  }
-
+class UserController extends AbstractController<User, IDbUser, IUserService> {
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await this._service.login(req.body)
+      const userInfo = await this.service.login(req.body)
       res.status(StatusCode.SuccessOK).json(userInfo)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  getAll = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { includeInactive } = req.query
-      const users = await this._service.getAll(includeInactive)
-      res.status(StatusCode.SuccessOK).json(users)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  getById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { includeInactive } = req.query
-      const { id } = req.params
-      const user = await this._service.getById(Number(id), includeInactive)
-      res.status(StatusCode.SuccessOK).json(user)
     } catch (error) {
       next(error)
     }
@@ -41,7 +16,7 @@ class UserController {
 
   getCredentials = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const credentials = await this._service.getCredentials()
+      const credentials = await this.service.getCredentials()
       res.status(StatusCode.SuccessOK).json(credentials)
     } catch (error) {
       next(error)
@@ -52,7 +27,7 @@ class UserController {
     try {
       const { id } = req.params
       const { password, newPassword } = req.body
-      const updatedMessage = await this._service.updatePassword({
+      const updatedMessage = await this.service.updatePassword({
         id: Number(id),
         password,
         newPassword,
@@ -71,7 +46,7 @@ class UserController {
     try {
       const { id } = req.params
       const { credentialId } = req.body
-      const updatedUser = await this._service.updateUserCredential({
+      const updatedUser = await this.service.updateUserCredential({
         id: Number(id),
         credentialId,
       })
@@ -89,7 +64,7 @@ class UserController {
     try {
       const { id } = req.params
       const { active } = req.body
-      const updatedMessage = await this._service.updateStatusById({
+      const updatedMessage = await this.service.updateStatusById({
         id: Number(id),
         active,
       })
@@ -102,7 +77,7 @@ class UserController {
   selfUpdateById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params
-      const updatedUser = await this._service.selfUpdateById(
+      const updatedUser = await this.service.selfUpdateById(
         Number(id),
         req.body,
       )
