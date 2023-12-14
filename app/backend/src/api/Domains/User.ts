@@ -4,14 +4,14 @@ class User {
   protected nickName: string
   protected firstName: string
   protected lastName: string | null
-  protected credential: string
+  protected credentialName: string
 
   constructor(user: IDbUser) {
     this.id = user.id
     this.nickName = user.nickName
     this.firstName = user.firstName
     this.lastName = user.lastName
-    this.credential = user.credential.credentialName
+    this.credentialName = user.credential.credentialName
   }
 }
 

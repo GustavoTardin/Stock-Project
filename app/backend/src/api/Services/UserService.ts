@@ -10,29 +10,32 @@ import {
   IChangePassword,
   IChangeUserCredential,
   IChangeStatus,
+  ISelfUpdate,
 } from '../Contracts/interfaces/users'
 import {
   ChangeStatusSchema,
   changePasswordSchema,
   completeUserSchema,
   loginSchema,
+  selfUpdateUserSchema,
+  updateCredentialSchema,
 } from '../Contracts/zod/schemas/users'
+import {
+  generateAccessInfo,
+  createUser,
+  compareHash,
+  hashAndUpdatePassword,
+} from '../Utils/user'
 import { User } from '../Domains'
 import CustomError from '../Errors/CustomError'
-import generateAccessInfo from '../Utils/user/generateAccessInfo'
-import { CompareHash } from '../Utils/user/hashPassword'
 import validateField from '../Utils/serviceValidation'
 import { IStoreModel } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
-import createUser from '../Utils/user/createUser'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSellerModel'
-import hashAndUpdatePassword from '../Utils/user/hashAndUpdatePassword'
 import { StatusCode } from 'status-code-enum'
-import updateCredentialSchema from '../Contracts/zod/schemas/users/updateCredentialSchema'
-import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
-import selfUpdateUserSchema from '../Contracts/zod/schemas/users/selfUpdateUserSchema'
 import AbstractService from './AbstractService'
+import DomainTypes from '../Utils/DomainTypes'
 
 class UserService
   extends AbstractService<User, IDbUser, ICompleteUser, IUserModel>
@@ -45,7 +48,7 @@ class UserService
     storeModel: IStoreModel,
     storeSellerModel: IStoreSellerModel,
   ) {
-    super(model, 'Usuário')
+    super(model, DomainTypes.USER)
     this._storeModel = storeModel
     this._storeSellerModel = storeSellerModel
   }
@@ -53,7 +56,7 @@ class UserService
   async getByNickName(nickName: unknown, query: unknown): Promise<User> {
     // valida se nickName é uma string; Se não, lança erro 400.
     const validatedNickName: string = validateField<string>(
-      loginSchema.pick({ nickName: true }),
+      loginSchema.shape.nickName,
       nickName,
     )
 
@@ -92,7 +95,7 @@ class UserService
     )
     if (duplicatedUser)
       throw new CustomError(
-        'Nome de usuário já existe!!',
+        'Esse nome de usuário já está em uso!',
         StatusCode.ClientErrorConflict,
       )
 
@@ -134,13 +137,13 @@ class UserService
 
     if (!userFound) {
       throw new CustomError(
-        'Usuário ou senha incorretos',
+        `${this.domainName} ou senha incorretos`,
         StatusCode.ClientErrorNotFound,
       )
     }
 
     // Verifica se a senha coincide
-    const rightPassword = await CompareHash(
+    const rightPassword = await compareHash(
       validatedLogin.password,
       userFound.password,
     )
@@ -180,7 +183,7 @@ class UserService
         throw error
       }
     })
-    const updatedMessage = `Usuário ${userToBeUpdated.firstName} ${
+    const updatedMessage = `${this.domainName} ${userToBeUpdated.firstName} ${
       active ? 'reativado' : 'desativado'
     } com sucesso`
     return updatedMessage
@@ -193,9 +196,9 @@ class UserService
       data,
     )
 
-    const { id, password, newPassword } = changePasswordType
+    const { id, currentPassword, newPassword } = changePasswordType
     // Verifica se senhas são iguais antes de chamar o database, aumentando performance em casos de erro
-    if (password === newPassword)
+    if (currentPassword === newPassword)
       throw new CustomError(
         'As senhas devem ser diferentes!',
         StatusCode.ClientErrorBadRequest,
@@ -212,14 +215,17 @@ class UserService
 
     if (!userToBeUpdated) {
       throw new CustomError(
-        'Usuário não encontrado',
+        `${this.domainName} não encontrado`,
         StatusCode.ClientErrorNotFound,
       )
     }
     // Verifica se a senha coincide
-    const rightPassword = await CompareHash(password, userToBeUpdated.password)
+    const rightPassword = await compareHash(
+      currentPassword,
+      userToBeUpdated.password,
+    )
     if (rightPassword) {
-      // Faz o hash da senha e envia mensagem de sucesso
+      // Faz o hash da senha, atualiza no database, e envia mensagem de sucesso
       return hashAndUpdatePassword(changePasswordType, this._model)
     } else {
       throw new CustomError(
@@ -259,6 +265,20 @@ class UserService
     // Verifica se usuário existe, se não, lança erro 404
     const includeInactive = false
     await super.verifyIfExistsById(id, includeInactive)
+
+    if (validatedUser.nickName) {
+      // Verifica se nickname já está em uso, se sim, retorna erro.
+      const includeInactive = true
+      const duplicatedUser = await this._model.getByNickName(
+        validatedUser.nickName,
+        includeInactive, // para incluir usuários desativados
+      )
+      if (duplicatedUser)
+        throw new CustomError(
+          'Esse nome de usuário já está em uso!',
+          StatusCode.ClientErrorConflict,
+        )
+    }
 
     const updatedUser = await this._model.selfUpdateById(id, validatedUser)
 

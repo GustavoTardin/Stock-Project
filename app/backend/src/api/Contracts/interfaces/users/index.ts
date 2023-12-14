@@ -10,6 +10,7 @@ import ILoginUser from './reqBody/ILoginUser'
 import IChangePassword from './updates/IChangePassword'
 import IChangeUserCredential from './updates/IChangeUserCredential'
 import IChangeStatus from './updates/IChangeStatus'
+import ISelfUpdate from './updates/ISelfUpdate'
 export {
   IUser,
   IUserService,
@@ -23,4 +24,5 @@ export {
   IChangePassword,
   IChangeUserCredential,
   IChangeStatus,
+  ISelfUpdate,
 }

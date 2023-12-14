@@ -106,6 +106,23 @@ class UserValidation {
     }
   }
 
+  static currentPasswordRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { currentPassword } = req.body
+    if (currentPassword) {
+      next()
+    } else {
+      const error = new CustomError(
+        'A senha antiga é obrigatório',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    }
+  }
+
   static activeRequired = (
     req: Request,
     _res: Response,

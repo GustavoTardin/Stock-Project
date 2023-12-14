@@ -1,19 +1,11 @@
 import z from 'zod'
+import ChangeStatusSchema from './changeStatusSchema'
+import loginSchema from './loginSchema'
 
 const changePasswordSchema = z.object({
-  id: z.number(),
-  password: z
-    .string()
-    .min(4, { message: 'A senha deve ter no mínimo 4 caracteres' })
-    .refine((value) => value.trim().length > 0, {
-      message: 'A senha é obrigatória',
-    }),
-  newPassword: z
-    .string()
-    .min(4, { message: 'A senha deve ter no mínimo 4 caracteres' })
-    .refine((value) => value.trim().length > 0, {
-      message: 'A senha é obrigatória',
-    }),
+  id: ChangeStatusSchema.shape.id,
+  currentPassword: loginSchema.shape.password,
+  newPassword: loginSchema.shape.password,
 })
 
 export default changePasswordSchema

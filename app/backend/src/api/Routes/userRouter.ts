@@ -21,6 +21,7 @@ const {
   firstNameRequired,
   paramsIdRequired,
   activeRequired,
+  currentPasswordRequired,
 } = UserValidation
 const { tokenRequired, verifyUserOwnership } = TokenValidation
 
@@ -62,7 +63,7 @@ userRouter.patch(
   paramsIdRequired,
   tokenRequired(credentialGuard.freeAccess),
   verifyUserOwnership,
-  passwordRequired,
+  currentPasswordRequired,
   newPasswordRequired,
   userController.updatePassword,
 )
