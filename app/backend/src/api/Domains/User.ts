@@ -5,6 +5,7 @@ class User {
   protected firstName: string
   protected lastName: string | null
   protected credentialName: string
+  protected active: boolean
 
   constructor(user: IDbUser) {
     this.id = user.id
@@ -12,6 +13,7 @@ class User {
     this.firstName = user.firstName
     this.lastName = user.lastName
     this.credentialName = user.credential.credentialName
+    this.active = user.active
   }
 }
 
