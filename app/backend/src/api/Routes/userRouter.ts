@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { TokenValidation, UserValidation } from '../Midllewares'
+import { TokenValidation, UserValidation } from '../Middlewares'
 import credentialGuard from '../Utils/credentialGuard'
 import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
