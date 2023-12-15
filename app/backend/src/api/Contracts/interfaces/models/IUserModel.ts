@@ -27,7 +27,7 @@ interface IUserModel extends IModel<IDbUser, ICompleteUser> {
     active: boolean,
     transaction?: ITransaction,
   ): Promise<void>
-  updatePassword({ id, password }: IChangePassword): Promise<void>
+  updatePassword({ id, currentPassword }: IChangePassword): Promise<void>
   updateUserCredential({
     id,
     credentialId,

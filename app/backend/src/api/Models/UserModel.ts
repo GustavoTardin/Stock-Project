@@ -24,6 +24,7 @@ class UserModel implements IUserModel {
         credentialName: true,
       },
     },
+    stores: { select: { storeId: true }, where: { active: true } },
   }
 
   constructor(prisma: PrismaClient) {

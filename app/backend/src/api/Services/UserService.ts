@@ -102,22 +102,22 @@ class UserService
     // Cria usuário e caso ele faça parte de alguma loja, cria um registro na tabela auxiliar.
     // Também faz a validação se as lojas de fato existem, se não, lança erro e graças
     // a transaction, desfaz a criação do usuário, evitando inconsistências no database.
-    const newUser = await prisma.$transaction(async (tx): Promise<IDbUser> => {
+    const userId = await prisma.$transaction(async (tx): Promise<number> => {
       try {
-        const createdUser = await createUser(
+        const userId = await createUser(
           validatedUser,
           this._model,
           this._storeModel,
           this._storeSellerModel,
           tx as ITransaction,
         )
-        return createdUser
+        return userId
       } catch (error) {
         console.log(`Erro durante a criação de uma das entidades: ${error}`)
         throw error
       }
     })
-
+    const newUser = (await this._model.getById(userId, false)) as IDbUser
     const domain = new User(newUser)
     return domain
   }
