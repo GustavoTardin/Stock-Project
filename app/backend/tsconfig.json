@@ -8,11 +8,11 @@
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "resolveJsonModule": true,
-        "moduleResolution": "Node16"
+        "moduleResolution": "Node16",
     },
     "exclude": [
         "**/node_modules*"
-    ],
+    ],  
     "include": [
         "./**/**/*.ts"
     ]

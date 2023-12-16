@@ -42,6 +42,7 @@ userRouter.get(
   paramsIdRequired,
   userController.getById,
 )
+
 userRouter.post(
   '/create',
   tokenRequired(credentialGuard.highLevelAccess),

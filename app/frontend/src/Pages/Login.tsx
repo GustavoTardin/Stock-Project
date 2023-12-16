@@ -11,32 +11,30 @@ export default function Login() {
   const isAuthenticated = useIsAuthenticated();
 
   const tryLogin = async (nickName: string, password: string): Promise<void> => {
-    const { token, credentialName, expiresIn, id } = await requestLogin(
-      '/users/login',
-      { nickName, password },
-    );
-    if (signIn({
-      token,
-      expiresIn,
-      tokenType: 'Bearer',
-      authState: { credentialName, id },
-    })) {
-      isLoggedSetter(true);
-    }
-  };
-  
-  let count = 0 
-  useEffect(() => {
 
-    count += 1
-    console.log(count)
-    if (isAuthenticated()) isLoggedSetter(true);
-  }, [isAuthenticated]); // perguntar pq ele usava como did mount
+      const { token, credentialName, expiresIn, id } = await requestLogin(
+        '/users/login',
+        { nickName, password },
+        );
+        if (signIn({
+          token,
+          expiresIn,
+          tokenType: 'Bearer',
+          authState: { credentialName, id },
+        })) {
+          isLoggedSetter(true)
+        }
 
-  if (isLogged) return <Navigate to="/menu" replace />;
+      }
+      
+      useEffect(() => {
+        if (isAuthenticated()) isLoggedSetter(true);
+      }, [isAuthenticated]); // perguntar pq ele usava como did mount
 
   return (
-    <main className="bg-gradient-to-bl from-slate-700 to-background">
+    <main className="bg-background">
+    {/* <main className="bg-gradient-to-bl from-black to-background"> */}
+    { isLogged && <Navigate to="/menu" replace />};
       <LoginForm tryLogin={ tryLogin } />
     </main>
   );

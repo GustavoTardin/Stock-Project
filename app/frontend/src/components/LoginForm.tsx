@@ -20,11 +20,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
     }
   };
 
-  let count = 0
   useEffect(() => {
-    count += 1
-    console.log(count, 'login form');
-    
     failedLoginSetter(false);
   }, [userName, password]);
 
@@ -79,8 +75,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
             }
 
         <Button 
-          className="my-2 bg-yellowDetails cursor-pointer hover:bg-blueDetails hover:text-white
-          active:bg-darkBlueDetails"
+          className="my-2 bg-yellowDetails cursor-pointer hover:bg-blueDetails hover:text-white active:bg-darkBlueDetails"
           disabled={ handleButton() }
           onClick={ handleSubmit }
         >

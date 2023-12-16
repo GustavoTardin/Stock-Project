@@ -1,13 +1,21 @@
-export default class createName {
-  constructor(
-    readonly completo: string,
-    readonly text: string,
-    readonly min: number = 3,
-    readonly max: number = 120,
-  ) {
-    if(!completo) throw new Error(`O ${text} é obrigatório`)
-    if(min > max) throw new Error('Tamanho mínimo não deve ser maior que o máximo')
-    if(completo.length > max) throw new Error(`O ${text} deve ter no máximo ${max} caracteres`)
-    if(completo.length < min) throw new Error(`O ${text} deve ter no mínimo ${min} caracteres`)
-  }
+type TCompleteName ={
+  firstName: string,
+  lastName: string,
+}
+
+type TMinAndMax = {
+  min?: number,
+  max?: number,
+}
+type createNameProps = TCompleteName & TMinAndMax
+export default function createName(name: createNameProps): void {
+  const max = name.max || 120
+  const min = name.min || 3
+  if(!name.firstName) throw new Error(`O primeiro nome é obrigatório`)
+  if(!name.lastName) throw new Error(`O sobrenome é obrigatório`)
+  if(min > max) throw new Error('Tamanho mínimo não deve ser maior que o máximo')
+  if(name.firstName.length > max) throw new Error(`O primeiro nome deve ter no máximo ${max} caracteres`)
+  if(name.lastName.length > max) throw new Error(`O sobrenome deve ter no máximo ${max} caracteres`)
+  if(name.lastName.length < min) throw new Error(`O o sobrenome deve ter no mínimo ${min} caracteres`)
+  if(name.firstName.length < min) throw new Error(`O o primeiro nome deve ter no mínimo ${min} caracteres`)
 }

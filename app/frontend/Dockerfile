@@ -12,4 +12,4 @@ EXPOSE 3000
 
 ENTRYPOINT [ "npm", "run" ]
 
-CMD [ "dev" ]       
+CMD [ "dev" ]  
