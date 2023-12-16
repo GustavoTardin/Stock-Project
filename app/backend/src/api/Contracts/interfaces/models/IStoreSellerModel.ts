@@ -1,11 +1,12 @@
-import IStoreSeller from './IStoreSeller'
+import IStoreSeller from '../storeSellers/IDbStoreSeller'
 import ITransaction from '../prisma/ITransaction'
 
 interface IStoreSellerModel {
-  createStoreSeller(
+  createOrUpdateStoreSeller(
     userId: number,
     storeId: number,
     tx?: ITransaction | null,
+    active?: boolean,
   ): Promise<IStoreSeller>
   getBySellerId(userId: number): Promise<IStoreSeller[] | null>
   getByStoreId(storeId: number): Promise<IStoreSeller[] | null>

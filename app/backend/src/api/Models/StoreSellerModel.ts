@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
-import IStoreSellerModel from '../Contracts/interfaces/storeSellers/IStoreSellerModel'
-import IStoreSeller from '../Contracts/interfaces/storeSellers/IStoreSeller'
+import IStoreSellerModel from '../Contracts/interfaces/models/IStoreSellerModel'
+import IStoreSeller from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
 
 class StoreSellerModel implements IStoreSellerModel {
   private _db: PrismaClient
@@ -21,16 +21,19 @@ class StoreSellerModel implements IStoreSellerModel {
    * @param transaction - Transação (opcional).
    * @returns Uma lista dos vendedores de lojas criados.
    */
-  async createStoreSeller(
+  async createOrUpdateStoreSeller(
     userId: number,
     storeId: number,
     transaction: ITransaction | null = null,
+    active: boolean = true,
   ): Promise<IStoreSeller> {
-    const createdSellers = await (transaction || this._db).storeSellers.create({
-      data: {
+    const createdSellers = await (transaction || this._db).storeSellers.upsert({
+      where: { userId_storeId: { userId, storeId } },
+      create: {
         userId,
         storeId,
       },
+      update: { active },
     })
 
     return createdSellers

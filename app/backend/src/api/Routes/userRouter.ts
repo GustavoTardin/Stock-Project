@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { TokenValidation, UserValidation } from '../Midllewares'
+import { TokenValidation, UserValidation } from '../Middlewares'
 import credentialGuard from '../Utils/credentialGuard'
 import UserService from '../Services/UserService'
 import prisma from '../database/prisma'
@@ -21,6 +21,7 @@ const {
   firstNameRequired,
   paramsIdRequired,
   activeRequired,
+  currentPasswordRequired,
 } = UserValidation
 const { tokenRequired, verifyUserOwnership } = TokenValidation
 
@@ -30,7 +31,11 @@ userRouter.get(
   userController.getAll,
 )
 
-userRouter.get('/credentials', tokenRequired(credentialGuard.freeAccess))
+userRouter.get(
+  '/credentials',
+  tokenRequired(credentialGuard.freeAccess),
+  userController.getCredentials,
+)
 userRouter.get(
   '/:id',
   tokenRequired(credentialGuard.freeAccess),
@@ -45,7 +50,7 @@ userRouter.post(
   firstNameRequired,
   passwordRequired,
   credentialRequired,
-  userController.createUser,
+  userController.create,
 )
 userRouter.post(
   '/login',
@@ -59,7 +64,7 @@ userRouter.patch(
   paramsIdRequired,
   tokenRequired(credentialGuard.freeAccess),
   verifyUserOwnership,
-  passwordRequired,
+  currentPasswordRequired,
   newPasswordRequired,
   userController.updatePassword,
 )

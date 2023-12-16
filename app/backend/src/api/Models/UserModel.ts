@@ -24,6 +24,7 @@ class UserModel implements IUserModel {
         credentialName: true,
       },
     },
+    stores: { select: { storeId: true }, where: { active: true } },
   }
 
   constructor(prisma: PrismaClient) {
@@ -50,8 +51,8 @@ class UserModel implements IUserModel {
 
   async getByNickName(
     nickName: string,
+    includeInactive: boolean,
     showPassword = false,
-    includeInactive = false,
   ): Promise<IDbUser | null> {
     // Quase nunca será necessário devolver o password(com hash) do usuário,
     // mas em alguns poucos casos(por isso o default é false), como em requisição
@@ -64,14 +65,13 @@ class UserModel implements IUserModel {
     })
 
     // Seta a exibição do password para false novamente.
-    this._includeCredential.password = false
     return user
   }
 
   async getById(
     id: number,
+    includeInactive: boolean,
     showPassword = false,
-    includeInactive = false,
   ): Promise<IDbUser | null> {
     // Quase nunca será necessário devolver o password(com hash) do usuário,
     // mas em alguns poucos casos(por isso o default é false), como em requisição
@@ -85,7 +85,7 @@ class UserModel implements IUserModel {
     return user
   }
 
-  async createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser> {
+  async create(user: ICompleteUser, tx: ITransaction): Promise<IDbUser> {
     const newUser = await tx.user.create({
       data: {
         ...user,

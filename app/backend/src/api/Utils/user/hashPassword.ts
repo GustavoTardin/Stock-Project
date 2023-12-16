@@ -6,9 +6,9 @@ export function hashPassword(pass: string) {
   return bcrypt.hashSync(pass, saltRounds)
 }
 
-export async function CompareHash(
+export async function compareHash(
+  unhashedString: string,
   hashPassed: string,
-  dbPassword: string,
 ): Promise<boolean> {
-  return bcrypt.compare(hashPassed, dbPassword)
+  return bcrypt.compare(unhashedString, hashPassed)
 }

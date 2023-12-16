@@ -1,8 +1,9 @@
 import z from 'zod'
+import { ChangeStatusSchema, partialUserSchema } from '.'
 
 const updateCredentialSchema = z.object({
-  id: z.number(),
-  credentialId: z.number(),
+  id: ChangeStatusSchema.shape.id,
+  credentialId: partialUserSchema.shape.credentialId,
 })
 
 export default updateCredentialSchema

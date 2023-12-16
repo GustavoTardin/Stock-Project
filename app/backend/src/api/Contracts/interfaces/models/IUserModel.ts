@@ -4,31 +4,30 @@ import {
   ICompleteUser,
   IChangePassword,
   IChangeUserCredential,
-} from '..'
-import ITransaction from '../../prisma/ITransaction'
-import ISelfUpdate from '../updates/ISelfUpdate'
+} from '../users'
+import IModel from './IModel'
+import ITransaction from '../prisma/ITransaction'
+import ISelfUpdate from '../users/updates/ISelfUpdate'
 
-interface IUserModel {
-  getAll(includeInactive: boolean): Promise<IDbUser[]>
+interface IUserModel extends IModel<IDbUser, ICompleteUser> {
   getByNickName(
     nickName: string,
+    includeInactive: boolean,
     showPassword?: boolean,
-    includeInactive?: boolean,
   ): Promise<IDbUser | null>
   getById(
     id: number,
+    includeInactive: boolean,
     showPassword?: boolean,
-    includeInactive?: boolean,
   ): Promise<IDbUser | null>
   getCredentials(): Promise<ICredential[]>
   getCredentialById(id: number): Promise<ICredential | null>
-  createUser(user: ICompleteUser, tx: ITransaction): Promise<IDbUser>
   updateStatusById(
     id: number,
     active: boolean,
     transaction?: ITransaction,
   ): Promise<void>
-  updatePassword({ id, password }: IChangePassword): Promise<void>
+  updatePassword({ id, currentPassword }: IChangePassword): Promise<void>
   updateUserCredential({
     id,
     credentialId,

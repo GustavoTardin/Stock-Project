@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import ErrorHandler from './api/Errors/ErrorHandler'
-import { userRouter } from './api/Routes'
+import { storeSellerRouter, userRouter } from './api/Routes'
 
 const accessControl: express.RequestHandler = (
   _req: Request,
@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(accessControl)
 app.use('/users', userRouter)
+app.use('/store-sellers', storeSellerRouter)
 
 app.use(ErrorHandler.handle)
 

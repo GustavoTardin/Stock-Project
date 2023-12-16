@@ -1,15 +1,16 @@
 import IUser from './IUser'
-import IUserService from './layers/IUserService'
+import IUserService from '../services/IUserService'
 import IToken from './IToken'
 import ILoginResponse from './reqResponse/ILoginResponse'
 import ICredential from './ICredential'
 import ICompleteUser from './reqBody/ICompleteUser'
 import IDbUser from './IDbUser'
-import IUserModel from './layers/IUserModel'
+import IUserModel from '../models/IUserModel'
 import ILoginUser from './reqBody/ILoginUser'
 import IChangePassword from './updates/IChangePassword'
 import IChangeUserCredential from './updates/IChangeUserCredential'
 import IChangeStatus from './updates/IChangeStatus'
+import ISelfUpdate from './updates/ISelfUpdate'
 export {
   IUser,
   IUserService,
@@ -23,4 +24,5 @@ export {
   IChangePassword,
   IChangeUserCredential,
   IChangeStatus,
+  ISelfUpdate,
 }

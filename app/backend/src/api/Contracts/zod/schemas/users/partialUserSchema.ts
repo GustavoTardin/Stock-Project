@@ -8,7 +8,7 @@ const partialUserSchema = z.object({
     .min(3, { message: 'Nome de usuário deve ter no mínimo 3 caracteres' }),
   lastName: z
     .string()
-    .min(3, { message: 'Nome de usuário deve ter no mínimo 3 caracteres' })
+    .min(3, { message: 'O sobrenome deve ter no mínimo 3 caracteres' })
     .optional(),
   credentialId: z
     .number()

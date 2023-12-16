@@ -4,15 +4,13 @@
 // import IUser from './IUser';
 // import IUserODM from './IUserODM';
 
-import { ICredential, ILoginResponse, IToken } from '..'
-import { User } from '../../../../Domains'
+import { ICredential, IDbUser, ILoginResponse, IToken } from '../users'
+import { User } from '../../../Domains'
+import IService from './IService'
 
-interface IUserService {
-  getAll(includeInactive: unknown): Promise<User[]>
+interface IUserService extends IService<User, IDbUser> {
+  getByNickName(nickName: unknown, query: unknown): Promise<User>
   getCredentials(): Promise<ICredential[]>
-  getByNickName(nickName: unknown): Promise<User>
-  getById(id: number): Promise<User>
-  createUser(user: unknown): Promise<User>
   login(user: unknown): Promise<ILoginResponse & IToken>
   updatePassword(data: unknown): Promise<string>
   updateUserCredential(data: unknown): Promise<User>

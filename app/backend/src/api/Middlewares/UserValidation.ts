@@ -59,8 +59,8 @@ class UserValidation {
     _res: Response,
     next: NextFunction,
   ) => {
-    const { credentialName } = req.body
-    if (credentialName) {
+    const { credentialId } = req.body
+    if (credentialId) {
       next()
     } else {
       const error = new CustomError(
@@ -100,6 +100,23 @@ class UserValidation {
     } else {
       const error = new CustomError(
         'A nova senha é obrigatório',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    }
+  }
+
+  static currentPasswordRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { currentPassword } = req.body
+    if (currentPassword) {
+      next()
+    } else {
+      const error = new CustomError(
+        'A senha antiga é obrigatório',
         StatusCode.ClientErrorBadRequest,
       )
       next(error)

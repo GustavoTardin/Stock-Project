@@ -29,7 +29,7 @@ export function FormCheckbox(props: CheckboxProps) {
             type="checkbox"
             value={value.id}
             {...register(props.name)}
-            />
+          />
           <Form.Label
             className="cursor-pointer text-yellowDetails ms-2 sm font-medium "
             htmlFor={value.id.toString()}
