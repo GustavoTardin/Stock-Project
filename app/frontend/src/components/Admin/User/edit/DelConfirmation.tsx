@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 interface ModalProps {
   showModal: boolean;
   toggleModal: React.Dispatch<React.SetStateAction<boolean>>;
-  tryDelete: () => Promise<void>;
+  // tryDelete: () => Promise<void>;
 }
 
 function DelConfirmation({ tryDelete, toggleModal, showModal }: ModalProps) {

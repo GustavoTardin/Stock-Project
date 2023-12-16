@@ -20,7 +20,9 @@ class UserController {
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log('a', req.body)
       const userInfo = await this._service.login(req.body)
+
       res.status(StatusCode.SuccessOK).json(userInfo)
     } catch (error) {
       next(error)

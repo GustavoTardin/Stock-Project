@@ -1,13 +1,13 @@
 import { Form } from '@/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { ZodType, z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { createUser } from '../../../../Utils/Requests/userRequests';
-import { Credential } from './TypeNewUser';
 import axios from 'axios';
+import { getStoreNames } from '@/Utils/Requests/storeRequests';
 
 export type FormData = {
   firstName: string,
@@ -15,7 +15,7 @@ export type FormData = {
   password: string,
   nickName: string,
   confirmPassword: string,
-  credentialName: string | Credential,
+  credential: number | string,
   stores?: number[] | string[]
 }
 
@@ -71,8 +71,9 @@ const createUserSchema: ZodType<FormData> = z.object({
   }).max(20, {
     message: 'A senha deve ter no máximo 20 caracteres'
   }),
-  credentialName: z.string()
-    .transform( test => Credential[test as keyof typeof Credential]),
+  credential: z.string()
+  .transform(credentialId => Number(credentialId) ),
+    // .transform( test => Credential[test as keyof typeof Credential]),
   stores: z.array(z.string())
     .transform( storesIds => storesIds.map( storeId => Number(storeId) ))
     .optional()
@@ -84,7 +85,13 @@ const createUserSchema: ZodType<FormData> = z.object({
 
 export type CreateUserData = z.infer<typeof createUserSchema>
 
-const credentialName = ['Admin', 'Estoquista', 'Lojista', 'Root']
+
+const credential = [
+  {id:1, credential:'Admin'},
+  {id:2, credential:'Estoquista'},
+  {id:3, credential:'Lojista'},
+  {id:4, credential:'Root'},
+]
 function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [isShopAssistant, setIsShopAssistant] =useState(false)
   const [output, setOutput] = useState('')
@@ -102,10 +109,21 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
   const isPasswordStrong = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})').test(userPassword)
 
   async function handleCreateUser(data: CreateUserData) {
-    const {confirmPassword, stores, ...userData} = data
+    const {confirmPassword, stores, credential, ...userData} = data
+    const newUser = {
+      ...userData, credentialId: credential, stores,
+    }
+    console.log('aqui', userPassword, isPasswordStrong);
+    
     try {
-      const a = await createUser({...userData});
-      setOutput(JSON.stringify(a))
+      if(!isShopAssistant) {
+        const a = await createUser({...newUser, stores: []});
+
+        setOutput(JSON.stringify(a.data))
+      } else {
+        const a = await createUser(newUser)
+        setOutput(JSON.stringify(a.data))
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data.message;
@@ -115,8 +133,7 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
     if(data) {
       props.setIsDataFetch(prev => !prev)
     }
-    console.log(data)
-    setOutput(JSON.stringify(data))
+
   }
 
   const stores = [
@@ -167,17 +184,17 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
               {/* {errors.nickName && <span>{errors.nickName.message}</span>} */}
             </Form.Field>
             <Form.Field>
-              <Form.Label htmlFor="password">Senha
-                {  (isPasswordStrong 
-                  ? <span className="text-xs text-emerald-600">Senha forte</span>
-                  : <span className="text-xs text-red-500">Senha fraca</span>
-                )}
-              </Form.Label>
+              <Form.Label htmlFor="password">Senha</Form.Label>
               <Form.Input
                 type="password"
                 id="password"
                 name="password"
               />
+              {  userPassword !== undefined && (isPasswordStrong 
+                  ? <span className="text-xs text-emerald-600">Senha forte</span>
+                  : <span className="text-xs text-red-500">Senha fraca</span>
+                )
+              }
               <Form.ErrorMessage field="password" />
             </Form.Field>
             <Form.Field>
@@ -192,8 +209,8 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
               {/* {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>} */}
             </Form.Field>
             <Form.Field>
-              <Form.Label htmlFor="credentialName">Função</Form.Label>
-              <Form.Select setIs={setIsShopAssistant} id="credentialName" name="credentialName" options={credentialName} />
+              <Form.Label htmlFor="credential">Função</Form.Label>
+              <Form.Select setIs={setIsShopAssistant} id="credential" name="credential" options={credential} />
               <Form.ErrorMessage field="CredentialName" />
 
             </Form.Field>
@@ -209,7 +226,8 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
           </Form.Field>)}
           <Button 
             type="submit"
-            className="flex items-center bg-yellowDetails text-white text-lg rounded px-3 py-2 font-semibold hover:bg-blueDetails"  disabled={isSubmitting}
+            className="flex items-center bg-yellowDetails text-white text-lg rounded px-3 py-2 font-semibold hover:bg-blueDetails" 
+            disabled={isSubmitting && isPasswordStrong}
           >
             Salvar
           </Button>
@@ -223,142 +241,3 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
 }
 
 export default NewUserForm;
-
-{/*import { ChangeEvent, useEffect, useState } from 'react';
-import axios from 'axios';
-import MultiSelect from './MultiSelect';
-import TNewUser, { Credential } from './TypeNewUser';
-import SelectCredential from './SelectCredential';
-import NamePassword from './Name&Password';
-import { Button } from '@/components/ui/button';
-import { FormInput } from '@/components/form/FormInput';
-import { FormRoot } from '@/components/form/FormRoot';
-import createName from '../../../../../../../domain/rules/shared/CreateName';
-import { Select } from 'react-select';
-import Id from '../../../../../../../domain/rules/shared/Id';
-import { messages } from 'joi-translation-pt-br';
-
-
-function NewUserForm() {
-  const [userData, setUserData] = useState<TNewUser>({
-    firstName: '',
-    lastName: '',
-    nickName: '',
-    password: '',
-    credentialName: Credential.Admin,
-    stores: [],
-  });
-  const [apiReturn, setApiReturn] = useState('');
-  const [isSeller, setIsSeller] = useState(false);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const disabledButton = () => {
-    return userData.firstName.length < 3
-      || userData.lastName.length < 3
-      || userData.nickName.length < 4
-      || userData.password.length < 4
-      // || typeof userData.credentialName === Credential 
-  };
-
-  const tryToCreate = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    try {
-      await createUser(userData);
-      setApiReturn('Colaborador criado com sucesso');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data.message;
-        setApiReturn(errorMessage);
-      }
-    }
-  };
-
-  useEffect(() => {
-    setApiReturn('');
-    setIsSeller(userData.credentialName === Credential.Lojista);
-  }, [userData]);
-
-  return (
-    <FormRoot >
-      
-    </FormRoot>
-    <form action="" autoComplete="off" className='border-2 border-yellowDetails rounded-xl p-10'>
-      
-      <div 
-        className="flex gap-2"
-      >
-        <FormInput
-          id="firstName"
-          type="text"
-          placeholder=" Inserir o primeiro nome"
-          value={ userData.firstName }
-          text='Nome'
-          setUserData={ setUserData }
-        />
-        <FormInput
-          id="lastName"
-          type="text"
-          placeholder=" Inserir o primeiro o sobrenome"
-          value={ userData.lastName }
-          text='Sobrenome'
-          setUserData={ setUserData }
-        />
-      </div>
-      <div 
-        className="flex gap-2 pt-10"
-      >
-        <FormInput
-          id="nickName"
-          type="text"
-          placeholder=" Inserir o login"
-          value={ userData.nickName }
-          text='Login para acesso'
-          setUserData={ setUserData }
-        />
-        <FormInput
-          id="password"
-          type="password"
-          placeholder=" Inserir o senha"
-          value={ userData.password }
-          text='Senha'
-          setUserData={ setUserData }
-        />
-      </div>
-      <NamePassword
-        setUserData={ setUserData }
-        firstName={ userData.firstName }
-        lastName={userData.lastName}
-        nickName={userData.nickName}
-        password={ userData.password }
-      /> 
-      <div className="flex gap-2 pt-10">
-        <SelectCredential setUserData={ setUserData } />
-        {
-          isSeller && (
-            <MultiSelect setUserData={ setUserData } stores={ userData.stores } />
-          )
-        }
-      // </div> 
-      <div className='flex justify-center'>
-        <Button 
-          className='flex w-[19.5rem] bg-yellowDetails cursor-pointer hover:bg-blueDetails hover:text-white active:bg-darkBlueDetails rounded mt-12 text-xl'
-          onClick={ tryToCreate }
-          disabled={ disabledButton() }
-        >
-          Criar
-        </Button>
-      </div>
-      { apiReturn && <p>{ apiReturn }</p> }
-    </form>
-    );
-}
-
-export default NewUserForm;*/}

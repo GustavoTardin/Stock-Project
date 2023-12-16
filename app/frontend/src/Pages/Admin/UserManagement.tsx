@@ -10,7 +10,7 @@ function UserManagement() {
   const [isCreate, setIsCreate] = useState(false);
   const [isButtonSm, setIsButtonSm] = useState(false);
   const [isDataFetch, setIsDataFetch] =useState(false)
-  const [edit, setEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false)
 
   useEffect(() => {
@@ -31,14 +31,14 @@ function UserManagement() {
   }, [isDataFetch]);
 
   const showForm = () => {
-    setEdit(false)
+    setIsEdit(false)
     setIsUpdatePassword(false)
     setIsCreate((prev) => !prev);
   };
 
   const showEdit = () => {
-    setIsButtonSm((prev) => !prev);
-    setEdit((prev) => !prev);
+    setIsEdit((prev) => !prev);
+    setIsUpdatePassword(false)
     setIsCreate(false);
   };
 
@@ -48,7 +48,7 @@ function UserManagement() {
   };
 
   useEffect(() => {
-    setIsButtonSm(isUpdatePassword || isCreate)
+    setIsButtonSm(isUpdatePassword || isCreate || isEdit)
   },[isUpdatePassword, isCreate])
 
   return (
@@ -109,8 +109,10 @@ function UserManagement() {
                 </div>
               </>
             )}
-            { edit && (
-              <EditUsers />
+            { isEdit && (
+              <div className=' w-full flex-grow'>
+                <EditUsers />
+              </div>
             )}
 
         </section>
