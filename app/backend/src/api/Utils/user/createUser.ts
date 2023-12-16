@@ -1,6 +1,6 @@
 import StatusCode from 'status-code-enum'
 import ITransaction from '../../Contracts/interfaces/prisma/ITransaction'
-import IStoreSellerModel from '../../Contracts/interfaces/storeSellers/IStoreSellerModel'
+import IStoreSellerModel from '../../Contracts/interfaces/models/IStoreSellerModel'
 import { IStoreModel } from '../../Contracts/interfaces/stores'
 import { ICompleteUser, IUserModel } from '../../Contracts/interfaces/users'
 import CustomError from '../../Errors/CustomError'
@@ -37,7 +37,7 @@ async function createUser(
     } else {
       await Promise.all(
         user.stores.map((storeId) =>
-          storeSellerModel.createStoreSeller(id, storeId, tx),
+          storeSellerModel. createOrUpdateStoreSeller(id, storeId, tx),
         ),
       )
     }

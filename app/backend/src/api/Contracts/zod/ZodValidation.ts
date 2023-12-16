@@ -8,6 +8,7 @@ class ZodValidation {
     try {
       schema.parse(data)
     } catch (error) {
+      console.log(error)
       if (error instanceof z.ZodError) {
         const firstError: TZod = error.errors[0] as TZod
         const field = firstError.path[0]
