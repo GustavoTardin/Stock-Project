@@ -9,12 +9,12 @@ class StoreSellerController {
 
   createOrUpdate = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { storesAndSeller } = req.body
+      console.log('oi')
+      const { storesAndSellers } = req.body
       const data =
-        await this._service.createOrUpdateStoreSeller(storesAndSeller)
+        await this._service.createOrUpdateStoreSeller(storesAndSellers)
       return res.status(201).json(data)
     } catch (error) {
-      console.log(error)
       next(error)
     }
   }

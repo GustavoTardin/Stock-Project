@@ -25,8 +25,9 @@ async function createUser(
         StatusCode.ClientErrorBadRequest,
       )
     }
+    const includeInactive = true
     const stores = await Promise.all(
-      user.stores.map((id) => storeModel.findById(id)),
+      user.stores.map((id) => storeModel.getById(id, includeInactive)),
     )
     const allIdsExist = stores.every((e) => e !== null)
     if (!allIdsExist) {
@@ -37,7 +38,7 @@ async function createUser(
     } else {
       await Promise.all(
         user.stores.map((storeId) =>
-          storeSellerModel. createOrUpdateStoreSeller(id, storeId, tx),
+          storeSellerModel.createOrUpdateStoreSeller(id, storeId, tx),
         ),
       )
     }

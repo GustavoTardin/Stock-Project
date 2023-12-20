@@ -5,10 +5,12 @@ import {
   ICompleteUser,
   ICredential,
   IDbUser,
+  INames,
   IUserModel,
 } from '../Contracts/interfaces/users'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
+import prisma from '../database/prisma'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
@@ -134,6 +136,16 @@ class UserModel implements IUserModel {
     })
     return updatedUser
   }
+
+  async getUserNamesById(id: number): Promise<INames | null> {
+    const user = await this._db.user.findUnique({
+      where: { id },
+      select: { id: true, nickName: true, firstName: true, lastName: true },
+    })
+    return user
+  }
 }
 
-export default UserModel
+const userModel = new UserModel(prisma)
+
+export default userModel

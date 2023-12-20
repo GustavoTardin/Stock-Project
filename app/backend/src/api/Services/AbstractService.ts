@@ -45,7 +45,7 @@ abstract class AbstractService<
     const obj = await this._model.getById(id, includeInactive)
     if (!obj) {
       throw new CustomError(
-        `${this.domainName} não existe`,
+        `${this.domainName} não existe ou está desativado`,
         StatusCode.ClientErrorNotFound,
       )
     } else {

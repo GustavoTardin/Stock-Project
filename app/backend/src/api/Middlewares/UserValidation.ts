@@ -139,6 +139,23 @@ class UserValidation {
       next()
     }
   }
+
+  static storeSellersRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { storeSellers } = req.body
+    if (storeSellers) {
+      next()
+    } else {
+      const error = new CustomError(
+        'A senha antiga é obrigatório',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    }
+  }
 }
 
 export default UserValidation
