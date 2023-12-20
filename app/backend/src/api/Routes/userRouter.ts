@@ -2,15 +2,10 @@ import { Router } from 'express'
 import { TokenValidation, UserValidation } from '../Middlewares'
 import credentialGuard from '../Utils/credentialGuard'
 import UserService from '../Services/UserService'
-import prisma from '../database/prisma'
 import UserController from '../Controllers/UserController'
-import { StoreModel, UserModel } from '../Models'
-import StoreSellerModel from '../Models/StoreSellerModel'
+import { storeModel, userModel, storeSellerModel } from '../Models'
 
 const userRouter = Router()
-const userModel = new UserModel(prisma)
-const storeModel = new StoreModel(prisma)
-const storeSellerModel = new StoreSellerModel(prisma)
 const userService = new UserService(userModel, storeModel, storeSellerModel)
 const userController = new UserController(userService)
 const {
@@ -91,6 +86,14 @@ userRouter.patch(
   paramsIdRequired,
   verifyUserOwnership,
   userController.selfUpdateById,
+)
+
+userRouter.get(
+  '/:id/names',
+  tokenRequired(credentialGuard.freeAccess),
+  paramsIdRequired,
+  verifyUserOwnership,
+  userController.getUserNamesById,
 )
 
 export default userRouter

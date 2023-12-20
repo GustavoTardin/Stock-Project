@@ -87,6 +87,20 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       next(error)
     }
   }
+
+  getUserNamesById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { id } = req.params
+      const names = await this.service.getUserNamesById(Number(id))
+      res.status(StatusCode.SuccessOK).json(names)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default UserController
