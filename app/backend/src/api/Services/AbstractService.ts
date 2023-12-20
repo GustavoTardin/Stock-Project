@@ -12,7 +12,7 @@ abstract class AbstractService<
 > implements IService<T, dbRes>
 {
   protected _model: Model
-  domainName: string
+  public domainName: string
 
   constructor(model: Model, domain: string) {
     this._model = model

@@ -15,7 +15,6 @@ class StoreSellerService implements IStoreSellerService {
   }
 
   async createOrUpdateStoreSeller(data: unknown): Promise<StoreSeller[]> {
-    console.log(data)
     const validated = validateField<z.infer<typeof storeSellerSchema>>(
       storeSellerSchema,
       data,
