@@ -1,10 +1,9 @@
-import { StoreSeller, User } from '../Domains'
+import { StoreSeller, User, Store } from '../Domains'
 import CustomError from '../Errors/CustomError'
 import { IDbUser } from '../Contracts/interfaces/users'
 import DomainTypes from './DomainTypes'
 import StatusCode from 'status-code-enum'
 import IStoreSeller from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
-import Store from '../Domains/Store'
 import { IDbStore } from '../Contracts/interfaces/stores'
 
 class DomainFactory {
