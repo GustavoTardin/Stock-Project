@@ -4,6 +4,7 @@ class Store {
   protected id: number
   protected storeName: string
   protected contactNumber: string
+  protected instagram: string | undefined
   protected sellers: number[] | undefined
   protected address: IStoreAddress | undefined
 
@@ -11,6 +12,7 @@ class Store {
     this.id = store.id
     this.storeName = store.storeName
     this.contactNumber = store.contactNumber
+    if (store.instagram) this.instagram = store.instagram
     if (store.sellers.length > 0) {
       const sellersId = store.sellers.map((e) => e.userId)
       this.sellers = sellersId

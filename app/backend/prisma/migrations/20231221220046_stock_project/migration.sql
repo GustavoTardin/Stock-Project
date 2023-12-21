@@ -29,6 +29,7 @@ CREATE TABLE "stores" (
     "id" SERIAL NOT NULL,
     "storeName" TEXT NOT NULL,
     "contactNumber" TEXT NOT NULL,
+    "instagram" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "active" BOOLEAN NOT NULL DEFAULT true,
@@ -37,16 +38,16 @@ CREATE TABLE "stores" (
 );
 
 -- CreateTable
-CREATE TABLE "StoreAdress" (
+CREATE TABLE "StoreAddress" (
     "id" SERIAL NOT NULL,
     "storeId" INTEGER NOT NULL,
     "state" TEXT NOT NULL,
     "city" TEXT NOT NULL,
     "street" TEXT NOT NULL,
-    "addressNumber" INTEGER NOT NULL,
+    "addressNumber" INTEGER,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "StoreAdress_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "StoreAddress_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -157,7 +158,7 @@ CREATE UNIQUE INDEX "stores_storeName_key" ON "stores"("storeName");
 CREATE UNIQUE INDEX "stores_contactNumber_key" ON "stores"("contactNumber");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "StoreAdress_storeId_key" ON "StoreAdress"("storeId");
+CREATE UNIQUE INDEX "StoreAddress_storeId_key" ON "StoreAddress"("storeId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "products_collectionId_key" ON "products"("collectionId");
@@ -193,7 +194,7 @@ CREATE UNIQUE INDEX "designs_design_key" ON "designs"("design");
 ALTER TABLE "users" ADD CONSTRAINT "users_credentialId_fkey" FOREIGN KEY ("credentialId") REFERENCES "credentials"("id") ON DELETE SET DEFAULT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoreAdress" ADD CONSTRAINT "StoreAdress_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StoreAddress" ADD CONSTRAINT "StoreAddress_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StoreSellers" ADD CONSTRAINT "StoreSellers_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;

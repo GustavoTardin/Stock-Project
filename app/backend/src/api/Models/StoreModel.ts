@@ -9,6 +9,7 @@ class StoreModel implements IStoreModel {
     id: true,
     storeName: true,
     contactNumber: true,
+    instagram: true,
 
     storeAddress: {
       select: {

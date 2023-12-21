@@ -145,12 +145,12 @@ class UserValidation {
     _res: Response,
     next: NextFunction,
   ) => {
-    const { storeSellers } = req.body
-    if (storeSellers) {
+    const { storesAndSellers } = req.body
+    if (storesAndSellers) {
       next()
     } else {
       const error = new CustomError(
-        'A senha antiga é obrigatório',
+        'O campo storesSellers é obrigatório',
         StatusCode.ClientErrorBadRequest,
       )
       next(error)

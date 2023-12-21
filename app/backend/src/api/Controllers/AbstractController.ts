@@ -19,6 +19,7 @@ abstract class AbstractController<
       const domains = await this.service.getAll(includeInactive)
       res.status(StatusCode.SuccessOK).json(domains)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }

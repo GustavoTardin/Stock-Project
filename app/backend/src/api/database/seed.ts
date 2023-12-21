@@ -1,7 +1,5 @@
 import prisma from './prisma'
-import users from './seeds/users'
-import credentials from './seeds/credentials'
-import stores from './seeds/stores'
+import { credentials, users, stores, storeAddress } from './seeds'
 
 async function seedCredentials() {
   await Promise.all(
@@ -50,11 +48,27 @@ async function seedStores() {
   )
 }
 
+async function seedStoreAddresses() {
+  await Promise.all(
+    storeAddress.map(async (storeAddress) => {
+      const createdStoreAddress = await prisma.storeAddress.upsert({
+        where: { id: storeAddress.id },
+        create: { ...storeAddress },
+        update: {},
+      })
+      console.log(
+        `Store address of id ${createdStoreAddress.id} created successfully`,
+      )
+    }),
+  )
+}
+
 async function main() {
   console.log('Start seeding...')
   await seedCredentials()
   await seedUsers()
   await seedStores()
+  await seedStoreAddresses()
   console.log('seed completed!!!')
 }
 

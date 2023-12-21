@@ -9,7 +9,6 @@ class StoreSellerController {
 
   createOrUpdate = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('oi')
       const { storesAndSellers } = req.body
       const data =
         await this._service.createOrUpdateStoreSeller(storesAndSellers)
