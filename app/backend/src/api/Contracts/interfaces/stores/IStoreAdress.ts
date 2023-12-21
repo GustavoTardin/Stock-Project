@@ -1,8 +1,10 @@
-interface IStoreAdress {
+interface IStoreAddress {
+  id?: number
+  storeId?: number
   state: string
   city: string
   street: string
-  adressNumber: number
+  addressNumber: number
 }
 
-export default IStoreAdress
+export default IStoreAddress
