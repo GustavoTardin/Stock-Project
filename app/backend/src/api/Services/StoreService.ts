@@ -1,23 +1,25 @@
-// import ConsistencyChecker from '../Utils/ConsistencyChecker';
-// import newStoreSchema from '../Contracts/zod/schemas/newStoreSchema';
-// import ZodValidation from '../Contracts/zod/ZodValidation';
-// import { IStoreODM, IStore } from '../Contracts/interfaces/stores';
-// import IStoreService from '../Contracts/interfaces/stores/IStoreService';
-// import AbstractService from './AbstractService';
+import {
+  IDbStore,
+  ISimpleStore,
+  IStoreModel,
+} from '../Contracts/interfaces/stores'
+import Store from '../Domains/Store'
+import DomainTypes from '../Utils/DomainTypes'
+import AbstractService from './AbstractService'
 
-// class StoreService extends AbstractService<IStore, IStoreODM> implements IStoreService {
-//   async getStoreNames(): Promise<string[]> {
-//     const storeNames = await this.odm.getStoreNames();
-//     return storeNames;
-//   }
+class StoreService extends AbstractService<
+  Store,
+  IDbStore,
+  ISimpleStore,
+  IStoreModel
+> {
+  constructor(storeModel: IStoreModel) {
+    super(storeModel, DomainTypes.STORE)
+  }
 
-//   async createStore(store: unknown): Promise<IStore | Error> {
-//     const storeZod = new ZodValidation(newStoreSchema);
-//     storeZod.validateData(store);
-//     const validatedStore = store as IStore;
-//     const newStore = await this.odm.createStore(validatedStore);
-//     return newStore;
-//   }
-// }
+  create(): Promise<Store> {
+    throw Error('not implemented')
+  }
+}
 
-// export default StoreService;
+export default StoreService

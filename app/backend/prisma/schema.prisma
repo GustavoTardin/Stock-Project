@@ -50,7 +50,7 @@ model StoreAdress {
   state         String
   city          String
   street        String
-  addressNumber Int
+  addressNumber Int?
   updatedAt    DateTime   @default(now())   @updatedAt
   store         Store  @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

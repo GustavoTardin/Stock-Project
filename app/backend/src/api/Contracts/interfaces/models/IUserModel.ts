@@ -4,6 +4,7 @@ import {
   ICompleteUser,
   IChangePassword,
   IChangeUserCredential,
+  INames,
 } from '../users'
 import IModel from './IModel'
 import ITransaction from '../prisma/ITransaction'

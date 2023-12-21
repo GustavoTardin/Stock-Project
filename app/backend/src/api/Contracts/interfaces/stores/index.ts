@@ -1,5 +1,6 @@
 import ISimpleStore from './ISimpleStore'
-import IStoreAdress from './IStoreAdress'
-import IStoreModel from './IStoreModel'
+import IStoreAddress from './IStoreAddress'
+import IStoreModel from '../models/IStoreModel'
+import IDbStore from './IDbStore'
 
-export { ISimpleStore, IStoreAdress, IStoreModel }
+export { ISimpleStore, IStoreAddress, IStoreModel, IDbStore }
