@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import IStoreSellerService from '../Contracts/interfaces/services/IStoreSellerService'
+import PrismaErrorHandler from '../Errors/PrismaErrorsHandler'
+import isPrismaError from '../Utils/isPrismaError'
 
 class StoreSellerController {
   private _service: IStoreSellerService
@@ -14,7 +16,12 @@ class StoreSellerController {
         await this._service.createOrUpdateStoreSeller(storesAndSellers)
       return res.status(201).json(data)
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 }

@@ -19,6 +19,7 @@ class StoreAddressModel implements IStoreAddressModel {
     address: IStoreAddress,
     tx: ITransaction,
   ): Promise<IDbStoreAddress> {
+    console.log(storeId, address)
     const newAddress = await (tx || this._db).storeAddress.create({
       data: { storeId, ...address },
     })

@@ -88,18 +88,6 @@ class UserService
       user,
     )
 
-    // Verifica se nickname já está em uso, se sim, retorna erro.
-    const includeInactive = true
-    const duplicatedUser = await this._model.getByNickName(
-      validatedUser.nickName,
-      includeInactive, // para incluir usuários desativados
-    )
-    if (duplicatedUser)
-      throw new CustomError(
-        'Esse nome de usuário já está em uso!',
-        StatusCode.ClientErrorConflict,
-      )
-
     // Cria usuário e caso ele faça parte de alguma loja, cria um registro na tabela auxiliar.
     // Também faz a validação se as lojas de fato existem, se não, lança erro e graças
     // a transaction, desfaz a criação do usuário, evitando inconsistências no database.
@@ -266,20 +254,6 @@ class UserService
     // Verifica se usuário existe, se não, lança erro 404
     const includeInactive = false
     await super.verifyIfExistsById(id, includeInactive)
-
-    if (validatedUser.nickName) {
-      // Verifica se nickname já está em uso, se sim, retorna erro.
-      const includeInactive = true
-      const duplicatedUser = await this._model.getByNickName(
-        validatedUser.nickName,
-        includeInactive, // para incluir usuários desativados
-      )
-      if (duplicatedUser)
-        throw new CustomError(
-          'Esse nome de usuário já está em uso!',
-          StatusCode.ClientErrorConflict,
-        )
-    }
 
     const updatedUser = await this._model.selfUpdateById(id, validatedUser)
 

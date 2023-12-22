@@ -3,6 +3,8 @@ import { IDbUser, IUserService } from '../Contracts/interfaces/users'
 import StatusCode from 'status-code-enum'
 import AbstractController from './AbstractController'
 import { User } from '../Domains'
+import PrismaErrorHandler from '../Errors/PrismaErrorsHandler'
+import isPrismaError from '../Utils/isPrismaError'
 
 class UserController extends AbstractController<User, IDbUser, IUserService> {
   login = async (req: Request, res: Response, next: NextFunction) => {
@@ -11,7 +13,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
 
       res.status(StatusCode.SuccessOK).json(userInfo)
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 
@@ -20,7 +27,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       const credentials = await this.service.getCredentials()
       res.status(StatusCode.SuccessOK).json(credentials)
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 
@@ -35,7 +47,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       })
       res.status(StatusCode.SuccessOK).json({ message: updatedMessage })
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 
@@ -53,7 +70,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       })
       res.status(StatusCode.SuccessOK).json(updatedUser)
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 
@@ -71,7 +93,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       })
       res.status(StatusCode.SuccessOK).json({ message: updatedMessage })
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 
@@ -84,7 +111,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       )
       res.status(StatusCode.SuccessOK).json(updatedUser)
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 
@@ -98,7 +130,12 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
       const names = await this.service.getUserNamesById(Number(id))
       res.status(StatusCode.SuccessOK).json(names)
     } catch (error) {
-      next(error)
+      if (isPrismaError(error)) {
+        const prismaError = PrismaErrorHandler.handleErrors(error)
+        next(prismaError)
+      } else {
+        next(error)
+      }
     }
   }
 }
