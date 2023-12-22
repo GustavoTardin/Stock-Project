@@ -1,9 +1,6 @@
-import { ISimpleStore } from '.'
-import IStoreAddress from './IStoreAddress'
+import { z } from 'zod'
+import newStoreSchema from '../../zod/schemas/stores/newStoreSchema'
 
-interface ICreateStore {
-  store: ISimpleStore
-  address?: IStoreAddress
-}
+interface ICreateStore extends z.infer<typeof newStoreSchema.shape.store> {}
 
 export default ICreateStore

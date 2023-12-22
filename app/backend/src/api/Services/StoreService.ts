@@ -1,6 +1,6 @@
 import {
   IDbStore,
-  ISimpleStore,
+  ICreateStore,
   IStoreModel,
 } from '../Contracts/interfaces/stores'
 import Store from '../Domains/Store'
@@ -10,7 +10,7 @@ import AbstractService from './AbstractService'
 class StoreService extends AbstractService<
   Store,
   IDbStore,
-  ISimpleStore,
+  ICreateStore,
   IStoreModel
 > {
   constructor(storeModel: IStoreModel) {

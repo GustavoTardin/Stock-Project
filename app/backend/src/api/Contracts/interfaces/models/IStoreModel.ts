@@ -1,6 +1,6 @@
-import { IDbStore, ISimpleStore } from '../stores'
+import { IDbStore, ICreateStore } from '../stores'
 import IModel from './IModel'
 
-interface IStoreModel extends IModel<IDbStore, ISimpleStore> {}
+interface IStoreModel extends IModel<IDbStore, ICreateStore> {}
 
 export default IStoreModel

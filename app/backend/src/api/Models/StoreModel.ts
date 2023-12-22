@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import IStoreModel from '../Contracts/interfaces/models/IStoreModel'
-import { IDbStore, ISimpleStore } from '../Contracts/interfaces/stores'
+import { IDbStore, ICreateStore } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 class StoreModel implements IStoreModel {
@@ -46,7 +46,7 @@ class StoreModel implements IStoreModel {
     return store
   }
 
-  async create(store: ISimpleStore, tx: ITransaction): Promise<IDbStore> {
+  async create(store: ICreateStore, tx: ITransaction): Promise<IDbStore> {
     const newStore = await tx.store.create({
       data: { ...store },
       select: this._select,
