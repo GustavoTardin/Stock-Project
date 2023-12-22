@@ -46,6 +46,7 @@ CREATE TABLE "StoreAddress" (
     "street" TEXT NOT NULL,
     "addressNumber" INTEGER,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "StoreAddress_pkey" PRIMARY KEY ("id")
 );

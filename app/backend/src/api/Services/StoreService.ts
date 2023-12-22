@@ -1,4 +1,5 @@
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
+import { IStoreAddressModel } from '../Contracts/interfaces/storeAddress'
 import {
   IDbStore,
   ICreateStore,
@@ -19,8 +20,10 @@ class StoreService extends AbstractService<
   ICreateStore,
   IStoreModel
 > {
-  constructor(storeModel: IStoreModel) {
+  private _storeAddressModel: IStoreAddressModel
+  constructor(storeModel: IStoreModel, storeAddressModel: IStoreAddressModel) {
     super(storeModel, DomainTypes.STORE)
+    this._storeAddressModel = storeAddressModel
   }
 
   async create(data: unknown): Promise<Store> {
@@ -33,7 +36,11 @@ class StoreService extends AbstractService<
         try {
           const { id } = await this._model.create(store, tx as ITransaction)
           if (address) {
-            await this.storeAddressModel.create(id, address, tx as ITransaction)
+            await this._storeAddressModel.create(
+              id,
+              address,
+              tx as ITransaction,
+            )
           }
           return id
         } catch (error) {

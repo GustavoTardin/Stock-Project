@@ -1,5 +1,5 @@
 interface ITimeStamp {
-  createAt: Date
+  createdAt: Date
   updatedAt: Date
 }
 
