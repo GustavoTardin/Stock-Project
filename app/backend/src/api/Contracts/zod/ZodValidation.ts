@@ -20,7 +20,7 @@ class ZodValidation {
         } else if (defaultMessage.split(' ')[0] === 'Expected') {
           errorMessage = `No campo ${field} esperava - se um(a) ${firstError.expected} e foi enviado um(a) ${firstError.received}`
         } else {
-          errorMessage = firstError.message
+          errorMessage = defaultMessage
         }
         throw new CustomError(errorMessage, StatusCode.ClientErrorBadRequest)
       } else {

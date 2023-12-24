@@ -14,6 +14,12 @@ const { tokenRequired } = TokenValidation
 const { paramsIdRequired } = UserValidation
 
 storeRouter.get(
+  '/names',
+  tokenRequired(credentialGuard.freeAccess),
+  storeController.getNames,
+)
+
+storeRouter.get(
   '/',
   tokenRequired(credentialGuard.highLevelAccess),
   storeController.getAll,

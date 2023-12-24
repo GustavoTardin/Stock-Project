@@ -1,6 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 import IStoreModel from '../Contracts/interfaces/models/IStoreModel'
-import { IDbStore, ICreateStore } from '../Contracts/interfaces/stores'
+import {
+  IDbStore,
+  ICreateStore,
+  IStoreNames,
+} from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 class StoreModel implements IStoreModel {
@@ -33,6 +37,14 @@ class StoreModel implements IStoreModel {
       select: this._select,
     })
     return stores
+  }
+
+  async getNames(includeInactive: boolean): Promise<IStoreNames[]> {
+    const storeNames = await this._db.store.findMany({
+      where: includeInactive ? undefined : { active: true },
+      select: { id: true, storeName: true },
+    })
+    return storeNames
   }
 
   async getById(
