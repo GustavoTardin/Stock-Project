@@ -11,7 +11,8 @@ class ZodValidation {
       console.log(error)
       if (error instanceof z.ZodError) {
         const firstError: TZod = error.errors[0] as TZod
-        const field = firstError.path[0]
+        const numberOfFields = firstError.path.length
+        const field = firstError.path[numberOfFields - 1]
         const defaultMessage = firstError.message
         let errorMessage = ''
         if (firstError.message === 'Required') {
