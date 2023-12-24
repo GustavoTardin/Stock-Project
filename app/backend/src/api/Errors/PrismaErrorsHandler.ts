@@ -3,7 +3,7 @@ import CustomError from './CustomError'
 import StatusCode from 'status-code-enum'
 
 class PrismaErrorHandler {
-  static handleErrors(error: unknown): CustomError | unknown {
+  static handleErrors(error: Error): CustomError | Error {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       const convertedError = this.handleClientKnownRequestError(error)
       return convertedError

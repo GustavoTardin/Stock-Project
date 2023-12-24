@@ -1,8 +1,6 @@
 import StatusCode from 'status-code-enum'
 import IService from '../Contracts/interfaces/services/IService'
 import { NextFunction, Request, Response } from 'express'
-import PrismaErrorHandler from '../Errors/PrismaErrorsHandler'
-import isPrismaError from '../Utils/isPrismaError'
 
 abstract class AbstractController<
   T,
@@ -21,12 +19,7 @@ abstract class AbstractController<
       const domains = await this.service.getAll(includeInactive)
       res.status(StatusCode.SuccessOK).json(domains)
     } catch (error) {
-      if (isPrismaError(error)) {
-        const prismaError = PrismaErrorHandler.handleErrors(error)
-        next(prismaError)
-      } else {
-        next(error)
-      }
+      next(error)
     }
   }
 
@@ -37,12 +30,7 @@ abstract class AbstractController<
       const domain = await this.service.getById(Number(id), includeInactive)
       res.status(StatusCode.SuccessOK).json(domain)
     } catch (error) {
-      if (isPrismaError(error)) {
-        const prismaError = PrismaErrorHandler.handleErrors(error)
-        next(prismaError)
-      } else {
-        next(error)
-      }
+      next(error)
     }
   }
 
@@ -51,12 +39,7 @@ abstract class AbstractController<
       const createdData = await this.service.create(req.body)
       res.status(StatusCode.SuccessCreated).json(createdData)
     } catch (error) {
-      if (isPrismaError(error)) {
-        const prismaError = PrismaErrorHandler.handleErrors(error)
-        next(prismaError)
-      } else {
-        next(error)
-      }
+      next(error)
     }
   }
 }

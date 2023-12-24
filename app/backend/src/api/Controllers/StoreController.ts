@@ -4,8 +4,6 @@ import { IDbStore } from '../Contracts/interfaces/stores'
 import Store from '../Domains/Store'
 import AbstractController from './AbstractController'
 import { NextFunction, Request, Response } from 'express'
-import { isPrismaError } from '../Utils'
-import PrismaErrorHandler from '../Errors/PrismaErrorsHandler'
 
 class StoreController extends AbstractController<
   Store,
@@ -18,12 +16,7 @@ class StoreController extends AbstractController<
       const storeNames = await this.service.getNames(includeInactive)
       res.status(StatusCode.SuccessOK).json(storeNames)
     } catch (error) {
-      if (isPrismaError(error)) {
-        const prismaError = PrismaErrorHandler.handleErrors(error)
-        next(prismaError)
-      } else {
-        next(error)
-      }
+      next(error)
     }
   }
 }
