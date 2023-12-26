@@ -1,7 +1,9 @@
 import NavBar from "./Navbar";
 
-export  default function Header(){
+export default function Header(){
   return (
-    <NavBar />
+    <header>
+      <NavBar />
+    </header>
   )
 }
