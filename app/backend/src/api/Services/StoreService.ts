@@ -1,6 +1,5 @@
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreService from '../Contracts/interfaces/services/IStoreService'
-import { IStoreAddressModel } from '../Contracts/interfaces/storeAddress'
 import {
   IDbStore,
   ICreateStore,
@@ -21,15 +20,9 @@ class StoreService
   extends AbstractService<Store, IDbStore, ICreateStore, IStoreModel>
   implements IStoreService
 {
-  private _storeAddressModel: IStoreAddressModel
   private _storeSellersModel: IStoreSellerModel
-  constructor(
-    storeModel: IStoreModel,
-    storeAddressModel: IStoreAddressModel,
-    storeSellersModel: IStoreSellerModel,
-  ) {
+  constructor(storeModel: IStoreModel, storeSellersModel: IStoreSellerModel) {
     super(storeModel, DomainTypes.STORE)
-    this._storeAddressModel = storeAddressModel
     this._storeSellersModel = storeSellersModel
   }
 

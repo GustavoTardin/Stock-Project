@@ -2,7 +2,7 @@
 
 import { Router } from 'express'
 import StoreService from '../Services/StoreService'
-import { storeAddressModel, storeModel, storeSellerModel } from '../Models'
+import { storeModel, storeSellerModel } from '../Models'
 import StoreController from '../Controllers/StoreController'
 import {
   StoreValidation,
@@ -12,11 +12,7 @@ import {
 import credentialGuard from '../Utils/credentialGuard'
 
 const storeRouter = Router()
-const storeService = new StoreService(
-  storeModel,
-  storeAddressModel,
-  storeSellerModel,
-)
+const storeService = new StoreService(storeModel, storeSellerModel)
 const storeController = new StoreController(storeService)
 const { tokenRequired } = TokenValidation
 const { paramsIdRequired } = UserValidation
