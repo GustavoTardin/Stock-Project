@@ -150,7 +150,7 @@ class UserValidation {
       next()
     } else {
       const error = new CustomError(
-        'O campo storesSellers é obrigatório',
+        'O campo storesAndSellers é obrigatório',
         StatusCode.ClientErrorBadRequest,
       )
       next(error)
