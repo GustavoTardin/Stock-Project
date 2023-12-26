@@ -95,6 +95,15 @@ class StoreModel implements IStoreModel {
     })
     return updatedStore
   }
+
+  async updateStatusById(id: number, active: boolean): Promise<IDbStore> {
+    const updatedStore = await this._db.store.update({
+      where: { id },
+      data: { active },
+      select: this._select,
+    })
+    return updatedStore
+  }
 }
 
 const storeModel = new StoreModel(prisma)

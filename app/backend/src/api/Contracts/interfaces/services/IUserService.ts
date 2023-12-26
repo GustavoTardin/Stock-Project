@@ -8,7 +8,6 @@ interface IUserService extends IService<User, IDbUser> {
   login(user: unknown): Promise<ILoginResponse & IToken>
   updatePassword(data: unknown): Promise<string>
   updateUserCredential(data: unknown): Promise<User>
-  updateStatusById(data: unknown): Promise<string>
   selfUpdateById(id: number, data: unknown): Promise<User>
   getUserNamesById(id: number): Promise<INames>
 }

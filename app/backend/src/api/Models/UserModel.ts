@@ -121,11 +121,13 @@ class UserModel implements IUserModel {
     id: number,
     active: boolean,
     transaction?: ITransaction,
-  ): Promise<void> {
-    await (transaction || this._db).user.update({
+  ): Promise<IDbUser> {
+    const updatedUser = await (transaction || this._db).user.update({
       where: { id },
       data: { active },
+      select: this._includeCredential,
     })
+    return updatedUser
   }
 
   async selfUpdateById(id: number, data: ISelfUpdate): Promise<IDbUser> {

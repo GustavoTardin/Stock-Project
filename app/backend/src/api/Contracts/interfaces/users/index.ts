@@ -9,7 +9,6 @@ import IUserModel from '../models/IUserModel'
 import ILoginUser from './reqBody/ILoginUser'
 import IChangePassword from './updates/IChangePassword'
 import IChangeUserCredential from './updates/IChangeUserCredential'
-import IChangeStatus from './updates/IChangeStatus'
 import ISelfUpdate from './updates/ISelfUpdate'
 import INames from './INames'
 
@@ -25,7 +24,6 @@ export {
   ILoginUser,
   IChangePassword,
   IChangeUserCredential,
-  IChangeStatus,
   ISelfUpdate,
   INames,
 }

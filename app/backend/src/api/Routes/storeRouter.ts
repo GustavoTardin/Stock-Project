@@ -15,7 +15,7 @@ const storeRouter = Router()
 const storeService = new StoreService(storeModel, storeSellerModel)
 const storeController = new StoreController(storeService)
 const { tokenRequired } = TokenValidation
-const { paramsIdRequired } = UserValidation
+const { paramsIdRequired, activeRequired } = UserValidation
 const { storeRequired } = StoreValidation
 
 storeRouter.get(
@@ -49,6 +49,14 @@ storeRouter.patch(
   tokenRequired(credentialGuard.highLevelAccess),
   paramsIdRequired,
   storeController.updateById,
+)
+
+storeRouter.patch(
+  '/:id/update-status',
+  tokenRequired(credentialGuard.highLevelAccess),
+  paramsIdRequired,
+  activeRequired,
+  storeController.updateStatusById,
 )
 
 export default storeRouter
