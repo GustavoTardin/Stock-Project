@@ -2,16 +2,25 @@
 
 import { Router } from 'express'
 import StoreService from '../Services/StoreService'
-import { storeAddressModel, storeModel } from '../Models'
+import { storeAddressModel, storeModel, storeSellerModel } from '../Models'
 import StoreController from '../Controllers/StoreController'
-import { TokenValidation, UserValidation } from '../Middlewares'
+import {
+  StoreValidation,
+  TokenValidation,
+  UserValidation,
+} from '../Middlewares'
 import credentialGuard from '../Utils/credentialGuard'
 
 const storeRouter = Router()
-const storeService = new StoreService(storeModel, storeAddressModel)
+const storeService = new StoreService(
+  storeModel,
+  storeAddressModel,
+  storeSellerModel,
+)
 const storeController = new StoreController(storeService)
 const { tokenRequired } = TokenValidation
 const { paramsIdRequired } = UserValidation
+const { storeRequired } = StoreValidation
 
 storeRouter.get(
   '/names',
@@ -34,8 +43,16 @@ storeRouter.get(
 
 storeRouter.post(
   '/create',
+  storeRequired,
   tokenRequired(credentialGuard.highLevelAccess),
   storeController.create,
+)
+
+storeRouter.patch(
+  '/:id/update',
+  tokenRequired(credentialGuard.highLevelAccess),
+  paramsIdRequired,
+  storeController.updateById,
 )
 
 export default storeRouter

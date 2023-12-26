@@ -19,6 +19,16 @@ class StoreController extends AbstractController<
       next(error)
     }
   }
+
+  updateById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params
+      const updatedStore = await this.service.updateById(Number(id), req.body)
+      return res.status(StatusCode.SuccessOK).json(updatedStore)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default StoreController

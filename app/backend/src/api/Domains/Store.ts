@@ -5,7 +5,7 @@ class Store {
   protected storeName: string
   protected contactNumber: string
   protected instagram: string | undefined
-  protected sellers: number[] | undefined
+  protected sellers: { userId: number; name: string }[] | undefined
   protected address: IStoreAddress | undefined
 
   constructor(store: IDbStore) {
@@ -14,8 +14,12 @@ class Store {
     this.contactNumber = store.contactNumber
     if (store.instagram) this.instagram = store.instagram
     if (store.sellers.length > 0) {
-      const sellersId = store.sellers.map((e) => e.userId)
-      this.sellers = sellersId
+      this.sellers = store.sellers.map(
+        ({ user: { id, firstName, lastName } }) => ({
+          userId: id,
+          name: `${firstName}${lastName ? ` ${lastName}` : ''}`,
+        }),
+      )
     }
     if (store.storeAddress) this.address = store.storeAddress
   }

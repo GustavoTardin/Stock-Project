@@ -4,6 +4,8 @@ import {
   IDbStore,
   ICreateStore,
   IStoreNames,
+  IUpdateStore,
+  IStoreAddress,
 } from '../Contracts/interfaces/stores'
 import prisma from '../database/prisma'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
@@ -24,7 +26,12 @@ class StoreModel implements IStoreModel {
       },
     },
 
-    sellers: { select: { userId: true }, where: { active: true } },
+    sellers: {
+      where: { active: true },
+      select: {
+        user: { select: { firstName: true, lastName: true, id: true } },
+      },
+    },
   }
 
   constructor(prisma: PrismaClient) {
@@ -58,12 +65,35 @@ class StoreModel implements IStoreModel {
     return store
   }
 
-  async create(store: ICreateStore, tx: ITransaction): Promise<IDbStore> {
+  async create(
+    store: ICreateStore,
+    tx: ITransaction,
+    address?: IStoreAddress,
+  ): Promise<IDbStore> {
     const newStore = await tx.store.create({
-      data: { ...store },
+      data: address ? { ...store, storeAddress: { create: address } } : store,
       select: this._select,
     })
     return newStore
+  }
+
+  async updateById(
+    id: number,
+    data?: IUpdateStore,
+    address?: IStoreAddress,
+    tx?: ITransaction,
+  ): Promise<IDbStore> {
+    const updatedStore = await (tx || this._db).store.update({
+      where: { id },
+      data: {
+        ...data,
+        storeAddress: {
+          update: { where: { storeId: id }, data: { ...address } },
+        },
+      },
+      select: this._select,
+    })
+    return updatedStore
   }
 }
 

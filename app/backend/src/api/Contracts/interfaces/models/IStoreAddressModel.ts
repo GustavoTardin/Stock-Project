@@ -1,6 +1,6 @@
 import ITransaction from '../prisma/ITransaction'
 import IDbStoreAddress from '../storeAddress/IDbStoreAddress'
-import { IStoreAddress } from '../stores'
+import { IStoreAddress, IUpdateAddress } from '../stores'
 
 interface IStoreAddressModel {
   create(
@@ -8,6 +8,11 @@ interface IStoreAddressModel {
     address: IStoreAddress,
     tx: ITransaction,
   ): Promise<IDbStoreAddress>
+  updateByStoreId(
+    storeId: number,
+    updatedAddress: IUpdateAddress,
+    tx?: ITransaction,
+  ): Promise<void>
 }
 
 export default IStoreAddressModel

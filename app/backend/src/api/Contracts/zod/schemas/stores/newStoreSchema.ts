@@ -20,6 +20,7 @@ const newStoreSchema = z
       })
       .strict(),
     address: storeAddressSchema.optional(),
+    sellers: z.array(z.number().min(1)).optional(),
   })
   .strict()
 

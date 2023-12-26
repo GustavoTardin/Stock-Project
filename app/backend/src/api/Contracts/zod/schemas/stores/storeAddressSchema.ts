@@ -11,7 +11,7 @@ const storeAddressSchema = z
     street: z.string().min(3, {
       message: 'A rua da loja deve ter no mínimo 3 caracteres',
     }),
-    addressNumber: z.number().nullish().optional(),
+    addressNumber: z.number().nullish(),
   })
   .strict()
 

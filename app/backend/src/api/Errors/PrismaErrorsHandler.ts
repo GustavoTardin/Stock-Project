@@ -22,6 +22,14 @@ class PrismaErrorHandler {
       )
       return customError
     }
+    if (error.code === 'P2003') {
+      const convertedMessage = `o valor no campo ${error.meta?.field_name} não existe`
+      const customError = new CustomError(
+        convertedMessage,
+        StatusCode.ClientErrorNotFound,
+      )
+      return customError
+    }
     return new CustomError(
       'Erro do tipo PrismaClientKnownRequestError não tratado',
       StatusCode.ServerErrorInternal,
