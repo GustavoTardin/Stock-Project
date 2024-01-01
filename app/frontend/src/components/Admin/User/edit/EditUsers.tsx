@@ -1,16 +1,7 @@
-import { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { AuthStateUserObject } from 'react-auth-kit/dist/types';
-import { Form } from '@/components/form';
 
 function EditUsers() {
-  // const [users, usersSetter] = useState<IUser[]>([]);
-  const [delMessage, delMessageSetter] = useState('');
-  const [showModal, toggleModal] = useState(false);
-  const [idToDelete, setIdToDelete] = useState<string>('');
-  // const [indexToDelete, setIndexToDelete] = useState<number>(users.length);
 
   const userInfo = useAuthUser() as () => AuthStateUserObject;
   const { id } = userInfo();
@@ -27,8 +18,7 @@ function EditUsers() {
   //   }
   // };
 
-  const handleChange = (event) => {
-    event 
+  const handleChange = () => {
     // setIndexToDelete(index);
     // toggleModal(true);
   };
