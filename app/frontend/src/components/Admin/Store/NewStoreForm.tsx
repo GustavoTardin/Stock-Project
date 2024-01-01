@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IStoreData } from './types';
 import StoreNameInput from './StoreNameInput';
-import { createStore } from '../../../Utils/Requests/storeRequests';
+import { createStore } from '../../../Service/Requests/storeRequests';
 import FileInput from './FileInput';
 
 function NewStoreForm() {
