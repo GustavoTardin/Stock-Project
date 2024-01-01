@@ -5,23 +5,21 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { ZodType, z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { createUser } from '../../../../Utils/Requests/userRequests';
+import { createUser } from '../../../../Service/Requests/userRequests';
 import axios from 'axios';
-import { getStoreNames } from '@/Utils/Requests/storeRequests';
+import { getStoreNames } from '@/Service/Requests/storeRequests';
+import { TUpdateUserFormData } from '../edit/UpdateUserForm';
+import { DataFetch } from '@/components/PopUp/PrintData';
+import NewProductForm from '../../Product/Form/NewProductForm';
 
-export type FormData = {
-  firstName: string,
-  lastName: string,
+export type TCreateUserFormData = TUpdateUserFormData & {
   password: string,
-  nickName: string,
   confirmPassword: string,
   credential: number | string,
   stores?: number[] | string[]
 }
 
-export const token = 'O Richard é o melhor'
-
-const createUserSchema: ZodType<FormData> = z.object({
+const createUserSchema: ZodType<TCreateUserFormData>  = z.object({
   firstName: z.string().nonempty({
     message: 'O nome é obrigatório'
   }).min(3, {
@@ -87,38 +85,72 @@ export type CreateUserData = z.infer<typeof createUserSchema>
 
 
 const credential = [
-  {id:1, credential:'Admin'},
-  {id:2, credential:'Estoquista'},
+  {id:2, credential:'Admin'},
+  {id:4, credential:'Estoquista'},
   {id:3, credential:'Lojista'},
-  {id:4, credential:'Root'},
+  {id:1, credential:'Root'},
 ]
-function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateAction<boolean>> }) {
+
+export interface NewUserFormProps { 
+  setDataFetch: React.Dispatch<React.SetStateAction<DataFetch>>
+  setIsDataFetch: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function NewUserForm(props: NewUserFormProps) {
   const [isShopAssistant, setIsShopAssistant] =useState(false)
   const [output, setOutput] = useState('')
   const createUserForm = useForm<CreateUserData>({
     resolver: zodResolver(createUserSchema),
+    defaultValues: async () => {
+      // const stores = await getStoreNames()
+      // console.log(stores);
+      
+      return {
+        confirmPassword: '',
+        credential: 2,
+        firstName: '',
+        lastName: '',
+        nickName: '',
+        password: '',
+      }
+    }
   })
   const { 
     // handleSubmit, 
-    formState: { isSubmitting }, 
+    formState, 
     watch,
+    reset,
+    formState: { isSubmitSuccessful },
     // control,
     // register,
   } = createUserForm
   const userPassword = watch('password')
   const isPasswordStrong = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})').test(userPassword)
 
+    useEffect(() => {
+      if (isSubmitSuccessful) { 
+        reset({
+          confirmPassword: '',
+          firstName: '',
+          lastName: '',
+          nickName: '',
+          password: '',
+          stores: []
+        })
+      }
+    }, [formState, isSubmitSuccessful])
   async function handleCreateUser(data: CreateUserData) {
+      props.setIsDataFetch(true)
+      props.setDataFetch({status: 'loading'})
     const {confirmPassword, stores, credential, ...userData} = data
     const newUser = {
       ...userData, credentialId: credential, stores,
     }
-    console.log('aqui', userPassword, isPasswordStrong);
-    
+      
     try {
       if(!isShopAssistant) {
         const a = await createUser({...newUser, stores: []});
-
+        props.setDataFetch({status: 'success', text: 'Deu boa'})
         setOutput(JSON.stringify(a.data))
       } else {
         const a = await createUser(newUser)
@@ -128,12 +160,11 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data.message;
         setOutput(JSON.stringify(errorMessage))
+      }
     }
-    }
-    if(data) {
-      props.setIsDataFetch(prev => !prev)
-    }
-
+    // if(data) {
+    //   props.setDataFetch(prev => !prev)
+    // }
   }
 
   const stores = [
@@ -141,14 +172,11 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
     { id: 2, name: " loja 2" },
     { id: 3, name: " loja 3" },
     { id: 4, name: " loja 4" },
-    { id: 5, name: " loja 5" },
-    { id: 6, name: " loja 6" },
-    { id: 7, name: " loja 7" },
   ]
 
 
   return (
-    <main className='bg-slate-900 border-yellowDetails rounded border-2 px-80 py-12 mx-52'>
+    <section className='bg-slate-900 border-yellowDetails rounded border-2 px-80 py-12 mx-52'>
       <FormProvider {...createUserForm}>
         <Form.Root create={handleCreateUser}>
           <Form.Field
@@ -190,7 +218,7 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
                 id="password"
                 name="password"
               />
-              {  userPassword !== undefined && (isPasswordStrong 
+              { userPassword !== '' && (isPasswordStrong 
                   ? <span className="text-xs text-emerald-600">Senha forte</span>
                   : <span className="text-xs text-red-500">Senha fraca</span>
                 )
@@ -227,7 +255,7 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
           <Button 
             type="submit"
             className="flex items-center bg-yellowDetails text-white text-lg rounded px-3 py-2 font-semibold hover:bg-blueDetails" 
-            disabled={isSubmitting && isPasswordStrong}
+            disabled={isPasswordStrong}
           >
             Salvar
           </Button>
@@ -236,7 +264,7 @@ function NewUserForm(props: { setIsDataFetch: React.Dispatch<React.SetStateActio
       <pre className="text-sm">
         {output}
       </pre>
-    </main>
+    </section>
   );
 }
 
