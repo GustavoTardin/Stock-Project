@@ -169,12 +169,5 @@ function UserManagement() {
   );
 }
 
-//  <header className="bg-blue-500 p-4">
-//    {/* Seu código do header aqui */}
-//  </header>
-//  <div className="flex-grow flex items-center justify-center">
-//    <button className="bg-green-500 p-4 m-2">Botão 1</button>
-//    <button className="bg-red-500 p-4 m-2">Botão 2</button>
-//  </div>
 
 export default UserManagement;
