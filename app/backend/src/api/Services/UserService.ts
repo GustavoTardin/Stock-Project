@@ -9,12 +9,10 @@ import {
   ICredential,
   IChangePassword,
   IChangeUserCredential,
-  IChangeStatus,
   ISelfUpdate,
   INames,
 } from '../Contracts/interfaces/users'
 import {
-  ChangeStatusSchema,
   changePasswordSchema,
   completeUserSchema,
   loginSchema,
@@ -88,18 +86,6 @@ class UserService
       user,
     )
 
-    // Verifica se nickname já está em uso, se sim, retorna erro.
-    const includeInactive = true
-    const duplicatedUser = await this._model.getByNickName(
-      validatedUser.nickName,
-      includeInactive, // para incluir usuários desativados
-    )
-    if (duplicatedUser)
-      throw new CustomError(
-        'Esse nome de usuário já está em uso!',
-        StatusCode.ClientErrorConflict,
-      )
-
     // Cria usuário e caso ele faça parte de alguma loja, cria um registro na tabela auxiliar.
     // Também faz a validação se as lojas de fato existem, se não, lança erro e graças
     // a transaction, desfaz a criação do usuário, evitando inconsistências no database.
@@ -158,36 +144,6 @@ class UserService
         StatusCode.ClientErrorUnauthorized,
       )
     }
-  }
-
-  async updateStatusById(data: unknown): Promise<string> {
-    // Valida formato, lança erro 400 se estiver incorreto.
-    const { id, active } = validateField<IChangeStatus>(
-      ChangeStatusSchema,
-      data,
-    )
-
-    // Verifica se o id existe, se não, lança erro 404
-    const includeInactive = true
-    const userToBeUpdated = await super.verifyIfExistsById(id, includeInactive)
-
-    await prisma.$transaction(async (tx) => {
-      try {
-        await this._model.updateStatusById(id, active, tx as ITransaction)
-        await this._storeSellerModel.updateBySellerId(
-          id,
-          active,
-          tx as ITransaction,
-        )
-      } catch (error) {
-        console.log(`Erro durante a criação de uma das entidades: ${error}`)
-        throw error
-      }
-    })
-    const updatedMessage = `${this.domainName} ${userToBeUpdated.firstName} ${
-      active ? 'reativado' : 'desativado'
-    } com sucesso`
-    return updatedMessage
   }
 
   async updatePassword(data: unknown): Promise<string> {
@@ -267,20 +223,6 @@ class UserService
     const includeInactive = false
     await super.verifyIfExistsById(id, includeInactive)
 
-    if (validatedUser.nickName) {
-      // Verifica se nickname já está em uso, se sim, retorna erro.
-      const includeInactive = true
-      const duplicatedUser = await this._model.getByNickName(
-        validatedUser.nickName,
-        includeInactive, // para incluir usuários desativados
-      )
-      if (duplicatedUser)
-        throw new CustomError(
-          'Esse nome de usuário já está em uso!',
-          StatusCode.ClientErrorConflict,
-        )
-    }
-
     const updatedUser = await this._model.selfUpdateById(id, validatedUser)
 
     const domain = new User(updatedUser)
@@ -291,7 +233,7 @@ class UserService
     const includeInactive = false
     await this.verifyIfExistsById(id, includeInactive)
     const userNames = await this._model.getUserNamesById(id)
-    return userNames
+    return userNames as INames // Na linha 292, ele lança erro caso o Id não exista. Então não existe chance de ser "null" aqui.
   }
 }
 

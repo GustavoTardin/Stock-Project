@@ -35,7 +35,8 @@ model Store {
   id            Int            @id @default(autoincrement())
   storeName     String         @unique
   contactNumber String         @unique
-  storeAddress  StoreAdress?
+  instagram     String?
+  storeAddress  StoreAddress?
   sellers       StoreSellers[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @default(now())   @updatedAt
@@ -44,14 +45,15 @@ model Store {
   @@map("stores")
 }
 
-model StoreAdress {
+model StoreAddress {
   id            Int    @id @default(autoincrement())
   storeId       Int    @unique
   state         String
   city          String
   street        String
-  addressNumber Int
+  addressNumber Int?
   updatedAt    DateTime   @default(now())   @updatedAt
+   createdAt    DateTime   @default(now())
   store         Store  @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 

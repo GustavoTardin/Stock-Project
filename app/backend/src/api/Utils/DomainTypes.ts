@@ -1,6 +1,6 @@
 enum DomainTypes {
   USER = 'Usuário',
-  PRODUCT = 'Product',
+  STORE = 'Loja',
   StoreSellers = 'StoreSellers',
 }
 

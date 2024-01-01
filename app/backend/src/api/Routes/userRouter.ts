@@ -77,7 +77,7 @@ userRouter.patch(
   tokenRequired(credentialGuard.highLevelAccess),
   paramsIdRequired,
   activeRequired,
-  userController.updateUserStatus,
+  userController.updateStatusById,
 )
 
 userRouter.patch(

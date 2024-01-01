@@ -57,24 +57,6 @@ class UserController extends AbstractController<User, IDbUser, IUserService> {
     }
   }
 
-  updateUserStatus = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    try {
-      const { id } = req.params
-      const { active } = req.body
-      const updatedMessage = await this.service.updateStatusById({
-        id: Number(id),
-        active,
-      })
-      res.status(StatusCode.SuccessOK).json({ message: updatedMessage })
-    } catch (error) {
-      next(error)
-    }
-  }
-
   selfUpdateById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params

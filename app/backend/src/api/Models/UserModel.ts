@@ -11,6 +11,7 @@ import {
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import ISelfUpdate from '../Contracts/interfaces/users/updates/ISelfUpdate'
 import prisma from '../database/prisma'
+import CredentialIds from '../database/seeds/CredentialIds'
 
 class UserModel implements IUserModel {
   private _db: PrismaClient
@@ -121,11 +122,25 @@ class UserModel implements IUserModel {
     id: number,
     active: boolean,
     transaction?: ITransaction,
-  ): Promise<void> {
-    await (transaction || this._db).user.update({
+  ): Promise<IDbUser> {
+    const isSeller = id === CredentialIds.Lojista
+    const updatedUser = await (transaction || this._db).user.update({
       where: { id },
-      data: { active },
+      data: {
+        active,
+        stores:
+          isSeller && !active
+            ? {
+                updateMany: {
+                  where: { userId: id },
+                  data: { active },
+                },
+              }
+            : undefined,
+      },
+      select: this._includeCredential,
     })
+    return updatedUser
   }
 
   async selfUpdateById(id: number, data: ISelfUpdate): Promise<IDbUser> {

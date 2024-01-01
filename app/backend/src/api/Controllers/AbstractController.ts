@@ -42,6 +42,21 @@ abstract class AbstractController<
       next(error)
     }
   }
+
+  updateStatusById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { id } = req.params
+      const { active } = req.body
+      const updatedObj = await this.service.updateStatusById(Number(id), active)
+      res.status(StatusCode.SuccessOK).json({ message: updatedObj })
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default AbstractController

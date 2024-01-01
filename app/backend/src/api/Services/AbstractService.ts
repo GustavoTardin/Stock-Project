@@ -3,6 +3,8 @@ import IModel from '../Contracts/interfaces/models/IModel'
 import IService from '../Contracts/interfaces/services/IService'
 import DomainFactory from '../Utils/DomainFactory'
 import CustomError from '../Errors/CustomError'
+import { validateField } from '../Utils'
+import { ChangeStatusSchema } from '../Contracts/zod/schemas/users'
 
 abstract class AbstractService<
   T,
@@ -38,6 +40,20 @@ abstract class AbstractService<
     return domain
   }
 
+  async updateStatusById(id: number, active: unknown): Promise<string> {
+    const validatedActive = validateField<boolean>(
+      ChangeStatusSchema.shape.active,
+      active,
+    )
+    const includeInactive = true
+    await this.verifyIfExistsById(id, includeInactive)
+    await this._model.updateStatusById(id, validatedActive)
+    const updatedMessage = `O(A) ${this.domainName} de id ${id} foi ${
+      active ? 'reativado' : 'desativado'
+    } com sucesso`
+    return updatedMessage
+  }
+
   async verifyIfExistsById(
     id: number,
     includeInactive: boolean,
@@ -45,7 +61,7 @@ abstract class AbstractService<
     const obj = await this._model.getById(id, includeInactive)
     if (!obj) {
       throw new CustomError(
-        `${this.domainName} não existe ou está desativado`,
+        `${this.domainName} não foi encontrado`,
         StatusCode.ClientErrorNotFound,
       )
     } else {
