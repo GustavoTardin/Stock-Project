@@ -1,3 +1,4 @@
+import { TUpdateUserFormData } from '@/components/Admin/User/edit/UpdateUserForm'
 import TNewUser from '../../components/Admin/User/creation/TypeNewUser'
 import { api } from './requests'
 
@@ -59,6 +60,8 @@ const getUsers = async () => {
 
 const getUserById = async ({id}: TId) => {
   const { data } = await api.get(`/users/${id}`)
+  console.log(data);
+  
   return data;
 };
 
@@ -75,5 +78,5 @@ export {
   updatePassword,
   getCredentialName,
   updateUser,
-  updateUserCredential
+  updateUserCredential,
 };

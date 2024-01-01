@@ -1,4 +1,4 @@
-import { TUpdatePassword } from "@/Utils/Requests/userRequests";
+import { TUpdatePassword } from "@/Service/Requests/userRequests";
 import { Form } from "@/components/form";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";

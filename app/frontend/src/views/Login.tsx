@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit';
 import { Navigate } from 'react-router-dom';
 import '../index.css';
-import { requestLogin } from '../Utils/Requests/requests';
+import { requestLogin } from '../Service/Requests/requests';
 import LoginForm from '../components/LoginForm';
 
 export default function Login() {
@@ -33,8 +33,7 @@ export default function Login() {
 
   return (
     <main className="bg-background">
-    {/* <main className="bg-gradient-to-bl from-black to-background"> */}
-    { isLogged && <Navigate to="/menu" replace />};
+    { isLogged && <Navigate to="/menu" replace />}
       <LoginForm tryLogin={ tryLogin } />
     </main>
   );

@@ -1,22 +1,20 @@
 import { useFormContext } from "react-hook-form";
 import { Form } from './index';
 import { InputHTMLAttributes } from 'react';
-
-interface Store {
+export interface IStore {
  id: number;
  name: string;
 }
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
- values: Store[];
+ values: IStore[];
  name: string;
 }
 
 export function FormCheckbox(props: CheckboxProps) {
- const { register } = useFormContext();
+  const { register } = useFormContext()
 
-
- return (
+  return (
     <ul className="grid grid-cols-4 justify-around">
       {props.values.map((value) => (
         <li

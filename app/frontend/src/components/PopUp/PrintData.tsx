@@ -21,14 +21,14 @@ export function PrintData(data: DataFetch) {
     <>
       {data.status === 'loading' && <Loading/>}
       {data.status === 'success' && (
-        <div className=" transition bg-emerald-500 flex justify-center items-center rounded-b-lg w-full h-10 duration-500">
+        <div className="absolute z-[1] transition bg-emerald-500 flex justify-center items-center rounded-b-lg w-full h-10 duration-500">
           {
             <pre className="text-white text-lg">{`${data.text} sucesso`}</pre>
           }
         </div>)
       }
       {data.status === 'error' && (
-        <div className=" transition bg-red-500 flex justify-center items-center rounded-b-lg w-full h-10 duration-500">
+        <div className="absolute z-[1] transition bg-red-500 flex justify-center items-center rounded-b-lg w-full h-10 duration-500">
           {
             <pre className="text-white">{data.error.message}</pre>
           }

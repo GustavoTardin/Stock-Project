@@ -75,7 +75,7 @@ function LoginForm({ tryLogin }: { tryLogin: (
             }
 
         <Button 
-          className="my-2 bg-yellowDetails cursor-pointer hover:bg-blueDetails hover:text-white active:bg-darkBlueDetails"
+          className="my-2 bg-yellowDetails rounded cursor-pointer text-darkBlueDetails hover:bg-blueDetails hover:text-white active:bg-darkBlueDetails"
           disabled={ handleButton() }
           onClick={ handleSubmit }
         >
