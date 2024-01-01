@@ -33,8 +33,7 @@ export default function Login() {
 
   return (
     <main className="bg-background">
-    {/* <main className="bg-gradient-to-bl from-black to-background"> */}
-    { isLogged && <Navigate to="/menu" replace />};
+    { isLogged && <Navigate to="/menu" replace />}
       <LoginForm tryLogin={ tryLogin } />
     </main>
   );
