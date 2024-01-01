@@ -8,7 +8,6 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import React  from 'react';
 import { Button } from './ui/button';
-import CredentialIds from '../../../backend/src/api/database/seeds/CredentialIds';
 
 function NavBar() {
   const signOut = useSignOut();
@@ -30,7 +29,7 @@ function NavBar() {
     return (
       <NavigationMenu.Item>
         <NavigationMenu.Link
-          className="block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
+          className="transition duration-1000 block select-none hover:text-blueDetails rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none"
           href={href}
           title={title} 
         >
@@ -44,7 +43,7 @@ function NavBar() {
       <li title={title} >                   
         <NavigationMenu.Link asChild>
           <a
-            className={'block select-none rounded-[6px] p-3 text-[15px] leading-none no-underline outline-none transition-colors'}
+            className={'transition duration-1000 block select-none rounded-[6px] p-3 text-[15px] hover:text-blueDetails leading-none no-underline outline-none'}
             href={href}
           >
             <div className="mb-[5px] font-medium leading-[1.2]">{title}</div>
@@ -59,9 +58,9 @@ function NavBar() {
   
 
   return (
-    <nav>
-      <NavigationMenu.Root className='relative z-[1] flex justify-center w-screen pl-5 pt-5'>
-        <NavigationMenu.List className="flex row items-center">
+    <>
+      <NavigationMenu.Root className='relative z-[1] flex justify-between px-10 items-center w-screen'>
+        <NavigationMenu.List className="flex row">
           <LinkNav title="Início" href="/menu"/>
           {storeAccess && (
             <>
@@ -79,7 +78,7 @@ function NavBar() {
           {isAdmin && (
             <>
               <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                <NavigationMenu.Trigger className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
                   Painel Administrativo{' '}
                   <CaretDownIcon
                     className="relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
@@ -98,23 +97,27 @@ function NavBar() {
               </NavigationMenu.Item> 
             </>
           )}
+          <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
+            <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
+          </NavigationMenu.Indicator>
+        </NavigationMenu.List>
+        <div className="perspective-[200px] absolute top-full w-full flex justify-center text-darkBlueDetails">
+          <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-slate-100 transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
+        </div>
+      </NavigationMenu.Root>
+      <NavigationMenu.Root className='pr-10'>
+        <NavigationMenu.List className="flex items-center">
           <NavigationMenu.Item> 
             <Theme />
           </NavigationMenu.Item> 
           <NavigationMenu.Item>
             {' '}
-            <Button variant='link' onClick={ () => signOut() }>Sair</Button>
-          </NavigationMenu.Item> 
-          <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
-            <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-slate-100" />
-          </NavigationMenu.Indicator>       
+            <Button variant='icon' className='text-white' onClick={ () => signOut() }>Sair</Button>
+          </NavigationMenu.Item>
         </NavigationMenu.List>
-        <div className="perspective-[2000px] absolute top-full flex w-full justify-end text-darkBlueDetails mr-96">
-          <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-slate-100 transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
-        </div>
       </NavigationMenu.Root>
-    </nav>
-  );
+    </>
+  )
 }
 
 export default NavBar;
