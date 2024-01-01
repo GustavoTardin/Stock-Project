@@ -11,6 +11,8 @@ import IChangePassword from './updates/IChangePassword'
 import IChangeUserCredential from './updates/IChangeUserCredential'
 import IChangeStatus from './updates/IChangeStatus'
 import ISelfUpdate from './updates/ISelfUpdate'
+import INames from './INames'
+
 export {
   IUser,
   IUserService,
@@ -25,4 +27,5 @@ export {
   IChangeUserCredential,
   IChangeStatus,
   ISelfUpdate,
+  INames,
 }

@@ -12,7 +12,7 @@ abstract class AbstractService<
 > implements IService<T, dbRes>
 {
   protected _model: Model
-  domainName: string
+  public domainName: string
 
   constructor(model: Model, domain: string) {
     this._model = model
@@ -45,7 +45,7 @@ abstract class AbstractService<
     const obj = await this._model.getById(id, includeInactive)
     if (!obj) {
       throw new CustomError(
-        `${this.domainName} não existe`,
+        `${this.domainName} não existe ou está desativado`,
         StatusCode.ClientErrorNotFound,
       )
     } else {

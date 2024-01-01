@@ -11,6 +11,7 @@ import {
   IChangeUserCredential,
   IChangeStatus,
   ISelfUpdate,
+  INames,
 } from '../Contracts/interfaces/users'
 import {
   ChangeStatusSchema,
@@ -284,6 +285,13 @@ class UserService
 
     const domain = new User(updatedUser)
     return domain
+  }
+
+  async getUserNamesById(id: number): Promise<INames> {
+    const includeInactive = false
+    await this.verifyIfExistsById(id, includeInactive)
+    const userNames = await this._model.getUserNamesById(id)
+    return userNames
   }
 }
 

@@ -3,6 +3,7 @@ import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/models/IStoreSellerModel'
 import { IStoreSeller } from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
 
+
 class StoreSellerModel implements IStoreSellerModel {
   private _db: PrismaClient
 
@@ -95,4 +96,6 @@ class StoreSellerModel implements IStoreSellerModel {
   }
 }
 
-export default StoreSellerModel
+const storeSellerModel = new StoreSellerModel(prisma)
+
+export default storeSellerModel

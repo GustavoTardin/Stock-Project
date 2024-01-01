@@ -1,4 +1,5 @@
-import StoreModel from './StoreModel'
-import UserModel from './UserModel'
+import storeModel from './StoreModel'
+import userModel from './UserModel'
+import storeSellerModel from './StoreSellerModel'
 
-export { StoreModel, UserModel }
+export { storeModel, userModel, storeSellerModel }

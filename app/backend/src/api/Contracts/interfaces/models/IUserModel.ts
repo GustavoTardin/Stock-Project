@@ -33,6 +33,7 @@ interface IUserModel extends IModel<IDbUser, ICompleteUser> {
     credentialId,
   }: IChangeUserCredential): Promise<IDbUser>
   selfUpdateById(id: number, data: ISelfUpdate): Promise<IDbUser>
+  getUserNamesById(id: number): Promise<INames | null>
 }
 
 export default IUserModel

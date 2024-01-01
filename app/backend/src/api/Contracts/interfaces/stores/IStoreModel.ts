@@ -2,7 +2,7 @@ import { ISimpleStore } from '.'
 
 interface IStoreModel {
   getAll(): Promise<ISimpleStore[]>
-  findById(id: number): Promise<ISimpleStore | null>
+  getById(id: number, includeInactive: boolean): Promise<ISimpleStore | null>
 }
 
 export default IStoreModel

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import IStoreModel from '../Contracts/interfaces/stores/IStoreModel'
 import { ISimpleStore } from '../Contracts/interfaces/stores'
+import prisma from '../database/prisma'
 class StoreModel implements IStoreModel {
   private _db: PrismaClient
   constructor(prisma: PrismaClient) {
@@ -12,10 +13,17 @@ class StoreModel implements IStoreModel {
     return stores
   }
 
-  async findById(id: number): Promise<ISimpleStore | null> {
-    const store = await this._db.store.findUnique({ where: { id } })
+  async getById(
+    id: number,
+    includeInactive: boolean,
+  ): Promise<ISimpleStore | null> {
+    const store = await this._db.store.findUnique({
+      where: includeInactive ? { id } : { id, active: true },
+    })
     return store
   }
 }
 
-export default StoreModel
+const storeModel = new StoreModel(prisma)
+
+export default storeModel
