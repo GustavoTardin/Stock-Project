@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/models/IStoreSellerModel'
-import IStoreSeller from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
+import { IStoreSeller } from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
 
 class StoreSellerModel implements IStoreSellerModel {
   private _db: PrismaClient
@@ -36,7 +36,7 @@ class StoreSellerModel implements IStoreSellerModel {
       update: { active },
     })
 
-    return createdSellers
+    return [createdSellers]
   }
 
   /**
@@ -48,7 +48,7 @@ class StoreSellerModel implements IStoreSellerModel {
     const storeSellers = await this._db.storeSellers.findMany({
       where: { userId, active: true },
     })
-    return storeSellers
+    return [storeSellers]
   }
 
   /**
@@ -60,7 +60,7 @@ class StoreSellerModel implements IStoreSellerModel {
     const storeSellers = await this._db.storeSellers.findMany({
       where: { storeId, active: true },
     })
-    return storeSellers
+    return [storeSellers]
   }
 
   /**

@@ -1,4 +1,4 @@
-import IStoreSeller from '../storeSellers/IDbStoreSeller'
+import { IStoreSeller } from '../storeSellers/IDbStoreSeller'
 import ITransaction from '../prisma/ITransaction'
 
 interface IStoreSellerModel {

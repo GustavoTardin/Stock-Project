@@ -1,4 +1,4 @@
-import IStoreSeller from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
+import { IStoreSeller } from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
 
 class StoreSeller {
   protected userId: number
@@ -6,9 +6,9 @@ class StoreSeller {
   protected active: boolean
 
   constructor(storeSeller: IStoreSeller) {
-    this.userId = storeSeller.userId
-    this.storeId = storeSeller.storeId
-    this.active = storeSeller.active
+    this.userId = storeSeller[0].userId
+    this.storeId = storeSeller[0].storeId
+    this.active = storeSeller[0].active
   }
 }
 
