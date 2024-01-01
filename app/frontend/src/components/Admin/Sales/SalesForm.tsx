@@ -8,7 +8,7 @@ import { IDate, IProduct } from './interfaces';
 import SalesDate from './SalesDate';
 import SalesProduct from './SalesProduct';
 import ISale from './interfaces/ISale';
-import { postSale } from '../../../Utils/Requests/salesRequests';
+import { postSale } from '../../../Service/Requests/salesRequests';
 
 function SalesForm() {
   const [products, setProducts] = useState<IProduct[]>([]);
