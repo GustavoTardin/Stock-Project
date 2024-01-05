@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import ITransaction from '../Contracts/interfaces/prisma/ITransaction'
 import IStoreSellerModel from '../Contracts/interfaces/models/IStoreSellerModel'
 import { IStoreSeller } from '../Contracts/interfaces/storeSellers/IDbStoreSeller'
-
+import prisma from '../database/prisma'
 
 class StoreSellerModel implements IStoreSellerModel {
   private _db: PrismaClient
