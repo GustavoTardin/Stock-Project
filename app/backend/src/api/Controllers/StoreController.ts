@@ -24,7 +24,17 @@ class StoreController extends AbstractController<
     try {
       const { id } = req.params
       const updatedStore = await this.service.updateById(Number(id), req.body)
-      return res.status(StatusCode.SuccessOK).json(updatedStore)
+      res.status(StatusCode.SuccessOK).json(updatedStore)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  addAddress = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params
+      const updatedStore = await this.service.addAddress(Number(id), req.body)
+      res.status(StatusCode.SuccessOK).json(updatedStore)
     } catch (error) {
       next(error)
     }

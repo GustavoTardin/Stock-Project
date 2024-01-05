@@ -16,6 +16,24 @@ class StoreValidation {
       )
     }
   }
+
+  static addressRequired = (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { state, city, street } = req.body
+
+    if (!state || !city || !street) {
+      const error = new CustomError(
+        'Os seguintes campos são obrigatórios: state, city, street',
+        StatusCode.ClientErrorBadRequest,
+      )
+      next(error)
+    } else {
+      next()
+    }
+  }
 }
 
 export default StoreValidation

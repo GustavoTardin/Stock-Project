@@ -5,6 +5,7 @@ import IService from './IService'
 interface IStoreService extends IService<Store, IDbStore> {
   getNames(query: unknown): Promise<IStoreNames[]>
   updateById(storeId: number, data: unknown): Promise<Store>
+  addAddress(storeId: number, address: unknown): Promise<Store>
 }
 
 export default IStoreService
