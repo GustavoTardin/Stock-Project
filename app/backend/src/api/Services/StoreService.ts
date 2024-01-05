@@ -6,15 +6,21 @@ import {
   IStoreModel,
   IStoreWithAddress,
   IStoreNames,
+  IStoreAddress,
 } from '../Contracts/interfaces/stores'
 import { DomainFactory, DomainTypes, validateField } from '../Utils'
-import { newStoreSchema } from '../Contracts/zod/schemas/stores'
+import {
+  newStoreSchema,
+  storeAddressSchema,
+} from '../Contracts/zod/schemas/stores'
 import Store from '../Domains/Store'
 import prisma from '../database/prisma'
 import AbstractService from './AbstractService'
 import IStoreSellerModel from '../Contracts/interfaces/models/IStoreSellerModel'
 import IUpdateStoreTables from '../Contracts/interfaces/stores/IUpdateStoreTables'
 import updateStoreTablesSchema from '../Contracts/zod/schemas/stores/updateStoreTablesSchema'
+import CustomError from '../Errors/CustomError'
+import StatusCode from 'status-code-enum'
 
 class StoreService
   extends AbstractService<Store, IDbStore, ICreateStore, IStoreModel>
@@ -71,11 +77,17 @@ class StoreService
 
   async updateById(storeId: number, data: unknown): Promise<Store> {
     const includeInactive = true
-    await super.verifyIfExistsById(storeId, includeInactive)
+    const dbStore = await super.verifyIfExistsById(storeId, includeInactive)
     const { store, address } = validateField<IUpdateStoreTables>(
       updateStoreTablesSchema,
       data,
     )
+    if (dbStore.storeAddress === null && address) {
+      throw new CustomError(
+        'Apenas depois de criar um endereço você poderá edita - lo.',
+        StatusCode.ClientErrorBadRequest,
+      )
+    }
     const updatedStore = await prisma.$transaction(
       async (tx): Promise<IDbStore> => {
         try {
@@ -92,6 +104,33 @@ class StoreService
         }
       },
     )
+    const domain = DomainFactory.createDomain<Store>(
+      this.domainName,
+      updatedStore as IDbStore,
+    )
+    return domain
+  }
+
+  async addAddress(storeId: number, address: unknown): Promise<Store> {
+    const validatedAddress = validateField<IStoreAddress>(
+      storeAddressSchema,
+      address,
+    )
+
+    const includeInactive = false
+    const store = await super.verifyIfExistsById(storeId, includeInactive)
+
+    let updatedStore: IDbStore
+
+    if (store.storeAddress !== null) {
+      updatedStore = await this._model.updateById(
+        storeId,
+        undefined, // Valor onde valores de atualização da loja seriam passados
+        validatedAddress,
+      )
+    } else {
+      updatedStore = await this._model.addAddress(storeId, validatedAddress)
+    }
     const domain = DomainFactory.createDomain<Store>(
       this.domainName,
       updatedStore as IDbStore,

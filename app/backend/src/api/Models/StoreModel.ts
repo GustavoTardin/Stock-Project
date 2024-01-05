@@ -87,9 +87,11 @@ class StoreModel implements IStoreModel {
       where: { id },
       data: {
         ...data,
-        storeAddress: {
-          update: { where: { storeId: id }, data: { ...address } },
-        },
+        storeAddress: address
+          ? {
+              update: { where: { storeId: id }, data: { ...address } },
+            }
+          : undefined,
       },
       select: this._select,
     })
@@ -103,6 +105,24 @@ class StoreModel implements IStoreModel {
       select: this._select,
     })
     return updatedStore
+  }
+
+  async addAddress(storeId: number, address: IStoreAddress): Promise<IDbStore> {
+    const updatedStore = await this._db.storeAddress.create({
+      data: { storeId, ...address },
+      select: {
+        store: { select: this._select },
+      },
+    })
+    const IDbStoreFormat = {
+      storeAddress: updatedStore.store.storeAddress,
+      id: updatedStore.store.id,
+      storeName: updatedStore.store.storeName,
+      contactNumber: updatedStore.store.contactNumber,
+      instagram: updatedStore.store.instagram,
+      sellers: updatedStore.store.sellers,
+    }
+    return IDbStoreFormat
   }
 }
 

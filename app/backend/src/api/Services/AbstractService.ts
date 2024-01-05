@@ -61,7 +61,7 @@ abstract class AbstractService<
     const obj = await this._model.getById(id, includeInactive)
     if (!obj) {
       throw new CustomError(
-        `${this.domainName} não foi encontrado`,
+        `${this.domainName} não foi encontrado(a)`,
         StatusCode.ClientErrorNotFound,
       )
     } else {

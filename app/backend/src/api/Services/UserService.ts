@@ -233,7 +233,7 @@ class UserService
     const includeInactive = false
     await this.verifyIfExistsById(id, includeInactive)
     const userNames = await this._model.getUserNamesById(id)
-    return userNames as INames // Na linha 292, ele lança erro caso o Id não exista. Então não existe chance de ser "null" aqui.
+    return userNames as INames // Na linha 234, ele lança erro caso o Id não exista. Então não existe chance de ser "null" aqui.
   }
 }
 

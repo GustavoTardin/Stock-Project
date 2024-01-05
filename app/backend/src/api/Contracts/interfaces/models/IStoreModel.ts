@@ -22,6 +22,7 @@ interface IStoreModel extends IModel<IDbStore, ICreateStore> {
     address?: IUpdateAddress,
     tx?: ITransaction,
   ): Promise<IDbStore>
+  addAddress(storeId: number, address: IStoreAddress): Promise<IDbStore>
 }
 
 export default IStoreModel
